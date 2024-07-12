@@ -46,8 +46,8 @@
 
   <?php
   include './loadCsv.php';
-  loadCsv('donors_IGVconfig.csv', 'donors_tissues');
-  loadCsv('slavseq_metadata.csv', 'cells');
+  loadCsv('data/donors_IGVconfig.csv', 'donors_tissues');
+  loadCsv('data/slavseq_metadata.csv', 'cells');
   ?>
 
 </head>
@@ -172,15 +172,34 @@
           'type': 'annotation',
           'sourceType': "file",
           'displayMode': "expanded",
-          'url': "https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/chm13v2.0.XY.fasta.all_rmsk.bb",
+          'url': "data/chm13v2.0.XY.fasta.all_rmsk.bb",
           'order': 0.5,
         },
         {
           'name': "KNRGL calls by Megane",
           'format': "bed",
+          'displayMode':'expanded',
           'sourceType': "file",
-          'url': "https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/megane_knrgl/KNRGL_alldonors_megane.merged.bed",
+          'url': "data/KNRGL_alldonors_megane.merged.bed",
+          'order': 0.6,
+        },
+        {
+          'name': "Filtered peaks",
+          'format': "bed",
+          'displayMode':'squish',
+          'height':20,
+          'sourceType': "file",
+          'url': './rois/allcells_max_q30.filtered.ForIGV.bed',
           'order': 1,
+        },
+        {
+          'name': 'Disc peaks (remove KNRGL,RefL1HS,PolyA)',
+          'format': "bed",
+          'displayMode':'squish',
+          'height':20,
+          'sourceType': "file",
+          'url': './rois/allcells_max_q30.R1_discordant.noKNRGL_noRefL1HS_slop60kb.noPolyA_2kb.bed',
+          'order': 1.1,
         }
       ],
       "sampleinfo": [
@@ -190,8 +209,8 @@
       ],
       roi: [
         {
-          name: 'Non-reference germline L1 insertions (KNRGL called by Megane)',
-          url: "./rois/KNRGL_alldonors_megane.merged.bed",
+          "name": 'Non-reference germline L1 insertions (KNRGL called by Megane)',
+          'url': "./rois/KNRGL_alldonors_megane.merged.bed",
           indexed: false,
           color: "rgba(255,255,255,0)",
           visible: false,
@@ -207,13 +226,6 @@
           url: './rois/allcells_max_q30.R1_discordant.noKNRGL_noRefL1HS_slop60kb.noPolyA_2kb.bed',
           indexed: false,
           color: "rgba(94,94,1,0.25)"
-        },
-        {
-          name: 'Non-reference germline L1 insertions (KNRGL called by Megane)',
-          url: "./rois/KNRGL_alldonors_megane.merged.bed",
-          indexed: false,
-          color: "rgba(255,255,255,0)",
-          visible: false,
         }
       ]
     };
@@ -251,7 +263,7 @@
 
     export function getLink() {
       var blob = browser.compressedSession();
-      var src = 'https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/IGV/?sessionURL=blob:' + blob
+      var src = 'https://brainome.ucsd.edu/slavseq_browser/?sessionURL=blob:' + blob
       document.getElementById('srcBox').value = src;
       window.history.pushState("object or string", "", src);
     }
@@ -272,7 +284,7 @@
 
     ////////////////////////////////////
     // Functions for updating the dropdown lists
-    
+
     export function updateDonors() {
       // Update the select menus
       const donorMenu = document.getElementById('select_donor');
@@ -425,7 +437,6 @@
       browser.loadTrackList(myTracks)
     }
 
-
     export function updateIGV() {
       for (const track of (browser.tracks.filter((x) => ['wig', 'alignment', 'seg'].includes(x.type)))) {
         browser.removeTrack(track);
@@ -448,7 +459,6 @@
     await updateDonors();
     await updateTracks();
     await updateCells();
-    await updateIGV();
 
     document.getElementById('getLinkButton').addEventListener('click', (event) => {
       getLink();
