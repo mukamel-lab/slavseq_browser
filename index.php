@@ -83,11 +83,19 @@
             </select>
           </li>
 
-          <li class="nav-item cell-selection" id="select_cells_li">
+          <li class="nav-item tissue-selection" id="select_tissue_li">
+            <select id="select_tissue" class="selectpicker" data-width="auto" multiple data-toggle="tooltip"
+              data-placement="top">
+              <option value="HIP"> Hippocampus</option>
+              <option value="DLPFC"> Dorsolateral pre-frontal cortex</option>
+            </select>
+          </li>
+
+          <li class="nav-item cell-selection" id="select_cells_li" style="display: none">
 
             <select id="select_cells_pileup" class="selectpicker" multiple data-width="auto" title="Cell pileups"
               data-toggle="tooltip" data-placement="top" data-live-search="true" data-header="Cells to show"
-              data-actions-box="true" data-selected-text-format="count">
+              data-actions-box="true" data-selected-text-format="count" >
               <option value="All" selected> All cells</option>
             </select>
             <label>Pileup track height:</label>
@@ -99,13 +107,6 @@
             </select>
           </li>
 
-          <li class="nav-item tissue-selection" id="select_tissue_li">
-            <select id="select_tissue" class="selectpicker" data-width="auto" multiple data-toggle="tooltip"
-              data-placement="top">
-              <option value="HIP"> Hippocampus</option>
-              <option value="DLPFC"> Dorsolateral pre-frontal cortex</option>
-            </select>
-          </li>
           <!-- 
           <li class="nav-item">
             <p>
@@ -180,6 +181,7 @@
           'format': "bed",
           'displayMode':'expanded',
           'sourceType': "file",
+          'height':40,
           'url': "data/KNRGL_alldonors_megane.merged.bed",
           'order': 0.6,
         },
@@ -187,7 +189,7 @@
           'name': "Filtered peaks",
           'format': "bed",
           'displayMode':'squish',
-          'height':20,
+          'height':25,
           'sourceType': "file",
           'url': './rois/allcells_max_q30.filtered.ForIGV.bed',
           'order': 1,
@@ -196,7 +198,7 @@
           'name': 'Disc peaks (remove KNRGL,RefL1HS,PolyA)',
           'format': "bed",
           'displayMode':'squish',
-          'height':20,
+          'height':25,
           'sourceType': "file",
           'url': './rois/allcells_max_q30.R1_discordant.noKNRGL_noRefL1HS_slop60kb.noPolyA_2kb.bed',
           'order': 1.1,
@@ -302,6 +304,7 @@
       var donor = document.getElementById('select_donor').value;
       if (['AllDonors'].includes(donor)) {
         document.getElementById('select_cells_li').style.display = 'none';
+        document.getElementById('select_tissue_li').style.display = 'block';
       }
       else if (['Heatmap'].includes(donor)) {
         document.getElementById('select_cells_li').style.display = 'none';
@@ -337,6 +340,7 @@
       var myTracks = []
       var tissues = $('#select_tissue').val();
       for (const donor of donors_tissues.filter((x) => tissues.includes(x.tissue))) {
+        var tissuenum = 0 ? donor.tissue=='HIP' : 1;
         var myTrack = {
           'name': "Donor" + donor.donor + ' ' + donor.tissue,
           'url': donor.url,
@@ -348,7 +352,7 @@
           'height': 20,
           'color': donor.tissue == "HIP" ? "rgb(0,204,255)" : "rgb(0,0,255)",
           'visible': false,
-          'order': 2 + donor.index / 100,
+          'order': 10 + donor.index / 100 + tissuenum/1000,
           'roi': [{
             name: donor.donor + ' non-reference germline L1 insertions (KNRGL called by Megane)',
             url: "./rois/KNRGL_Donor" + donor.donor + "_megane.bed",
@@ -468,7 +472,7 @@
     document.getElementById('select_donor').addEventListener('change', () => { updateCells(); updateTracks(); updateIGV(); })
     document.getElementById('select_cells_pileup').addEventListener('change', () => { updateTracks(); updateIGV(); })
     document.getElementById('select_cells_bam').addEventListener('change', () => { updateTracks(); updateIGV(); })
-    document.getElementById('select_tissue').addEventListener('change', () => { console.log('hi'); updateCells(); updateTracks(); updateIGV(); })
+    document.getElementById('select_tissue').addEventListener('change', () => { updateCells(); updateTracks(); updateIGV(); })
     document.getElementById('pileup_height').addEventListener('change', () => { updateIGV(); })
 
     globalThis.browser = browser; // Makes the browser available in the console
