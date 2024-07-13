@@ -15,11 +15,11 @@ dfs=[]
 def loadsample(i, samples=samples):
   sample=samples.iloc[i]
   bedfile=f'{datadir}/{sample["sample"]}.q30_R1_disc_bins1kb.bed.gz'
-  if os.path.exists(bedfile):
-    df=pd.read_csv(bedfile,sep='\t',
-                  names=['Chromosome','Start','End','Segment_Mean'])
-    df['Sample']='D'+str(sample['donor'])+'_'+sample['tissue']+'_'+sample["sample"]
-    return df
+  assert os.path.exists(bedfile), f'File does not exists: {bedfile}'
+  df=pd.read_csv(bedfile,sep='\t',
+                names=['Chromosome','Start','End','Segment_Mean'])
+  df['Sample']='D'+str(sample['donor'])+'_'+sample['tissue']+'_'+sample["sample"]
+  return df
     # dfs.append(df)
 
 with Pool() as p:

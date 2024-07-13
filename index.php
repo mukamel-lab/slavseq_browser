@@ -369,10 +369,10 @@
       // Create a heatmap track showing all cells
       browser.loadTrack({
         "name": "All cells - coverage around peaks",
-        "filename": "allcells.peaks.R1_disc_q30.seg.gz",
+        "filename": "allcells_q30_R1_disc_bins1kb.seg.gz",
         "format": "seg",
-        "url": "./data/allcells.peaks.R1_disc_q30.seg.gz",
-        "indexURL": "./data/allcells.peaks.R1_disc_q30.seg.gz.tbi",
+        "url": "./data/allcells_q30_R1_disc_bins1kb.seg.gz",
+        "indexURL": "./data/allcells_q30_R1_disc_bins1kb.seg.gz.tbi",
         "indexed": true,
         "sourceType": "file",
         "type": "seg",
