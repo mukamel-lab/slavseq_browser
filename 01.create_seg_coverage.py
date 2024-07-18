@@ -11,7 +11,6 @@ samples=samples[~samples['is_bulk']]
 # Use the full bam file
 datadir='/mysqlpool/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bed_coverage_donor_q30_bins1kb'
 dfs=[]
-# for i,sample in tqdm(samples.iterrows(),total=samples.shape[0]):
 def loadsample(i, samples=samples):
   sample=samples.iloc[i]
   bedfile=f'{datadir}/{sample["sample"]}.q30_R1_disc_bins1kb.bed.gz'
@@ -20,41 +19,24 @@ def loadsample(i, samples=samples):
                 names=['Chromosome','Start','End','Segment_Mean'])
   df['Sample']='D'+str(sample['donor'])+'_'+sample['tissue']+'_'+sample["sample"]
   return df
-    # dfs.append(df)
 
 with Pool() as p:
   dfs=list(tqdm(p.imap(loadsample, range(samples.shape[0])), 
                 total=samples.shape[0],
                 desc="Loading binned coverages"))
 
-# # Use only the regions around the peaks
-# datadir='/mysqlpool/emukamel/SLAVSeq_SZ/allsamples/Merged_SingleCells/peak_coverage_q30'
-# dfs=[]
-# for i,sample in tqdm(samples.iterrows(),total=samples.shape[0]):
-#   df=pd.read_csv(f'{datadir}/{sample["sample"]}.q30.allcells_max_peaks.R1_disc.bed.gz',sep='\t',
-#                  names=['id_bin','Segment_Mean'])
-#   df['Sample']='D'+str(sample['donor'])+'_'+sample['tissue']+'_'+sample["sample"]
-#   dfs.append(df)
-
 df=pd.concat(dfs)
-
-# df['Chromosome']=df['id_bin'].str.extract(r'(chr.*):[0-9]+_.*$')
-# df['locus']=df['id_bin'].str.extract(r'chr.*:([0-9]+)_.*$').astype(int)
-# df['bin']=df['id_bin'].str.extract(r'chr.*:[0-9]+_(.*)$').astype(int)
-# binsize=1000
-# df['bin']=(df['bin']-20)*binsize
-
-
-# df['Start']=df['locus']+df['bin']
-# df['End']=df['locus']+df['bin']+binsize
 df['NumProbes']=1
-
 df=df.sort_values(['Chromosome','Start'])
 
 df[['Sample','Chromosome','Start','End','NumProbes','Segment_Mean']].to_csv('data/allcells_q30_R1_disc_bins1kb.seg',sep='\t',index=False)
 
 os.system('bgzip -f data/allcells_q30_R1_disc_bins1kb.seg')
 os.system('tabix -b3 -e4 -s2 -S1 -f data/allcells_q30_R1_disc_bins1kb.seg.gz')
+
+# Make a filtered file with just the bins that have coverage≥5 reads
+os.system('zcat allcells_q30_R1_disc_bins1kb.seg.gz | awk '(NR==1)||($6>=5)'| bgzip > data/allcells_q30_R1_disc_bins1kb.coverage5.seg.gz')
+os.system('tabix -b3 -e4 -s2 -S1 -f data/allcells_q30_R1_disc_bins1kb.coverage5.seg.gz')
 
 ###########
 # Create sample table

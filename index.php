@@ -3,7 +3,7 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-1T4FCX4DFN"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
+    function gtag() {dataLayer.push(arguments);}
     gtag('js', new Date());
 
     gtag('config', 'G-1T4FCX4DFN');
@@ -56,13 +56,13 @@
   <nav class="navbar navbar-default" style="margin:0;">
     <div class="container-fluid">
       <ul class="nav navbar-nav">
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <span class="glyphicon glyphicon-chevron-down" data-toggle="collapse" href="#topbar" title="Show/hide options"
             style="line-height: inherit; font-size:18;"></span>
-        </li>
+        </li> -->
         <li class="nav-item">
           <button id="screenshotButton" class="btn btn-primary">
-            <i class="fa fa-camera"></i> Save screenshot</button>
+            <i class="fa fa-camera"></i>Screenshot</button>
         </li>
         <li class="nav-item">
           <button id="getLinkButton" class="btn btn-primary">
@@ -70,22 +70,27 @@
           <input type="text" id="srcBox" size="1" style="visibility:hidden;"></input>
         </li>
       </ul>
-    </div>
 
-    <div class="collapse in" id="topbar">
       <div class="container-fluid">
         <ul class="nav navbar-nav">
           <li class="nav-item donor-selection">
+            <select id="select_rois" class="selectpicker" multiple data-width="100px" data-toggle="tooltip"
+              data-placement="top" data-header="ROIs" data-selected-text-format="count"
+              title="ROIs">
+            </select>
+          </li>
+
+          <li class="nav-item donor-selection">
             <select id="select_donor" class="selectpicker" data-width="auto" data-toggle="tooltip" data-placement="top"
-              data-header="Donor to show" data-actions-box="true">
+              data-header="Donor to show" data-actions-box="true" data-live-search="true">
               <option value="AllDonors" selected> All donors (pileups)</option>
               <option value="Heatmap"> All cells (heatmap)</option>
             </select>
           </li>
 
-          <li class="nav-item tissue-selection" id="select_tissue_li">
-            <select id="select_tissue" class="selectpicker" data-width="auto" multiple data-toggle="tooltip"
-              data-placement="top">
+          <li class="nav-item tissue-selection" id="select_tissue_li" style="width:none">
+            <select id="select_tissue" class="selectpicker" multiple data-toggle="tooltip" data-placement="top"
+              title="Tissue">
               <option value="HIP"> Hippocampus</option>
               <option value="DLPFC"> Dorsolateral pre-frontal cortex</option>
             </select>
@@ -95,7 +100,7 @@
 
             <select id="select_cells_pileup" class="selectpicker" multiple data-width="auto" title="Cell pileups"
               data-toggle="tooltip" data-placement="top" data-live-search="true" data-header="Cells to show"
-              data-actions-box="true" data-selected-text-format="count" >
+              data-actions-box="true" data-selected-text-format="count">
               <option value="All" selected> All cells</option>
             </select>
             <label>Pileup track height:</label>
@@ -106,14 +111,6 @@
               <option value="All" selected> All cells</option>
             </select>
           </li>
-
-          <!-- 
-          <li class="nav-item">
-            <p>
-              <button onclick="myRefresh(); getLink();" class="btn btn-primary">Reload browser</button>
-            </p>
-          </li> -->
-
         </ul>
       </div>
     </div>
@@ -167,29 +164,40 @@
           "type": "annotation",
           "displayMode": 'squish'
         },
+        // {
+        //   'name': "RepeatMasker",
+        //   'format': "bigbed",
+        //   'type': 'annotation',
+        //   'sourceType': "file",
+        //   'displayMode': "expanded",
+        //   'url': "data/chm13v2.0.XY.fasta.all_rmsk.bb",
+        //   'order': 0.5,
+        // },
         {
-          'name': "RepeatMasker",
-          'format': "bigbed",
+          'name': "RepeatMasker L1",
+          'format': "bed",
           'type': 'annotation',
           'sourceType': "file",
           'displayMode': "expanded",
-          'url': "data/chm13v2.0.XY.fasta.all_rmsk.bb",
+          'url': "data/L1HS.chm13v2.0_rmsk.reformat.bed.gz",
+          'indexURL': "data/L1HS.chm13v2.0_rmsk.reformat.bed.gz.tbi",
+          'indexed': true,
           'order': 0.5,
         },
         {
           'name': "KNRGL calls by Megane",
           'format': "bed",
-          'displayMode':'expanded',
+          'displayMode': 'expanded',
           'sourceType': "file",
-          'height':40,
+          'height': 40,
           'url': "data/KNRGL_alldonors_megane.merged.bed",
           'order': 0.6,
         },
         {
           'name': "Filtered peaks",
           'format': "bed",
-          'displayMode':'squish',
-          'height':25,
+          'displayMode': 'squish',
+          'height': 25,
           'sourceType': "file",
           'url': './rois/allcells_max_q30.filtered.ForIGV.bed',
           'order': 1,
@@ -197,37 +205,25 @@
         {
           'name': 'Disc peaks (remove KNRGL,RefL1HS,PolyA)',
           'format': "bed",
-          'displayMode':'squish',
-          'height':25,
+          'displayMode': 'squish',
+          'height': 25,
           'sourceType': "file",
           'url': './rois/allcells_max_q30.R1_discordant.noKNRGL_noRefL1HS_slop60kb.noPolyA_2kb.bed',
           'order': 1.1,
+        },
+        {
+          'name': 'Apua peaks (liftOver from hg19)',
+          'format': "bed",
+          'displayMode': 'expanded',
+          'height': 50,
+          'sourceType': "file",
+          'url': './rois/apua_calls_chm13.bed',
+          'order': 1.2,
         }
       ],
       "sampleinfo": [
         {
           "url": "./data/sampletable.tsv"
-        }
-      ],
-      roi: [
-        {
-          "name": 'Non-reference germline L1 insertions (KNRGL called by Megane)',
-          'url': "./rois/KNRGL_alldonors_megane.merged.bed",
-          indexed: false,
-          color: "rgba(255,255,255,0)",
-          visible: false,
-        },
-        {
-          name: 'Filtered peaks',
-          url: './rois/allcells_max_q30.filtered.ForIGV.bed',
-          indexed: false,
-          color: "rgba(94,255,1,0.25)"
-        },
-        {
-          name: 'Disc peaks (remove KNRGL,RefL1HS,PolyA)',
-          url: './rois/allcells_max_q30.R1_discordant.noKNRGL_noRefL1HS_slop60kb.noPolyA_2kb.bed',
-          indexed: false,
-          color: "rgba(94,94,1,0.25)"
         }
       ]
     };
@@ -293,7 +289,7 @@
       const donors = donors_tissues.filter((d) => d.tissue == "HIP")
       for (const donor of donors) {
         var option = document.createElement("option");
-        option.text = "Donor " + donor.donor;
+        option.text = donor.name;
         option.title = "D" + donor.donor;
         option.value = donor.donor;
         donorMenu.add(option);
@@ -312,8 +308,61 @@
       } else {
         document.getElementById('select_cells_li').style.display = 'block';
         document.getElementById('select_tissue_li').style.display = 'block';
-
       }
+    }
+
+    // Create the ROIs
+    const all_roi_tracks = [
+      {
+        "name": 'Non-reference germline L1 insertions (KNRGL called by Megane)',
+        'url': "./rois/KNRGL_alldonors_megane.merged.bed",
+        indexed: false,
+        color: "rgba(255,255,255,0)",
+        visible: false,
+      },
+      {
+        name: 'Filtered peaks',
+        url: './rois/allcells_max_q30.filtered.ForIGV.bed',
+        indexed: false,
+        color: "rgba(94,255,1,0.25)"
+      },
+      {
+        name: 'Disc peaks (remove KNRGL,RefL1HS,PolyA)',
+        url: './rois/allcells_max_q30.R1_discordant.noKNRGL_noRefL1HS_slop60kb.noPolyA_2kb.bed',
+        indexed: false,
+        color: "rgba(94,94,1,0.25)"
+      },
+      {
+        name: "Apua's peak calls",
+        'url': './rois/apua_calls_chm13.bed',
+        indexed: false,
+        color: "rgba(1,1,255,0.25)"
+      }]
+    for (const roi_track of all_roi_tracks) {
+      var option = document.createElement("option");
+      option.text = roi_track.name;
+      option.value = roi_track.name;
+      document.getElementById('select_rois').add(option);
+    }
+    $('.selectpicker').selectpicker('refresh');
+
+    export function updateROIs() {
+      if (['AllDonors', 'Heatmap'].includes($("#select_donor").val())) {
+        var rois = $('#select_rois').val()
+        roi_tracks = all_roi_tracks.filter((x) => rois.includes(x.name))
+        console.log(roi_tracks)
+
+      } else {
+        // When we're only showing a single donor, just show the ROIs for that donor
+        var donor = document.getElementById('select_donor').value;
+        var roi_tracks = [{
+          "name": "Peaks for Donor " + donor,
+          'url': 'data/peaks_per_donor/peaks_' + donor + '.bed',
+          'indexed': false
+        }]
+      }
+      browser.clearROIs();
+      browser.loadROI(roi_tracks);
     }
 
     export function updateCells() {
@@ -340,7 +389,7 @@
       var myTracks = []
       var tissues = $('#select_tissue').val();
       for (const donor of donors_tissues.filter((x) => tissues.includes(x.tissue))) {
-        var tissuenum = 0 ? donor.tissue=='HIP' : 1;
+        var tissuenum = 0 ? donor.tissue == 'HIP' : 1;
         var myTrack = {
           'name': "Donor" + donor.donor + ' ' + donor.tissue,
           'url': donor.url,
@@ -352,7 +401,7 @@
           'height': 20,
           'color': donor.tissue == "HIP" ? "rgb(0,204,255)" : "rgb(0,0,255)",
           'visible': false,
-          'order': 10 + donor.index / 100 + tissuenum/1000,
+          'order': 10 + donor.index / 100 + tissuenum / 1000,
           'roi': [{
             name: donor.donor + ' non-reference germline L1 insertions (KNRGL called by Megane)',
             url: "./rois/KNRGL_Donor" + donor.donor + "_megane.bed",
@@ -371,7 +420,9 @@
         "name": "All cells - coverage around peaks",
         "filename": "allcells_q30_R1_disc_bins1kb.seg.gz",
         "format": "seg",
-        "url": "./data/allcells_q30_R1_disc_bins1kb.seg.gz",
+        // "url": "./data/allcells_q30_R1_disc_bins1kb.coverage5.seg.gz", // Show only the bins with ≥5 reads
+        // "indexURL": "./data/allcells_q30_R1_disc_bins1kb.coverage5.seg.gz.tbi",
+        "url": "./data/allcells_q30_R1_disc_bins1kb.seg.gz", // Show all reads
         "indexURL": "./data/allcells_q30_R1_disc_bins1kb.seg.gz.tbi",
         "indexed": true,
         "sourceType": "file",
@@ -468,12 +519,13 @@
       getLink();
       copyLink();
     })
-    document.getElementById('screenshotButton').addEventListener('click', () => { myScreenshot(); })
-    document.getElementById('select_donor').addEventListener('change', () => { updateCells(); updateTracks(); updateIGV(); })
-    document.getElementById('select_cells_pileup').addEventListener('change', () => { updateTracks(); updateIGV(); })
-    document.getElementById('select_cells_bam').addEventListener('change', () => { updateTracks(); updateIGV(); })
-    document.getElementById('select_tissue').addEventListener('change', () => { updateCells(); updateTracks(); updateIGV(); })
-    document.getElementById('pileup_height').addEventListener('change', () => { updateIGV(); })
+    document.getElementById('screenshotButton').addEventListener('click', () => {myScreenshot();})
+    document.getElementById('select_donor').addEventListener('change', () => {updateCells(); updateTracks(); updateROIs(); updateIGV();})
+    document.getElementById('select_cells_pileup').addEventListener('change', () => {updateTracks(); updateIGV();})
+    document.getElementById('select_cells_bam').addEventListener('change', () => {updateTracks(); updateIGV();})
+    document.getElementById('select_tissue').addEventListener('change', () => {updateCells(); updateTracks(); updateIGV();})
+    document.getElementById('pileup_height').addEventListener('change', () => {updateIGV();})
+    document.getElementById('select_rois').addEventListener('change', () => {updateROIs();})
 
     globalThis.browser = browser; // Makes the browser available in the console
 
