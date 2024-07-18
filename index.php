@@ -123,7 +123,39 @@
 
     import igv from "./dist/igv.esm.min.js"
 
-    const options =
+    // Create the ROIs
+    const all_roi_tracks = [
+      {
+        "name": 'Non-reference germline L1 insertions (KNRGL called by Megane)',
+        'url': "./rois/KNRGL_alldonors_megane.merged.bed",
+        indexed: false,
+        color: "rgba(255,255,255,0)",
+        visible: false,
+        'format':'bed'
+      },
+      {
+        name: 'Filtered peaks',
+        url: './rois/allcells_max_q30.filtered.ForIGV.bed',
+        indexed: false,
+        color: "rgba(94,255,1,0.5)",
+        'format':'bed'
+      },
+      {
+        name: 'Disc peaks (remove KNRGL,RefL1HS,PolyA)',
+        url: './rois/allcells_max_q30.R1_discordant.noKNRGL_noRefL1HS_slop60kb.noPolyA_2kb.bed',
+        indexed: false,
+        color: "rgba(94,94,1,0.5)",
+        'format':'bed'
+      },
+      {
+        name: "Apua's peak calls",
+        'url': './rois/apua_calls_chm13.bed',
+        indexed: false,
+        color: "rgba(1,1,255,0.5)",
+        'format':'bed'
+      }]
+
+    var options =
     {
       genome: "hs1",
       queryParametersSupported: true,
@@ -173,6 +205,7 @@
         //   'url': "data/chm13v2.0.XY.fasta.all_rmsk.bb",
         //   'order': 0.5,
         // },
+        
         {
           'name': "RepeatMasker L1",
           'format': "bed",
@@ -180,53 +213,57 @@
           'sourceType': "file",
           'displayMode': "expanded",
           'url': "data/L1HS.chm13v2.0_rmsk.reformat.bed.gz",
-          'indexURL': "data/L1HS.chm13v2.0_rmsk.reformat.bed.gz.tbi",
+          'indexURL': "./data/L1HS.chm13v2.0_rmsk.reformat.bed.gz.tbi",
           'indexed': true,
           'order': 0.5,
         },
-        {
-          'name': "KNRGL calls by Megane",
-          'format': "bed",
-          'displayMode': 'expanded',
-          'sourceType': "file",
-          'height': 40,
-          'url': "data/KNRGL_alldonors_megane.merged.bed",
-          'order': 0.6,
-        },
-        {
-          'name': "Filtered peaks",
-          'format': "bed",
-          'displayMode': 'squish',
-          'height': 25,
-          'sourceType': "file",
-          'url': './rois/allcells_max_q30.filtered.ForIGV.bed',
-          'order': 1,
-        },
-        {
-          'name': 'Disc peaks (remove KNRGL,RefL1HS,PolyA)',
-          'format': "bed",
-          'displayMode': 'squish',
-          'height': 25,
-          'sourceType': "file",
-          'url': './rois/allcells_max_q30.R1_discordant.noKNRGL_noRefL1HS_slop60kb.noPolyA_2kb.bed',
-          'order': 1.1,
-        },
-        {
-          'name': 'Apua peaks (liftOver from hg19)',
-          'format': "bed",
-          'displayMode': 'expanded',
-          'height': 50,
-          'sourceType': "file",
-          'url': './rois/apua_calls_chm13.bed',
-          'order': 1.2,
-        }
+        // {
+        //   'name': "KNRGL calls by Megane",
+        //   'format': "bed",
+        //   'displayMode': 'expanded',
+        //   'sourceType': "file",
+        //   'height': 40,
+        //   'url': "./data/KNRGL_alldonors_megane.merged.bed",
+        //   'order': 0.6,
+        // },
+        // {
+        //   'name': "Filtered peaks",
+        //   'format': "bed",
+        //   'displayMode': 'squish',
+        //   'height': 25,
+        //   'sourceType': "file",
+        //   'url': './rois/allcells_max_q30.filtered.ForIGV.bed',
+        //   'order': 1,
+        // },
+        // {
+        //   'name': 'Disc peaks (remove KNRGL,RefL1HS,PolyA)',
+        //   'format': "bed",
+        //   'displayMode': 'squish',
+        //   'height': 25,
+        //   'sourceType': "file",
+        //   'url': './rois/allcells_max_q30.R1_discordant.noKNRGL_noRefL1HS_slop60kb.noPolyA_2kb.bed',
+        //   'order': 1.1,
+        // },
+        // {
+        //   'name': 'Apua peaks (liftOver from hg19)',
+        //   'format': "bed",
+        //   'displayMode': 'expanded',
+        //   'height': 50,
+        //   'sourceType': "file",
+        //   'url': './rois/apua_calls_chm13.bed',
+        //   'order': 1.2,
+        // }
       ],
       "sampleinfo": [
         {
           "url": "./data/sampletable.tsv"
         }
-      ]
-    };
+      ]};
+
+    for (const mytrack of all_roi_tracks) {
+      mytrack.height=25
+      options.tracks.push(mytrack)
+    }
 
     ////////////////////////////////////////////////
     // Functions for screenshot and links
@@ -311,33 +348,6 @@
       }
     }
 
-    // Create the ROIs
-    const all_roi_tracks = [
-      {
-        "name": 'Non-reference germline L1 insertions (KNRGL called by Megane)',
-        'url': "./rois/KNRGL_alldonors_megane.merged.bed",
-        indexed: false,
-        color: "rgba(255,255,255,0)",
-        visible: false,
-      },
-      {
-        name: 'Filtered peaks',
-        url: './rois/allcells_max_q30.filtered.ForIGV.bed',
-        indexed: false,
-        color: "rgba(94,255,1,0.25)"
-      },
-      {
-        name: 'Disc peaks (remove KNRGL,RefL1HS,PolyA)',
-        url: './rois/allcells_max_q30.R1_discordant.noKNRGL_noRefL1HS_slop60kb.noPolyA_2kb.bed',
-        indexed: false,
-        color: "rgba(94,94,1,0.25)"
-      },
-      {
-        name: "Apua's peak calls",
-        'url': './rois/apua_calls_chm13.bed',
-        indexed: false,
-        color: "rgba(1,1,255,0.25)"
-      }]
     for (const roi_track of all_roi_tracks) {
       var option = document.createElement("option");
       option.text = roi_track.name;
