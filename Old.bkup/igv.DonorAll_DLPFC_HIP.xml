@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Session genome="hs1" locus="chr5:158952443-158981301" nextAutoscaleGroup="3" version="8">
+    <Resources>
+            <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor1_DLPFC_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor1_HIP_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor2_DLPFC_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor2_HIP_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor3_DLPFC_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor3_HIP_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor4_DLPFC_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor4_HIP_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor5_DLPFC_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor5_HIP_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor7_DLPFC_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor7_HIP_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor8_DLPFC_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor8_HIP_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor10_DLPFC_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor10_HIP_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor11_DLPFC_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor11_HIP_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor12_DLPFC_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor12_HIP_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor13_DLPFC_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor13_HIP_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor14_DLPFC_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor14_HIP_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor15_DLPFC_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor15_HIP_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor16_DLPFC_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor16_HIP_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor17_DLPFC_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor17_HIP_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor19_DLPFC_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor19_HIP_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor20_DLPFC_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor20_HIP_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor21_DLPFC_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor21_HIP_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor22_DLPFC_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor22_HIP_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor24_DLPFC_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor24_HIP_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor25_DLPFC_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor25_HIP_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor26_DLPFC_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor26_HIP_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor27_DLPFC_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor27_HIP_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor28_DLPFC_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor28_HIP_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor30_DLPFC_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor30_HIP_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor31_DLPFC_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor31_HIP_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor32_DLPFC_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor32_HIP_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor33_DLPFC_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor33_HIP_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor35_DLPFC_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor35_HIP_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor36_DLPFC_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor36_HIP_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor37_DLPFC_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor37_HIP_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor38_DLPFC_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor38_HIP_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor39_DLPFC_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor39_HIP_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor41_DLPFC_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor41_HIP_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor42_DLPFC_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor42_HIP_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor43_DLPFC_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor43_HIP_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor46_DLPFC_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor46_HIP_discordant.max.bw" type="bw"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/L1HS.chm13v2.0_rmsk.reformat.bed" type="bed"/>
+        <Resource path="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/igv_attributes.txt" type="/emukamel/slavseq_sz/igv_attributes"/>
+    </Resources>
+    <Panel name="DataPanel">
+            <Track attributeKey="R1_discordant_q30.Donor1_DLPFC_discordant.max.bw" autoScale="false" color="0,0,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor1_DLPFC_discordant.max.bw"  name="D1_DLPFC.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor1_HIP_discordant.max.bw" autoScale="false" color="0,204,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor1_HIP_discordant.max.bw"  name="D1_HIP.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor2_DLPFC_discordant.max.bw" autoScale="false" color="0,0,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor2_DLPFC_discordant.max.bw"  name="D2_DLPFC.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor2_HIP_discordant.max.bw" autoScale="false" color="0,204,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor2_HIP_discordant.max.bw"  name="D2_HIP.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor3_DLPFC_discordant.max.bw" autoScale="false" color="0,0,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor3_DLPFC_discordant.max.bw"  name="D3_DLPFC.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor3_HIP_discordant.max.bw" autoScale="false" color="0,204,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor3_HIP_discordant.max.bw"  name="D3_HIP.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor4_DLPFC_discordant.max.bw" autoScale="false" color="0,0,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor4_DLPFC_discordant.max.bw"  name="D4_DLPFC.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor4_HIP_discordant.max.bw" autoScale="false" color="0,204,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor4_HIP_discordant.max.bw"  name="D4_HIP.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor5_DLPFC_discordant.max.bw" autoScale="false" color="0,0,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor5_DLPFC_discordant.max.bw"  name="D5_DLPFC.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor5_HIP_discordant.max.bw" autoScale="false" color="0,204,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor5_HIP_discordant.max.bw"  name="D5_HIP.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor7_DLPFC_discordant.max.bw" autoScale="false" color="0,0,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor7_DLPFC_discordant.max.bw"  name="D7_DLPFC.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor7_HIP_discordant.max.bw" autoScale="false" color="0,204,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor7_HIP_discordant.max.bw"  name="D7_HIP.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor8_DLPFC_discordant.max.bw" autoScale="false" color="0,0,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor8_DLPFC_discordant.max.bw"  name="D8_DLPFC.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor8_HIP_discordant.max.bw" autoScale="false" color="0,204,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor8_HIP_discordant.max.bw"  name="D8_HIP.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor10_DLPFC_discordant.max.bw" autoScale="false" color="0,0,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor10_DLPFC_discordant.max.bw"  name="D10_DLPFC.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor10_HIP_discordant.max.bw" autoScale="false" color="0,204,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor10_HIP_discordant.max.bw"  name="D10_HIP.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor11_DLPFC_discordant.max.bw" autoScale="false" color="0,0,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor11_DLPFC_discordant.max.bw"  name="D11_DLPFC.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor11_HIP_discordant.max.bw" autoScale="false" color="0,204,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor11_HIP_discordant.max.bw"  name="D11_HIP.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor12_DLPFC_discordant.max.bw" autoScale="false" color="0,0,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor12_DLPFC_discordant.max.bw"  name="D12_DLPFC.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor12_HIP_discordant.max.bw" autoScale="false" color="0,204,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor12_HIP_discordant.max.bw"  name="D12_HIP.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor13_DLPFC_discordant.max.bw" autoScale="false" color="0,0,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor13_DLPFC_discordant.max.bw"  name="D13_DLPFC.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor13_HIP_discordant.max.bw" autoScale="false" color="0,204,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor13_HIP_discordant.max.bw"  name="D13_HIP.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor14_DLPFC_discordant.max.bw" autoScale="false" color="0,0,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor14_DLPFC_discordant.max.bw"  name="D14_DLPFC.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor14_HIP_discordant.max.bw" autoScale="false" color="0,204,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor14_HIP_discordant.max.bw"  name="D14_HIP.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor15_DLPFC_discordant.max.bw" autoScale="false" color="0,0,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor15_DLPFC_discordant.max.bw"  name="D15_DLPFC.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor15_HIP_discordant.max.bw" autoScale="false" color="0,204,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor15_HIP_discordant.max.bw"  name="D15_HIP.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor16_DLPFC_discordant.max.bw" autoScale="false" color="0,0,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor16_DLPFC_discordant.max.bw"  name="D16_DLPFC.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor16_HIP_discordant.max.bw" autoScale="false" color="0,204,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor16_HIP_discordant.max.bw"  name="D16_HIP.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor17_DLPFC_discordant.max.bw" autoScale="false" color="0,0,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor17_DLPFC_discordant.max.bw"  name="D17_DLPFC.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor17_HIP_discordant.max.bw" autoScale="false" color="0,204,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor17_HIP_discordant.max.bw"  name="D17_HIP.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor19_DLPFC_discordant.max.bw" autoScale="false" color="0,0,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor19_DLPFC_discordant.max.bw"  name="D19_DLPFC.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor19_HIP_discordant.max.bw" autoScale="false" color="0,204,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor19_HIP_discordant.max.bw"  name="D19_HIP.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor20_DLPFC_discordant.max.bw" autoScale="false" color="0,0,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor20_DLPFC_discordant.max.bw"  name="D20_DLPFC.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor20_HIP_discordant.max.bw" autoScale="false" color="0,204,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor20_HIP_discordant.max.bw"  name="D20_HIP.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor21_DLPFC_discordant.max.bw" autoScale="false" color="0,0,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor21_DLPFC_discordant.max.bw"  name="D21_DLPFC.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor21_HIP_discordant.max.bw" autoScale="false" color="0,204,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor21_HIP_discordant.max.bw"  name="D21_HIP.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor22_DLPFC_discordant.max.bw" autoScale="false" color="0,0,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor22_DLPFC_discordant.max.bw"  name="D22_DLPFC.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor22_HIP_discordant.max.bw" autoScale="false" color="0,204,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor22_HIP_discordant.max.bw"  name="D22_HIP.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor24_DLPFC_discordant.max.bw" autoScale="false" color="0,0,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor24_DLPFC_discordant.max.bw"  name="D24_DLPFC.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor24_HIP_discordant.max.bw" autoScale="false" color="0,204,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor24_HIP_discordant.max.bw"  name="D24_HIP.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor25_DLPFC_discordant.max.bw" autoScale="false" color="0,0,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor25_DLPFC_discordant.max.bw"  name="D25_DLPFC.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor25_HIP_discordant.max.bw" autoScale="false" color="0,204,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor25_HIP_discordant.max.bw"  name="D25_HIP.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor26_DLPFC_discordant.max.bw" autoScale="false" color="0,0,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor26_DLPFC_discordant.max.bw"  name="D26_DLPFC.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor26_HIP_discordant.max.bw" autoScale="false" color="0,204,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor26_HIP_discordant.max.bw"  name="D26_HIP.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor27_DLPFC_discordant.max.bw" autoScale="false" color="0,0,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor27_DLPFC_discordant.max.bw"  name="D27_DLPFC.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor27_HIP_discordant.max.bw" autoScale="false" color="0,204,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor27_HIP_discordant.max.bw"  name="D27_HIP.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor28_DLPFC_discordant.max.bw" autoScale="false" color="0,0,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor28_DLPFC_discordant.max.bw"  name="D28_DLPFC.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor28_HIP_discordant.max.bw" autoScale="false" color="0,204,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor28_HIP_discordant.max.bw"  name="D28_HIP.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor30_DLPFC_discordant.max.bw" autoScale="false" color="0,0,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor30_DLPFC_discordant.max.bw"  name="D30_DLPFC.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor30_HIP_discordant.max.bw" autoScale="false" color="0,204,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor30_HIP_discordant.max.bw"  name="D30_HIP.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor31_DLPFC_discordant.max.bw" autoScale="false" color="0,0,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor31_DLPFC_discordant.max.bw"  name="D31_DLPFC.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor31_HIP_discordant.max.bw" autoScale="false" color="0,204,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor31_HIP_discordant.max.bw"  name="D31_HIP.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor32_DLPFC_discordant.max.bw" autoScale="false" color="0,0,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor32_DLPFC_discordant.max.bw"  name="D32_DLPFC.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor32_HIP_discordant.max.bw" autoScale="false" color="0,204,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor32_HIP_discordant.max.bw"  name="D32_HIP.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor33_DLPFC_discordant.max.bw" autoScale="false" color="0,0,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor33_DLPFC_discordant.max.bw"  name="D33_DLPFC.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor33_HIP_discordant.max.bw" autoScale="false" color="0,204,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor33_HIP_discordant.max.bw"  name="D33_HIP.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor35_DLPFC_discordant.max.bw" autoScale="false" color="0,0,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor35_DLPFC_discordant.max.bw"  name="D35_DLPFC.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor35_HIP_discordant.max.bw" autoScale="false" color="0,204,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor35_HIP_discordant.max.bw"  name="D35_HIP.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor36_DLPFC_discordant.max.bw" autoScale="false" color="0,0,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor36_DLPFC_discordant.max.bw"  name="D36_DLPFC.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor36_HIP_discordant.max.bw" autoScale="false" color="0,204,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor36_HIP_discordant.max.bw"  name="D36_HIP.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor37_DLPFC_discordant.max.bw" autoScale="false" color="0,0,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor37_DLPFC_discordant.max.bw"  name="D37_DLPFC.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor37_HIP_discordant.max.bw" autoScale="false" color="0,204,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor37_HIP_discordant.max.bw"  name="D37_HIP.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor38_DLPFC_discordant.max.bw" autoScale="false" color="0,0,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor38_DLPFC_discordant.max.bw"  name="D38_DLPFC.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor38_HIP_discordant.max.bw" autoScale="false" color="0,204,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor38_HIP_discordant.max.bw"  name="D38_HIP.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor39_DLPFC_discordant.max.bw" autoScale="false" color="0,0,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor39_DLPFC_discordant.max.bw"  name="D39_DLPFC.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor39_HIP_discordant.max.bw" autoScale="false" color="0,204,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor39_HIP_discordant.max.bw"  name="D39_HIP.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor41_DLPFC_discordant.max.bw" autoScale="false" color="0,0,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor41_DLPFC_discordant.max.bw"  name="D41_DLPFC.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor41_HIP_discordant.max.bw" autoScale="false" color="0,204,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor41_HIP_discordant.max.bw"  name="D41_HIP.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor42_DLPFC_discordant.max.bw" autoScale="false" color="0,0,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor42_DLPFC_discordant.max.bw"  name="D42_DLPFC.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor42_HIP_discordant.max.bw" autoScale="false" color="0,204,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor42_HIP_discordant.max.bw"  name="D42_HIP.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor43_DLPFC_discordant.max.bw" autoScale="false" color="0,0,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor43_DLPFC_discordant.max.bw"  name="D43_DLPFC.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor43_HIP_discordant.max.bw" autoScale="false" color="0,204,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor43_HIP_discordant.max.bw"  name="D43_HIP.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor46_DLPFC_discordant.max.bw" autoScale="false" color="0,0,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor46_DLPFC_discordant.max.bw"  name="D46_DLPFC.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+            <Track attributeKey="R1_discordant_q30.Donor46_HIP_discordant.max.bw" autoScale="false" color="0,204,255" clazz="org.broad.igv.track.DataSourceTrack" fontSize="12" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bigwigs_donor_q30/R1_discordant_q30.Donor46_HIP_discordant.max.bw"  name="D46_HIP.bw" renderer="BAR_CHART" visible="true" windowFunction="max">
+                                <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="20.0" minimum="0.0" type="LINEAR"/>
+                            </Track>
+        </Panel>
+    <Panel height="150" name="FeaturePanel">
+        <Track attributeKey="Reference sequence" clazz="org.broad.igv.track.SequenceTrack" fontSize="12" id="Reference sequence" name="Reference sequence" sequenceTranslationStrandValue="POSITIVE" shouldShowTranslation="false" visible="true"/>
+        <Track attributeKey="L1HS.chm13v2.0_rmsk.reformat.bed" clazz="org.broad.igv.track.FeatureTrack" fontSize="12" displayMode="EXPANDED" groupByStrand="false" id="https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/L1HS.chm13v2.0_rmsk.reformat.bed" name="L1HS.chm13v2.0_rmsk.reformat.bed" visible="true"/>
+        <Track attributeKey="CAT/Liftoff Genes" clazz="org.broad.igv.track.FeatureTrack" colorScale="ContinuousColorScale;0.0;51.182891845703125;255,255,255;0,0,178" fontSize="12" groupByStrand="false" height="29" id="https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_T2T-CHM13v2.0.catLiftOffGenesV1/catLiftOffGenesV1.bb" name="CAT/Liftoff Genes" visible="true"/>
+    </Panel>
+    <PanelLayout dividerFractions="0.9"/>
+    <HiddenAttributes>
+        <Attribute name="DATA FILE"/>
+        <Attribute name="DATA TYPE"/>
+        <Attribute name="ID"/>
+        <Attribute name="NAME"/>
+    </HiddenAttributes>
+</Session>
