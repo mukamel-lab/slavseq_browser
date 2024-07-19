@@ -1,3 +1,6 @@
+#
+# Prepare data file for heatmap
+
 import pandas as pd 
 from glob import glob
 from tqdm import tqdm
