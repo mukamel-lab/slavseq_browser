@@ -120,7 +120,7 @@
 
   <script type="module">
 
-    import igv from "./dist/igv.esm.min.js"
+    import igv from "./js/igv.esm.min.js"
     import {all_roi_tracks} from "./roi_tracks.js"
 
     var options =
