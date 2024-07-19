@@ -75,8 +75,7 @@
         <ul class="nav navbar-nav">
           <li class="nav-item donor-selection">
             <select id="select_rois" class="selectpicker" multiple data-width="100px" data-toggle="tooltip"
-              data-placement="top" data-header="ROIs" data-selected-text-format="count"
-              title="ROIs">
+              data-placement="top" data-header="ROIs" data-selected-text-format="count" title="ROIs">
             </select>
           </li>
 
@@ -123,7 +122,7 @@
 
     import igv from "./dist/igv.esm.min.js"
 
-    // Create the ROIs
+    // Configure the ROI tracks. TODO: Create a separate config file that lists these?
     const all_roi_tracks = [
       {
         "name": 'Non-reference germline L1 insertions (KNRGL called by Megane)',
@@ -131,29 +130,33 @@
         indexed: false,
         color: "rgba(255,255,255,0)",
         visible: false,
-        'format':'bed'
+        'format': 'bed',
+        'tracktype':'ROI'
       },
       {
         name: 'Filtered peaks',
         url: './rois/allcells_max_q30.filtered.ForIGV.bed',
         indexed: false,
         color: "rgba(94,255,1,0.5)",
-        'format':'bed'
+        'format': 'bed',
+        'tracktype':'ROI'
       },
       {
         name: 'Disc peaks (remove KNRGL,RefL1HS,PolyA)',
         url: './rois/allcells_max_q30.R1_discordant.noKNRGL_noRefL1HS_slop60kb.noPolyA_2kb.bed',
         indexed: false,
         color: "rgba(94,94,1,0.5)",
-        'format':'bed'
+        'format': 'bed',
+        'tracktype':'ROI'
       },
       {
         name: "Apua's peak calls",
         'url': './rois/apua_calls_chm13.bed',
         indexed: false,
         color: "rgba(1,1,255,0.5)",
-        'format':'bed'
-      }]
+        'format': 'bed',
+        'tracktype':'ROI'
+      }];
 
     var options =
     {
@@ -188,23 +191,13 @@
           "format": "bigbed",
           "description": " <a target = \"_blank\" href = \"https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/html/GCA_009914755.4_T2T-CHM13v2.0.catLiftOffGenesV1.html\">CAT + Liftoff Gene Annotations</a>",
           "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_T2T-CHM13v2.0.catLiftOffGenesV1/catLiftOffGenesV1.bb",
-          "height": 100,
+          "height": 25,
           "visibilityWindow": -1,
           "supportsWholeGenome": false,
           "order": 0.1,
           "type": "annotation",
           "displayMode": 'squish'
         },
-        // {
-        //   'name': "RepeatMasker",
-        //   'format': "bigbed",
-        //   'type': 'annotation',
-        //   'sourceType': "file",
-        //   'displayMode': "expanded",
-        //   'url': "data/chm13v2.0.XY.fasta.all_rmsk.bb",
-        //   'order': 0.5,
-        // },
-        
         {
           'name': "RepeatMasker L1",
           'format': "bed",
@@ -221,10 +214,15 @@
         {
           "url": "./data/sampletable.tsv"
         }
-      ]};
+      ]
+    };
 
     for (const mytrack of all_roi_tracks) {
-      mytrack.height=25
+      mytrack.height = 25;
+      // Make the color non-transparent
+      if (mytrack.color) {
+        mytrack.color = mytrack.color.replace(/,[0-9]+\)/i, ',0)');
+      }
       options.tracks.push(mytrack)
     }
 
@@ -315,16 +313,22 @@
       var option = document.createElement("option");
       option.text = roi_track.name;
       option.value = roi_track.name;
+      option.selected = true;
       document.getElementById('select_rois').add(option);
     }
     $('.selectpicker').selectpicker('refresh');
 
+    // TODO: There's a bug where sometimes switching the ROIs on and off causes some ROIs not to be highlighted
     export function updateROIs() {
+      // Remove the currently active ROI tracks
+      var activeROITracks=browser.tracks.filter((x) => (x.config) ? x.config.tracktype=='ROI' : 0)
+      for (const roiTrack of activeROITracks) {browser.removeTrack(roiTrack)}
+      browser.clearROIs();
+
       if (['AllDonors', 'Heatmap'].includes($("#select_donor").val())) {
+        // If we're showing data from all donors, 
         var rois = $('#select_rois').val()
         roi_tracks = all_roi_tracks.filter((x) => rois.includes(x.name))
-        console.log(roi_tracks)
-
       } else {
         // When we're only showing a single donor, just show the ROIs for that donor
         var donor = document.getElementById('select_donor').value;
@@ -334,8 +338,12 @@
           'indexed': false
         }]
       }
-      browser.clearROIs();
-      browser.loadROI(roi_tracks);
+      browser.loadTrackList(roi_tracks);
+      browser.loadROI(roi_tracks)
+      // for (const roi_track of roi_tracks) { 
+      //   console.log(roi_track)
+      //   browser.loadROI(roi_track);
+      //  }
     }
 
     export function updateCells() {
@@ -487,6 +495,8 @@
     await updateDonors();
     await updateTracks();
     await updateCells();
+    await updateROIs();
+    await browser.roiManager.toggleROIs();
 
     document.getElementById('getLinkButton').addEventListener('click', (event) => {
       getLink();
