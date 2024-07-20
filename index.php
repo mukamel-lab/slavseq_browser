@@ -379,7 +379,7 @@
           'order': 10 + (donor.index / 100) + (tissuenum / 1000),
           'roi': [{
             name: donor.donor + ' non-reference germline L1 insertions (KNRGL called by Megane)',
-            url: "./rois/KNRGL_Donor" + donor.donor + "_megane.bed",
+            url: "./rois/KNRGL_" + donor.donor + "_megane.bed",
             color: "rgba(255,94,1,0.90)"
           }],
           'overflowColor': "rgb(100,100,100)"
@@ -420,7 +420,7 @@
       var myTracks = []
       for (const cell_info of cells_info) {
         var myTrack = {
-          'name': "Donor" + cell_info.donor + ' ' + cell_info.tissue + ':' + cell_info.sample,
+          'name': cell_info.donor + ' ' + cell_info.tissue + ':' + cell_info.sample,
           'url': 'https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/pileups_q30_bothstrands/' + cell_info.sample + '.tagged.sorted.R1_discordant.q30.sorted.bigwig',
           'format': 'bigwig',
           'type': 'wig',
@@ -445,7 +445,7 @@
       var myTracks = []
       for (const cell_info of cells_info) {
         var myTrack = {
-          'name': "Donor" + cell_info.donor + ' ' + cell_info.tissue + ':' + cell_info.sample,
+          'name': cell_info.donor + ' ' + cell_info.tissue + ':' + cell_info.sample,
           'url': 'https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bam/' + cell_info.sample + '.tagged.sorted.bam',
           'indexURL': 'https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bam/' + cell_info.sample + '.tagged.sorted.bam.bai',
           'format': 'bam',
