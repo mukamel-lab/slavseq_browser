@@ -123,6 +123,20 @@
     import igv from "./js/igv.esm.min.js"
     import {all_roi_tracks} from "./roi_tracks.js"
 
+    // Add ROI tracks for each donor
+    const donors = donors_tissues.filter((d) => d.tissue == "HIP")
+    for (const donor of donors) {
+      var roiTrack = {
+        'name': "Peaks in " + donor.donor,
+        'url': './data/peaks_per_donor/peaks_' + donor.donor + '.bed',
+        'indexed': false,
+        'color': "rgba(1,1,255,0.5)",
+        'format': 'bed',
+        'tracktype': 'ROI'
+      };
+      all_roi_tracks.push(roiTrack);
+    }
+
     var options =
     {
       genome: "hs1",
@@ -182,8 +196,9 @@
       ]
     };
 
-    for (const mytrack of all_roi_tracks) {
+    for (const mytrack of all_roi_tracks.filter((x) => !x.name.startsWith("Peaks in D"))) {
       mytrack.height = 25;
+      mytrack.order = 4;
       // Make the color non-transparent
       if (mytrack.color) {
         mytrack.color = mytrack.color.replace(/,[0-9]+\)/i, ',0)');
@@ -253,7 +268,7 @@
       for (const donor of donors) {
         var option = document.createElement("option");
         option.text = donor.name;
-        option.title = "D" + donor.donor;
+        option.title = donor.donor;
         option.value = donor.donor;
         donorMenu.add(option);
       }
@@ -269,39 +284,52 @@
         document.getElementById('select_cells_li').style.display = 'none';
         document.getElementById('select_tissue_li').style.display = 'none';
       } else {
+        // Showing a specific donor
         document.getElementById('select_cells_li').style.display = 'block';
         document.getElementById('select_tissue_li').style.display = 'block';
+
+        var option = document.createElement("option");
+        option.text = donor + ' KNRGL Megane';
+        option.value = donor + '_knrgl';
+        option.selected = true;
+        document.getElementById('select_rois').add(option);
+        $('.selectpicker').selectpicker('refresh');
+
       }
     }
 
-    for (const roi_track of all_roi_tracks) {
-      var option = document.createElement("option");
-      option.text = roi_track.name;
-      option.value = roi_track.name;
-      option.selected = true;
-      document.getElementById('select_rois').add(option);
+    export function initializeROIs() {
+      var activeROIs=browser.roiManager.roiSets.map((x)=>x.name)
+      for (const roi_track of all_roi_tracks.filter((x) => !x.name.startsWith("Peaks in D"))) {
+        var option = document.createElement("option");
+        option.text = roi_track.name;
+        option.value = roi_track.name;
+        option.selected = activeROIs.includes(roi_track.name);
+        document.getElementById('select_rois').add(option);
+      }
+      $('.selectpicker').selectpicker('refresh');
     }
-    $('.selectpicker').selectpicker('refresh');
 
     // TODO: There's a bug where sometimes switching the ROIs on and off causes some ROIs not to be highlighted
     export function updateROIs() {
       // Remove the currently active ROI tracks
-      var activeROITracks=browser.tracks.filter((x) => (x.config) ? x.config.tracktype=='ROI' : 0)
+      var activeROITracks = browser.tracks.filter((x) => (x.config) ? x.config.tracktype == 'ROI' : 0)
       for (const roiTrack of activeROITracks) {browser.removeTrack(roiTrack)}
       browser.clearROIs();
+      var rois = $('#select_rois').val()
+      var roi_tracks = all_roi_tracks.filter((x) => rois.includes(x.name))
 
-      if (['AllDonors', 'Heatmap'].includes($("#select_donor").val())) {
-        // If we're showing data from all donors, 
-        var rois = $('#select_rois').val()
-        roi_tracks = all_roi_tracks.filter((x) => rois.includes(x.name))
-      } else {
+      if ($("#select_donor").val().startsWith('D')) {
         // When we're only showing a single donor, just show the ROIs for that donor
         var donor = document.getElementById('select_donor').value;
-        var roi_tracks = [{
+        roi_tracks.push({
           "name": "Peaks for Donor " + donor,
           'url': 'data/peaks_per_donor/peaks_' + donor + '.bed',
-          'indexed': false
-        }]
+          'indexed': false,
+          'tracktype': 'ROI',
+          'height': 25,
+          'order': 4.9
+        })
       }
       browser.loadTrackList(roi_tracks);
       browser.loadROI(roi_tracks)
@@ -311,15 +339,18 @@
       //  }
     }
 
+    ////////////////////
+    // Create tracks
     export function updateCells() {
       var donor = document.getElementById('select_donor').value;
       var tissues = $('#select_tissue').val();
+      var tissuenum = 0 ? donor.tissue == 'HIP' : 1;
       var cellsu = cells.filter((x) => (x.donor == donor) & (tissues.includes(x.tissue)) & (x.is_bulk == 'False'))
       for (const selector of ['pileup', 'bam']) {
         $("#select_cells_" + selector).empty();
         for (const cell of cellsu) {
           var option = document.createElement("option");
-          option.text = 'D' + cell.donor + ' ' + cell.tissue + ': ' + cell.sample;
+          option.text = cell.donor + ' ' + cell.tissue + ': ' + cell.sample;
           option.value = cell.sample;
           option.selected = selector == 'pileup';
           document.getElementById('select_cells_' + selector).add(option)
@@ -328,8 +359,6 @@
       $('.selectpicker').selectpicker('refresh');
     }
 
-    ////////////////////
-    // Create tracks
     export function allDonorsTracks() {
       // Create a pileup track for each donor/tissue
       var myTracks = []
@@ -347,7 +376,7 @@
           'height': 20,
           'color': donor.tissue == "HIP" ? "rgb(0,204,255)" : "rgb(0,0,255)",
           'visible': false,
-          'order': 10 + donor.index / 100 + tissuenum / 1000,
+          'order': 10 + (donor.index / 100) + (tissuenum / 1000),
           'roi': [{
             name: donor.donor + ' non-reference germline L1 insertions (KNRGL called by Megane)',
             url: "./rois/KNRGL_Donor" + donor.donor + "_megane.bed",
@@ -401,7 +430,7 @@
           'height': trackHeight,
           'color': cell_info.tissue == "HIP" ? "rgb(0,204,255)" : "rgb(0,0,255)",
           'visible': false,
-          'order': 3
+          'order': 10
         };
         // browser.loadTrack(myTrack)
         myTracks.push(myTrack)
@@ -460,8 +489,9 @@
     await updateDonors();
     await updateTracks();
     await updateCells();
-    await updateROIs();
-    await browser.roiManager.toggleROIs();
+    await initializeROIs();
+    if (!window.location.search.includes('sessionURL')) {await updateROIs();}
+    // await browser.roiManager.toggleROIs();
 
     document.getElementById('getLinkButton').addEventListener('click', (event) => {
       getLink();
