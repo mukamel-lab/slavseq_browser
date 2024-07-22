@@ -22,6 +22,8 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
   <script src="./js/bootstrap-select.js"></script>
   <script type='text/javascript' src='./js/html2canvas.min.js'></script>
+  <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+  <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 
   <style type="text/css">
     select.selectpicker {
@@ -77,6 +79,10 @@
             <select id="select_rois" class="selectpicker" multiple data-width="100px" data-toggle="tooltip"
               data-placement="top" data-header="ROIs" data-selected-text-format="count" title="ROIs">
             </select>
+          </li>
+          
+          <li class="nav-item">
+            <input id="toggleROIs_btn" type="checkbox" checked data-toggle="toggle" data-on="Show ROIs"  data-off="Hide ROIs">
           </li>
 
           <li class="nav-item donor-selection">
@@ -258,6 +264,10 @@
       copySrc.style.visibility = 'hidden';
     }
 
+    export function toggleROIs() {
+      browser.roiManager.roiTable.setROIVisibility($('#toggleROIs_btn').prop('checked'));
+    }
+
     ////////////////////////////////////
     // Functions for updating the dropdown lists
 
@@ -299,7 +309,7 @@
     }
 
     export function initializeROIs() {
-      var activeROIs=browser.roiManager.roiSets.map((x)=>x.name)
+      var activeROIs = browser.roiManager.roiSets.map((x) => x.name)
       for (const roi_track of all_roi_tracks.filter((x) => !x.name.startsWith("Peaks in D"))) {
         var option = document.createElement("option");
         option.text = roi_track.name;
@@ -366,7 +376,7 @@
       for (const donor of donors_tissues.filter((x) => tissues.includes(x.tissue))) {
         var tissuenum = 0 ? donor.tissue == 'HIP' : 1;
         var myTrack = {
-          'name': "Donor" + donor.donor + ' ' + donor.tissue,
+          'name': donor.donor + ' ' + donor.tissue,
           'url': donor.url,
           'format': 'bigwig',
           'type': 'wig',
@@ -503,8 +513,13 @@
     document.getElementById('select_cells_bam').addEventListener('change', () => {updateTracks(); updateIGV();})
     document.getElementById('select_tissue').addEventListener('change', () => {updateCells(); updateTracks(); updateIGV();})
     document.getElementById('pileup_height').addEventListener('change', () => {updateIGV();})
-    document.getElementById('select_rois').addEventListener('change', () => {updateROIs();})
-
+    document.getElementById('select_rois').addEventListener('change', () => {updateROIs(); toggleROIs();})
+    $('#toggleROIs_btn').change(function () {
+      toggleROIs();
+    })
+    browser.on('locuschange', function () {toggleROIs()});
+    browser.on('trackorderchanged', function () {toggleROIs()});
+    
     globalThis.browser = browser; // Makes the browser available in the console
 
   </script>
