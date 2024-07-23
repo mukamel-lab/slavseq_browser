@@ -30,7 +30,14 @@
       display: none;
     }
 
-    /* Prevent FOUC }*/
+    .btn {
+      /* padding: 2px 4px; */
+      font-size: 10pt;
+    }
+
+    .toggle.btn {
+      min-height: 0px;
+    }
 
     div {
       text-align: center;
@@ -64,65 +71,61 @@
         </li> -->
         <li class="nav-item">
           <button id="screenshotButton" class="btn btn-primary">
-            <i class="fa fa-camera"></i>Screenshot</button>
+            <i class="fa fa-camera"></i> Screenshot</button>
         </li>
         <li class="nav-item">
           <button id="getLinkButton" class="btn btn-primary">
             <i class="fa fa-link" aria-hidden="true"></i> Copy shareable link</button>
           <input type="text" id="srcBox" size="1" style="visibility:hidden;"></input>
         </li>
+
+        <li class="nav-item" id="select_donor_li">
+          <select id="select_donor" class="selectpicker" data-selected-text-format="static" data-title="Donor(s)"
+            multiple data-max-options="1" data-width="100%" data-toggle="tooltip"
+            data-placement="top" data-header="Donor(s) to show" data-actions-box="true" data-live-search="true">
+            <option value="AllDonors" selected> All donors (pileups)</option>
+            <option value="Heatmap"> All cells (heatmap)</option>
+          </select>
+        </li>
+
+        <li class="nav-item" id="select_tissue_li" style="width:none">
+          <select id="select_tissue" class="selectpicker" multiple data-width="100%" data-toggle="tooltip"
+            data-placement="top" title="Tissue" data-selected-text-format="static" data-title="Tissue" data-header="Tissues to show">
+            <option value="HIP"> Hippocampus</option>
+            <option value="DLPFC"> Dorsolateral pre-frontal cortex</option>
+          </select>
+        </li>
+
+        <li class="nav-item" id="select_cells_li" style="display: none">
+          <select id="select_cells_pileup" class="selectpicker" multiple data-width="auto" title="Cell pileups"
+            data-toggle="tooltip" data-placement="top" data-live-search="true" data-header="Cells to show"
+            data-actions-box="true" data-selected-text-format="static">
+            <option value="All" selected> All cells</option>
+          </select>
+          <label>Pileup track height:</label>
+          <input class="selectpicker" id="pileup_height" value="20" style="width:50px; ">
+          <select id="select_cells_bam" class="selectpicker" multiple data-width="auto" data-live-search="true"
+            title="Cell BAMs" data-toggle="tooltip" data-placement="top" data-header="Cells to show"
+            data-actions-box="true" data-selected-text-format="static">
+            <option value="All" selected> All cells</option>
+          </select>
+        </li>
+
+        <li class="nav-item donor-selection">
+          <select id="select_rois" class="selectpicker" multiple data-width="100px" data-toggle="tooltip"
+            data-placement="top" data-header="ROIs" data-selected-text-format="static" data-title="ROIs">
+          </select>
+          <input class="btn" id="toggleROIs_btn" type="checkbox" data-toggle="toggle" data-off="Clear ROIs"
+            data-on="Mark ROIs">
+        </li>
+
       </ul>
-
-      <div class="container-fluid">
-        <ul class="nav navbar-nav">
-          <li class="nav-item donor-selection">
-            <select id="select_rois" class="selectpicker" multiple data-width="100px" data-toggle="tooltip"
-              data-placement="top" data-header="ROIs" data-selected-text-format="count" title="ROIs">
-            </select>
-          </li>
-          
-          <li class="nav-item">
-            <input id="toggleROIs_btn" type="checkbox" checked data-toggle="toggle" data-on="Show ROIs"  data-off="Hide ROIs">
-          </li>
-
-          <li class="nav-item donor-selection">
-            <select id="select_donor" class="selectpicker" data-width="auto" data-toggle="tooltip" data-placement="top"
-              data-header="Donor to show" data-actions-box="true" data-live-search="true">
-              <option value="AllDonors" selected> All donors (pileups)</option>
-              <option value="Heatmap"> All cells (heatmap)</option>
-            </select>
-          </li>
-
-          <li class="nav-item tissue-selection" id="select_tissue_li" style="width:none">
-            <select id="select_tissue" class="selectpicker" multiple data-toggle="tooltip" data-placement="top"
-              title="Tissue">
-              <option value="HIP"> Hippocampus</option>
-              <option value="DLPFC"> Dorsolateral pre-frontal cortex</option>
-            </select>
-          </li>
-
-          <li class="nav-item cell-selection" id="select_cells_li" style="display: none">
-
-            <select id="select_cells_pileup" class="selectpicker" multiple data-width="auto" title="Cell pileups"
-              data-toggle="tooltip" data-placement="top" data-live-search="true" data-header="Cells to show"
-              data-actions-box="true" data-selected-text-format="count">
-              <option value="All" selected> All cells</option>
-            </select>
-            <label>Pileup track height:</label>
-            <input class="selectpicker" id="pileup_height" value="20" style="width:50px; ">
-            <select id="select_cells_bam" class="selectpicker" multiple data-width="auto" data-live-search="true"
-              title="Cell BAMs" data-toggle="tooltip" data-placement="top" data-header="Cells to show"
-              data-actions-box="true" data-selected-text-format="count">
-              <option value="All" selected> All cells</option>
-            </select>
-          </li>
-        </ul>
-      </div>
     </div>
+
 
   </nav>
 
-  <div id="igv-div" width="50%"></div>
+  <div id="igv-div"></div>
 
   <script type="module">
 
@@ -147,7 +150,7 @@
     {
       genome: "hs1",
       queryParametersSupported: true,
-      locus: "chr5:155,155,059-157,910,460",
+      locus: "chr5:156,424,267-156,454,552",
       reference: {
         "id": "hs1",
         "blatDB": "hub_3671779_hs1",
@@ -273,14 +276,15 @@
 
     export function updateDonors() {
       // Update the select menus
-      const donorMenu = document.getElementById('select_donor');
       const donors = donors_tissues.filter((d) => d.tissue == "HIP")
       for (const donor of donors) {
         var option = document.createElement("option");
         option.text = donor.name;
-        option.title = donor.donor;
+        option.selected = false;
+        // option.title = donor.donor;
         option.value = donor.donor;
-        donorMenu.add(option);
+        console.log(option)
+        document.getElementById('select_donor').add(option);
       }
     }
 
@@ -304,7 +308,6 @@
         option.selected = true;
         document.getElementById('select_rois').add(option);
         $('.selectpicker').selectpicker('refresh');
-
       }
     }
 
@@ -320,7 +323,6 @@
       $('.selectpicker').selectpicker('refresh');
     }
 
-    // TODO: There's a bug where sometimes switching the ROIs on and off causes some ROIs not to be highlighted
     export function updateROIs() {
       // Remove the currently active ROI tracks
       var activeROITracks = browser.tracks.filter((x) => (x.config) ? x.config.tracktype == 'ROI' : 0)
@@ -343,10 +345,6 @@
       }
       browser.loadTrackList(roi_tracks);
       browser.loadROI(roi_tracks)
-      // for (const roi_track of roi_tracks) { 
-      //   console.log(roi_track)
-      //   browser.loadROI(roi_track);
-      //  }
     }
 
     ////////////////////
@@ -496,9 +494,9 @@
     const igvDiv = document.getElementById("igv-div");
     const browser = await igv.createBrowser(igvDiv, options)
 
-    await updateDonors();
     await updateTracks();
     await updateCells();
+    await updateDonors();
     await initializeROIs();
     if (!window.location.search.includes('sessionURL')) {await updateROIs();}
     // await browser.roiManager.toggleROIs();
@@ -519,7 +517,7 @@
     })
     browser.on('locuschange', function () {toggleROIs()});
     browser.on('trackorderchanged', function () {toggleROIs()});
-    
+
     globalThis.browser = browser; // Makes the browser available in the console
 
   </script>

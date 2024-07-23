@@ -1,5 +1,4 @@
 // Configure the ROI tracks. 
-// TODO: Create a separate config file that lists these?
 // TODO: Better color palette...
 export const all_roi_tracks = [
   {
