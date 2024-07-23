@@ -81,8 +81,8 @@
 
         <li class="nav-item" id="select_donor_li">
           <select id="select_donor" class="selectpicker" data-selected-text-format="static" data-title="Donor(s)"
-            multiple data-max-options="1" data-width="100%" data-toggle="tooltip"
-            data-placement="top" data-header="Donor(s) to show" data-actions-box="true" data-live-search="true">
+            multiple data-max-options="1" data-width="100%" data-toggle="tooltip" data-placement="top"
+            data-header="Donor(s) to show" data-actions-box="true" data-live-search="true">
             <option value="AllDonors" selected> All donors (pileups)</option>
             <option value="Heatmap"> All cells (heatmap)</option>
           </select>
@@ -90,14 +90,15 @@
 
         <li class="nav-item" id="select_tissue_li" style="width:none">
           <select id="select_tissue" class="selectpicker" multiple data-width="100%" data-toggle="tooltip"
-            data-placement="top" title="Tissue" data-selected-text-format="static" data-title="Tissue" data-header="Tissues to show">
+            data-placement="top" title="Tissue" data-selected-text-format="static" data-title="Tissue"
+            data-header="Tissues to show">
             <option value="HIP"> Hippocampus</option>
             <option value="DLPFC"> Dorsolateral pre-frontal cortex</option>
           </select>
         </li>
 
         <li class="nav-item" id="select_cells_li" style="display: none">
-          <select id="select_cells_pileup" class="selectpicker" multiple data-width="auto" title="Cell pileups"
+          <select id="select_cells_pileup" class="selectpicker" multiple data-width="100%" title="Cell pileups"
             data-toggle="tooltip" data-placement="top" data-live-search="true" data-header="Cells to show"
             data-actions-box="true" data-selected-text-format="static">
             <option value="All" selected> All cells</option>
@@ -280,8 +281,7 @@
       for (const donor of donors) {
         var option = document.createElement("option");
         option.text = donor.name;
-        option.selected = false;
-        // option.title = donor.donor;
+        option.title = donor.donor;
         option.value = donor.donor;
         document.getElementById('select_donor').add(option);
       }
@@ -480,13 +480,18 @@
       }
 
       // Add pileup tracks (bigwig)
-      if (['AllDonors'].includes($("#select_donor").val())) {
-        allDonorsTracks();
-      } else if (['Heatmap'].includes($("#select_donor").val())) {
-        allCellsHeatmapTrack();
-      } else {
-        addBigWigTracks();
-        addBamTracks();
+      var selectedDonor = document.getElementById('select_donor').value;
+      switch (selectedDonor) {
+        case 'AllDonors': 
+          allDonorsTracks(); 
+          break;
+        case 'Heatmap': 
+          allCellsHeatmapTrack();
+          break;
+        default: 
+          addBigWigTracks();
+          addBamTracks();
+        
       }
     }
 
@@ -505,7 +510,7 @@
       copyLink();
     })
     document.getElementById('screenshotButton').addEventListener('click', () => {myScreenshot();})
-    document.getElementById('select_donor').addEventListener('change', () => {updateCells(); updateTracks(); updateROIs(); updateIGV();})
+    document.getElementById('select_donor').addEventListener('change', () => {console.log('Pressed select_donor'); updateCells(); updateTracks(); updateROIs(); updateIGV();})
     document.getElementById('select_cells_pileup').addEventListener('change', () => {updateTracks(); updateIGV();})
     document.getElementById('select_cells_bam').addEventListener('change', () => {updateTracks(); updateIGV();})
     document.getElementById('select_tissue').addEventListener('change', () => {updateCells(); updateTracks(); updateIGV();})
