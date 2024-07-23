@@ -97,15 +97,17 @@
           </select>
         </li>
 
-        <li class="nav-item" id="select_cells_li" style="display: none">
-          <select id="select_cells_pileup" class="selectpicker" multiple data-width="100%" title="Cell pileups"
-            data-toggle="tooltip" data-placement="top" data-live-search="true" data-header="Cells to show"
-            data-actions-box="true" data-selected-text-format="static">
+        <li class="nav-item" id="select_cells_li" style="display:none; width:none;">
+          <!-- <label>Pileup track height:</label> -->
+          <input class="selectpicker" id="pileup_height" value="20" style="width:50px; display:none;">
+          <select id="select_cells_pileup" class="selectpicker" multiple data-width="100%" data-title="Cell pileups"
+            title="Cell pileups" data-toggle="tooltip" data-placement="top" data-live-search="true"
+            data-header="Cells to show" data-actions-box="true" data-selected-text-format="static">
             <option value="All" selected> All cells</option>
           </select>
-          <label>Pileup track height:</label>
-          <input class="selectpicker" id="pileup_height" value="20" style="width:50px; ">
-          <select id="select_cells_bam" class="selectpicker" multiple data-width="auto" data-live-search="true"
+        </li>
+        <li class="nav-item" id="select_bams_li" style="display:none; width:none;">
+          <select id="select_cells_bam" class="selectpicker" multiple data-width="100%" data-live-search="true"
             title="Cell BAMs" data-toggle="tooltip" data-placement="top" data-header="Cells to show"
             data-actions-box="true" data-selected-text-format="static">
             <option value="All" selected> All cells</option>
@@ -114,7 +116,8 @@
 
         <li class="nav-item donor-selection">
           <select id="select_rois" class="selectpicker" multiple data-width="100px" data-toggle="tooltip"
-            data-placement="top" data-header="ROIs" data-actions-box="true" data-selected-text-format="static" data-title="ROIs">
+            data-placement="top" data-header="ROIs" data-actions-box="true" data-selected-text-format="static"
+            data-title="ROIs">
           </select>
           <input class="btn" id="toggleROIs_btn" type="checkbox" data-toggle="toggle" data-off="Clear ROIs"
             data-on="Mark ROIs">
@@ -291,14 +294,17 @@
       var donor = document.getElementById('select_donor').value;
       if (['AllDonors'].includes(donor)) {
         document.getElementById('select_cells_li').style.display = 'none';
+        document.getElementById('select_bams_li').style.display = 'none';
         document.getElementById('select_tissue_li').style.display = 'block';
       }
       else if (['Heatmap'].includes(donor)) {
         document.getElementById('select_cells_li').style.display = 'none';
+        document.getElementById('select_bams_li').style.display = 'none';
         document.getElementById('select_tissue_li').style.display = 'none';
       } else {
         // Showing a specific donor
         document.getElementById('select_cells_li').style.display = 'block';
+        document.getElementById('select_bams_li').style.display = 'block';
         document.getElementById('select_tissue_li').style.display = 'block';
 
         var option = document.createElement("option");
@@ -457,7 +463,7 @@
           'indexURL': 'https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bam/' + cell_info.sample + '.tagged.sorted.bam.bai',
           'format': 'bam',
           'type': 'alignment',
-          'height': 300,
+          'height': 100,
           'coverageColor': cell_info.tissue == "HIP" ? "rgb(0,204,255)" : "rgb(0,0,255)",
           'showSoftClips': true,
           'showCoverage': false,
@@ -511,8 +517,8 @@
     })
     document.getElementById('screenshotButton').addEventListener('click', () => {myScreenshot();})
     document.getElementById('select_donor').addEventListener('change', () => {console.log('Pressed select_donor'); updateCells(); updateTracks(); updateROIs(); updateIGV();})
-    document.getElementById('select_cells_pileup').addEventListener('change', () => {updateTracks(); updateIGV();})
-    document.getElementById('select_cells_bam').addEventListener('change', () => {updateTracks(); updateIGV();})
+    // document.getElementById('select_cells_pileup').addEventListener('change', () => {updateTracks(); updateIGV();})
+    // document.getElementById('select_cells_bam').addEventListener('change', () => {updateTracks(); updateIGV();})
     document.getElementById('pileup_height').addEventListener('change', () => {updateIGV();})
     $('#toggleROIs_btn').change(function () {
       toggleROIs();
@@ -525,14 +531,17 @@
     // I don't know why, but we have to use jQuery to set up events which can get triggered by "select all" and "deselect all"
     $(document).ready(() => {
       $('#select_tissue').on('change', (e) => {
-        console.log('change TISSUE');
         updateCells();
         updateTracks();
         updateIGV();
       })
+      $('#select_cells_pileup, #select_cells_bam').on('change', (e) => {
+        updateTracks();
+        updateIGV();
+      })
       $('#select_rois').on('change', function () {
-        console.log('changed bs select ROIs'); 
-        updateROIs(); 
+        console.log('changed bs select ROIs');
+        updateROIs();
         toggleROIs();
       });
     })

@@ -32,4 +32,12 @@ export const all_roi_tracks = [
     'color': "rgba(1,1,255,0.5)",
     'format': 'bed',
     'tracktype':'ROI'
+  },
+  {
+    "name": 'L1 insertions called by Alex Urban',
+    'url': "./rois/urban_L1.chm13.bed",
+    'indexed': false,
+    'color': "rgba(99,99,99,0.5)",
+    'format': 'bed',
+    'tracktype':'ROI',
   }];
