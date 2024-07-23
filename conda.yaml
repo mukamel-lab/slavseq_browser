@@ -1,0 +1,16 @@
+channels:
+  - conda-forge
+  - bioconda
+  - nodefaults
+dependencies:
+  - python=3.12
+  - pandas>=2
+  - tqdm
+  - joblib
+  - pysam
+  - samtools>=1.20
+  - bcftools>=1.20
+  - black
+  - ipykernel
+  - seaborn
+  - bedtools>=2.31
