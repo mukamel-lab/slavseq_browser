@@ -283,7 +283,6 @@
         option.selected = false;
         // option.title = donor.donor;
         option.value = donor.donor;
-        console.log(option)
         document.getElementById('select_donor').add(option);
       }
     }
@@ -331,7 +330,7 @@
       var rois = $('#select_rois').val()
       var roi_tracks = all_roi_tracks.filter((x) => rois.includes(x.name))
 
-      if ($("#select_donor").val().startsWith('D')) {
+      if (document.getElementById('select_donor').value.startsWith('D')) {
         // When we're only showing a single donor, just show the ROIs for that donor
         var donor = document.getElementById('select_donor').value;
         roi_tracks.push({
@@ -494,9 +493,9 @@
     const igvDiv = document.getElementById("igv-div");
     const browser = await igv.createBrowser(igvDiv, options)
 
+    await updateDonors();
     await updateTracks();
     await updateCells();
-    await updateDonors();
     await initializeROIs();
     if (!window.location.search.includes('sessionURL')) {await updateROIs();}
     // await browser.roiManager.toggleROIs();
