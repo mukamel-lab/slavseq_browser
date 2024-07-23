@@ -82,7 +82,7 @@
         <li class="nav-item" id="select_donor_li">
           <select id="select_donor" class="selectpicker" data-selected-text-format="static" data-title="Donor(s)"
             multiple data-max-options="1" data-width="100%" data-toggle="tooltip" data-placement="top"
-            data-header="Donor(s) to show" data-actions-box="true" data-live-search="true">
+            data-header="Donor(s) to show" data-live-search="true">
             <option value="AllDonors" selected> All donors (pileups)</option>
             <option value="Heatmap"> All cells (heatmap)</option>
           </select>
@@ -91,7 +91,7 @@
         <li class="nav-item" id="select_tissue_li" style="width:none">
           <select id="select_tissue" class="selectpicker" multiple data-width="100%" data-toggle="tooltip"
             data-placement="top" title="Tissue" data-selected-text-format="static" data-title="Tissue"
-            data-header="Tissues to show">
+            data-header="Tissues to show" data-actions-box="true">
             <option value="HIP"> Hippocampus</option>
             <option value="DLPFC"> Dorsolateral pre-frontal cortex</option>
           </select>
@@ -114,7 +114,7 @@
 
         <li class="nav-item donor-selection">
           <select id="select_rois" class="selectpicker" multiple data-width="100px" data-toggle="tooltip"
-            data-placement="top" data-header="ROIs" data-selected-text-format="static" data-title="ROIs">
+            data-placement="top" data-header="ROIs" data-actions-box="true" data-selected-text-format="static" data-title="ROIs">
           </select>
           <input class="btn" id="toggleROIs_btn" type="checkbox" data-toggle="toggle" data-off="Clear ROIs"
             data-on="Mark ROIs">
@@ -482,16 +482,16 @@
       // Add pileup tracks (bigwig)
       var selectedDonor = document.getElementById('select_donor').value;
       switch (selectedDonor) {
-        case 'AllDonors': 
-          allDonorsTracks(); 
+        case 'AllDonors':
+          allDonorsTracks();
           break;
-        case 'Heatmap': 
+        case 'Heatmap':
           allCellsHeatmapTrack();
           break;
-        default: 
+        default:
           addBigWigTracks();
           addBamTracks();
-        
+
       }
     }
 
@@ -513,9 +513,7 @@
     document.getElementById('select_donor').addEventListener('change', () => {console.log('Pressed select_donor'); updateCells(); updateTracks(); updateROIs(); updateIGV();})
     document.getElementById('select_cells_pileup').addEventListener('change', () => {updateTracks(); updateIGV();})
     document.getElementById('select_cells_bam').addEventListener('change', () => {updateTracks(); updateIGV();})
-    document.getElementById('select_tissue').addEventListener('change', () => {updateCells(); updateTracks(); updateIGV();})
     document.getElementById('pileup_height').addEventListener('change', () => {updateIGV();})
-    document.getElementById('select_rois').addEventListener('change', () => {updateROIs(); toggleROIs();})
     $('#toggleROIs_btn').change(function () {
       toggleROIs();
     })
@@ -523,6 +521,21 @@
     browser.on('trackorderchanged', function () {toggleROIs()});
 
     globalThis.browser = browser; // Makes the browser available in the console
+
+    // I don't know why, but we have to use jQuery to set up events which can get triggered by "select all" and "deselect all"
+    $(document).ready(() => {
+      $('#select_tissue').on('change', (e) => {
+        console.log('change TISSUE');
+        updateCells();
+        updateTracks();
+        updateIGV();
+      })
+      $('#select_rois').on('change', function () {
+        console.log('changed bs select ROIs'); 
+        updateROIs(); 
+        toggleROIs();
+      });
+    })
 
   </script>
 </body>
