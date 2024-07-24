@@ -14,7 +14,6 @@
   <!-- <link type='text/css' rel='stylesheet' href='browser/css/navbar.css' /> -->
 
   <meta charset="utf-8">
-  <script src="./js/fontawesome.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
   <link rel="stylesheet" href="./css/bootstrap-select.css">
 
@@ -52,7 +51,10 @@
       margin: 5;
     }
   </style>
-
+  <script src="js/fontawesome.js"></script>
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/solid.min.css"> -->
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/solid.min.js"></script> -->
+  
   <?php
   include './loadCsv.php';
   loadCsv('data/donors_IGVconfig.csv', 'donors_tissues');
@@ -123,6 +125,15 @@
             data-on="Mark ROIs">
         </li>
 
+        <li class="nav-item">
+          <button id="btn_plus" class="btn btn-primary" title="Increase track size">
+            <i class="fa fa-plus"></i>
+          </button>
+          <button id="btn_minus" class="btn btn-primary" title="Decrease track size">
+            <i class="fa fa-minus"></i>
+          </button>
+        </li>
+        
       </ul>
     </div>
 
@@ -440,7 +451,7 @@
           'windowFunction': 'max',
           'autoscale': false,
           'min': 0, 'max': 20,
-          'height': trackHeight,
+          'height': trackHeight, 'minHeight':5,
           'color': cell_info.tissue == "HIP" ? "rgb(0,204,255)" : "rgb(0,0,255)",
           'visible': false,
           'order': 10
@@ -464,6 +475,7 @@
           'format': 'bam',
           'type': 'alignment',
           'height': 100,
+          'minHeight':10,
           'coverageColor': cell_info.tissue == "HIP" ? "rgb(0,204,255)" : "rgb(0,0,255)",
           'showSoftClips': true,
           'showCoverage': false,
@@ -478,6 +490,34 @@
         myTracks.push(myTrack)
       }
       browser.loadTrackList(myTracks)
+    }
+
+    async function sortSegTracks() {
+      console.log('Sort seg tracks')
+      var mytracks = browser.tracks.filter((x)=>x.type=='seg')
+      mytracks.forEach(
+        (x)=>x.sortByAttribute('order')
+      )
+      console.log(mytracks.length)
+    }
+
+    async function trackHeight(plusminus) {
+      console.log('Changing track height: '+plusminus)
+      var tracks=browser.trackViews.filter((x)=>['wig', 'alignment', 'seg'].includes(x.track.type))
+      tracks.forEach((x) =>{
+        var height=x.track.height;
+        switch (plusminus) {
+          case '+':
+            height*=1.1;
+            break;
+          case '-':
+            height/=1.1;
+            break
+        }
+        console.log('new height = '+height)
+        x.track.height=height;
+         x.setTrackHeight(height)
+        })
     }
 
     export function updateIGV() {
@@ -520,10 +560,15 @@
     // document.getElementById('select_cells_pileup').addEventListener('change', () => {updateTracks(); updateIGV();})
     // document.getElementById('select_cells_bam').addEventListener('change', () => {updateTracks(); updateIGV();})
     document.getElementById('pileup_height').addEventListener('change', () => {updateIGV();})
+    document.getElementById('btn_plus').addEventListener('click', () => {trackHeight('+');})
+    document.getElementById('btn_minus').addEventListener('click', () => {trackHeight('-');})
     $('#toggleROIs_btn').change(function () {
       toggleROIs();
     })
-    browser.on('locuschange', function () {toggleROIs()});
+    browser.on('locuschange', function () {
+      toggleROIs(); 
+      // sortSegTracks(); // This may be too slow and compromise performance?
+    });
     browser.on('trackorderchanged', function () {toggleROIs()});
 
     globalThis.browser = browser; // Makes the browser available in the console
