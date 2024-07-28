@@ -395,26 +395,36 @@
       // Load all tracks of selected type
       var tracktype = document.getElementById('select_donor').value;
       console.log('tracktype = ' + tracktype)
+
       switch (tracktype) {
-        case 'allDonors':
+        case 'AllDonors_MaxSingleCells':
+        case 'AllDonors_BulkSLAVseq':
+          for (var opt of document.getElementById('select_tissue').options) { 
+            opt.selected = opt.value == 'DLPFC'; 
+          }
+          $('.selectpicker').selectpicker('refresh');
+          break
+        default:
+          console.log('Error: tracktype is wrong: '+tracktype)
       }
       var tissues = $('#select_tissue').val();
       var usetracks = donors_tissues.filter((x) => tissues.includes(x.tissue))
 
-
+      var myTracks=[];
       for (const donor of usetracks) {
         var tissuenum = 0 ? donor.tissue == 'HIP' : 1;
         var myTrack = {
-          'name': donor.donor + ' ' + donor.tissue,
+          'name': tracktype.replace('AllDonors_','') + ' ' + donor.donor + ' ' + donor.tissue,
           'url': donor[tracktype + '_path'],
           'format': 'bigwig',
           'type': 'wig',
           'windowFunction': 'max',
-          'autoscale': false,
+          'autoscale': true,
           'min': 0, 'max': 20,
           'height': 20,
+          'minHeight':5,
           'color': donor.tissue == "HIP" ? "rgb(0,204,255)" : "rgb(0,0,255)",
-          'visible': false,
+          // 'visible': false,
           'order': 10 + (donor.index / 100) + (tissuenum / 1000),
           'roi': [{
             name: donor.donor + ' non-reference germline L1 insertions (KNRGL called by Megane)',
@@ -443,9 +453,9 @@
           'autoscale': false,
           'min': 0, 'max': 20,
           'height': 20,
-          'minHeight':5,
+          'minHeight': 5,
           'color': donor.tissue == "HIP" ? "rgb(0,204,255)" : "rgb(0,0,255)",
-          'visible': false,
+          // 'visible': false,
           'order': 10 + (donor.index / 100) + (tissuenum / 1000),
           'roi': [{
             name: donor.donor + ' non-reference germline L1 insertions (KNRGL called by Megane)',
@@ -497,10 +507,10 @@
           'windowFunction': 'max',
           'autoscale': false,
           'min': 0, 'max': 20,
-          'height': trackHeight, 
+          'height': trackHeight,
           'minHeight': 5,
           'color': cell_info.tissue == "HIP" ? "rgb(0,204,255)" : "rgb(0,0,255)",
-          'visible': false,
+          // 'visible': false,
           'order': 10
         };
         // browser.loadTrack(myTrack)
@@ -528,7 +538,7 @@
           'showCoverage': false,
           'displayMode': 'squished',
           'viewAsPairs': false,
-          'visible': false,
+          // 'visible': false,
           'visibilityWindow': 3000000,
           'maxTLEN': 10000,
           'order': 4
@@ -574,10 +584,12 @@
       var selectedDonor = document.getElementById('select_donor').value;
       switch (selectedDonor) {
         case 'AllDonors_MaxSingleCells':
+          allDonorsTracks();
+          break;
         case 'AllDonors_BulkSLAVseq':
         case 'AllDonors_BulkWGS':
-          // pileupTracks();
-          allDonorsTracks();
+          pileupTracks();
+          // allDonorsTracks();
           break;
         case 'Heatmap':
           allCellsHeatmapTrack();
@@ -619,7 +631,9 @@
     });
     browser.on('trackorderchanged', function () {toggleROIs()});
 
+    // Make some functions and variables accessible globally
     browser.pileupTracks = pileupTracks;
+    browser.donors_tissues = donors_tissues;
     globalThis.browser = browser; // Makes the browser available in the console
 
     // I don't know why, but we have to use jQuery to set up events which can get triggered by "select all" and "deselect all"
