@@ -134,7 +134,12 @@
           <button id="btn_minus" class="btn btn-primary" title="Decrease track size">
             <i class="fa fa-minus"></i>
           </button>
+
+          <input class="btn" id="toggleAutoscale_btn" type="checkbox" data-toggle="toggle" data-off="Fixed scale"
+            data-on="Autoscale">
         </li>
+
+
 
       </ul>
     </div>
@@ -288,6 +293,27 @@
       browser.roiManager.roiTable.setROIVisibility($('#toggleROIs_btn').prop('checked'));
     }
 
+    function toggleAutoscale() {
+      console.log('Toggle autoscale')
+      if ($('#toggleAutoscale_btn').prop('checked')) {
+        console.log('Autoscale on')
+        for (var track of browser.tracks) {
+          if ('dataRange' in track) {track.autoscale = true}
+        }
+        browser.updateViews();
+      } else {
+        console.log('Autoscale off')
+        for (var track of browser.tracks) {
+          if ('dataRange' in track) {
+            track.autoscale = false; 
+            track.dataRange['max']=20;
+            track.trackView.dataRange['max']=20;
+          }
+        }      
+        browser.repaintViews();
+      }
+    }
+
     ////////////////////////////////////
     // Functions for updating the dropdown lists
 
@@ -397,24 +423,24 @@
       console.log('tracktype = ' + tracktype)
 
       switch (tracktype) {
-        case 'AllDonors_MaxSingleCells':
+        case 'AllDonors_BulkWGS':
         case 'AllDonors_BulkSLAVseq':
-          for (var opt of document.getElementById('select_tissue').options) { 
-            opt.selected = opt.value == 'DLPFC'; 
+          for (var opt of document.getElementById('select_tissue').options) {
+            opt.selected = opt.value == 'DLPFC';
           }
           $('.selectpicker').selectpicker('refresh');
           break
         default:
-          console.log('Error: tracktype is wrong: '+tracktype)
+          console.log('Error: tracktype is wrong: ' + tracktype)
       }
       var tissues = $('#select_tissue').val();
       var usetracks = donors_tissues.filter((x) => tissues.includes(x.tissue))
 
-      var myTracks=[];
+      var myTracks = [];
       for (const donor of usetracks) {
         var tissuenum = 0 ? donor.tissue == 'HIP' : 1;
         var myTrack = {
-          'name': tracktype.replace('AllDonors_','') + ' ' + donor.donor + ' ' + donor.tissue,
+          'name': tracktype.replace('AllDonors_', '') + ' ' + donor.donor + ' ' + donor.tissue,
           'url': donor[tracktype + '_path'],
           'format': 'bigwig',
           'type': 'wig',
@@ -422,7 +448,7 @@
           'autoscale': true,
           'min': 0, 'max': 20,
           'height': 20,
-          'minHeight':5,
+          'minHeight': 5,
           'color': donor.tissue == "HIP" ? "rgb(0,204,255)" : "rgb(0,0,255)",
           // 'visible': false,
           'order': 10 + (donor.index / 100) + (tissuenum / 1000),
@@ -589,7 +615,6 @@
         case 'AllDonors_BulkSLAVseq':
         case 'AllDonors_BulkWGS':
           pileupTracks();
-          // allDonorsTracks();
           break;
         case 'Heatmap':
           allCellsHeatmapTrack();
@@ -622,9 +647,6 @@
     document.getElementById('pileup_height').addEventListener('change', () => {updateIGV();})
     document.getElementById('btn_plus').addEventListener('click', () => {trackHeight('+');})
     document.getElementById('btn_minus').addEventListener('click', () => {trackHeight('-');})
-    $('#toggleROIs_btn').change(function () {
-      toggleROIs();
-    })
     browser.on('locuschange', function () {
       toggleROIs();
       // sortSegTracks(); // This may be too slow and compromise performance?
@@ -632,12 +654,16 @@
     browser.on('trackorderchanged', function () {toggleROIs()});
 
     // Make some functions and variables accessible globally
-    browser.pileupTracks = pileupTracks;
-    browser.donors_tissues = donors_tissues;
     globalThis.browser = browser; // Makes the browser available in the console
 
     // I don't know why, but we have to use jQuery to set up events which can get triggered by "select all" and "deselect all"
     $(document).ready(() => {
+      $('#toggleROIs_btn').change(function () {
+        toggleROIs();
+      })
+      $('#toggleAutoscale_btn').change(function () {
+        toggleAutoscale();
+      })
       $('#select_tissue').on('change', (e) => {
         updateCells();
         updateTracks();
