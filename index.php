@@ -57,6 +57,7 @@
 
   <?php
   include './loadCsv.php';
+  loadCsv('config/donors2libd.csv', 'donors2libd');
   loadCsv('config/donors_IGVconfig.csv', 'donors_tissues');
   loadCsv('config/slavseq_metadata.csv', 'cells');
   ?>
@@ -294,15 +295,12 @@
     }
 
     function toggleAutoscale() {
-      console.log('Toggle autoscale')
       if ($('#toggleAutoscale_btn').prop('checked')) {
-        console.log('Autoscale on')
         for (var track of browser.tracks) {
           if ('dataRange' in track) {track.autoscale = true}
         }
         browser.updateViews();
       } else {
-        console.log('Autoscale off')
         for (var track of browser.tracks) {
           if ('dataRange' in track) {
             track.autoscale = false; 
@@ -333,12 +331,10 @@
       // Show and hide the appropriate dropdown menus
       var donor = document.getElementById('select_donor').value;
       if (donor == 'AllDonors_MaxSingleCells') {
-        console.log('AllDonors_MaxSingleCells')
         document.getElementById('select_cells_li').style.display = 'none';
         document.getElementById('select_bams_li').style.display = 'none';
         document.getElementById('select_tissue_li').style.display = 'block';
       } else if (donor.startsWith('AllDonors_Bulk')) {
-        console.log('AllDonors_Bulk')
         document.getElementById('select_cells_li').style.display = 'none';
         document.getElementById('select_bams_li').style.display = 'none';
         document.getElementById('select_tissue_li').style.display = 'none';
@@ -404,10 +400,20 @@
       var tissues = $('#select_tissue').val();
       var tissuenum = 0 ? donor.tissue == 'HIP' : 1;
       var cellsu = cells.filter((x) => (x.donor == donor) & (tissues.includes(x.tissue)) & (x.is_bulk == 'False'))
+
+      // Add Bulk BAM tracks
+      var option = document.createElement("option");
+      option.selected = false;
+      option.text = donor + ' Bulk WGS';
+      option.value = donor+'_BulkWGS';
+      document.getElementById('select_cells_bam').add(option)
+      option.text = donor + ' Bulk SLAV-seq';
+      option.value = donor+'_BulkSLAVseq';
+      document.getElementById('select_cells_bam').add(option)
+
       for (const selector of ['pileup', 'bam']) {
         $("#select_cells_" + selector).empty();
         for (const cell of cellsu) {
-          var option = document.createElement("option");
           option.text = cell.donor + ' ' + cell.tissue + ': ' + cell.sample;
           option.value = cell.sample;
           option.selected = selector == 'pileup';
@@ -420,7 +426,6 @@
     export function pileupTracks() {
       // Load all tracks of selected type
       var tracktype = document.getElementById('select_donor').value;
-      console.log('tracktype = ' + tracktype)
 
       switch (tracktype) {
         case 'AllDonors_BulkWGS':
@@ -546,15 +551,15 @@
     }
 
     function addBamTracks() {
-      // Add bam tracks
+      // Add bam tracks for single cells
       var cells_show = $("#select_cells_bam").val();
       var cells_info = cells.filter((x) => cells_show.includes(x.sample))
       var myTracks = []
       for (const cell_info of cells_info) {
         var myTrack = {
           'name': cell_info.donor + ' ' + cell_info.tissue + ':' + cell_info.sample,
-          'url': 'https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bam/' + cell_info.sample + '.tagged.sorted.bam',
-          'indexURL': 'https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bam/' + cell_info.sample + '.tagged.sorted.bam.bai',
+          'url': 'data/bam/SingleCells/' + cell_info.sample + '.tagged.sorted.bam',
+          'indexURL': 'data/bam/SingleCells/' + cell_info.sample + '.tagged.sorted.bam.bai',
           'format': 'bam',
           'type': 'alignment',
           'height': 100,
@@ -564,7 +569,6 @@
           'showCoverage': false,
           'displayMode': 'squished',
           'viewAsPairs': false,
-          // 'visible': false,
           'visibilityWindow': 3000000,
           'maxTLEN': 10000,
           'order': 4
@@ -572,16 +576,18 @@
         // browser.loadTrack(myTrack)
         myTracks.push(myTrack)
       }
+
+      // Add BulkWGS and BulkSLAVseq bams
+
+
       browser.loadTrackList(myTracks)
     }
 
     async function sortSegTracks() {
-      console.log('Sort seg tracks')
       var mytracks = browser.tracks.filter((x) => x.type == 'seg')
       mytracks.forEach(
         (x) => x.sortByAttribute('order')
       )
-      console.log(mytracks.length)
     }
 
     async function trackHeight(plusminus) {
