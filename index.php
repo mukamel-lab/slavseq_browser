@@ -235,7 +235,7 @@
     ////////////////////////////////////////////////
     // Functions for screenshot and links
     // Screenshot
-    export function myScreenshot() {
+    function myScreenshot() {
       html2canvas(document.body, {
         // scale: window.devicePixelRatio = 5,
         useCORS: true,
@@ -247,7 +247,7 @@
       )
     }
 
-    export function saveAs(uri, filename) {
+    function saveAs(uri, filename) {
       var link = document.createElement('a');
       if (typeof link.download === 'string') {
         link.href = uri;
@@ -263,14 +263,14 @@
       }
     }
 
-    export function getLink() {
+    function getLink() {
       var blob = browser.compressedSession();
       var src = 'https://brainome.ucsd.edu/slavseq_browser/?sessionURL=blob:' + blob
       document.getElementById('srcBox').value = src;
       window.history.pushState("object or string", "", src);
     }
 
-    export function copyLink() {
+    function copyLink() {
       // Copy link to the current state to the clipboard
 
       /* Select the text field */
@@ -284,14 +284,14 @@
       copySrc.style.visibility = 'hidden';
     }
 
-    export function toggleROIs() {
+    function toggleROIs() {
       browser.roiManager.roiTable.setROIVisibility($('#toggleROIs_btn').prop('checked'));
     }
 
     ////////////////////////////////////
     // Functions for updating the dropdown lists
 
-    export function updateDonors() {
+    function updateDonors() {
       // Update the select menus
       const donors = donors_tissues.filter((d) => d.tissue == "HIP")
       for (const donor of donors) {
@@ -303,7 +303,7 @@
       }
     }
 
-    export function updateTracks() {
+    function updateTracks() {
       // Show and hide the appropriate dropdown menus
       var donor = document.getElementById('select_donor').value;
       if (donor == 'AllDonors_MaxSingleCells') {
@@ -333,7 +333,7 @@
       }
     }
 
-    export function initializeROIs() {
+    function initializeROIs() {
       var activeROIs = browser.roiManager.roiSets.map((x) => x.name)
       for (const roi_track of all_roi_tracks.filter((x) => !x.name.startsWith("Peaks in D"))) {
         var option = document.createElement("option");
@@ -345,7 +345,7 @@
       $('.selectpicker').selectpicker('refresh');
     }
 
-    export function updateROIs() {
+    function updateROIs() {
       // Remove the currently active ROI tracks
       var activeROITracks = browser.tracks.filter((x) => (x.config) ? x.config.tracktype == 'ROI' : 0)
       for (const roiTrack of activeROITracks) {browser.removeTrack(roiTrack)}
@@ -371,7 +371,7 @@
 
     ////////////////////
     // Create tracks
-    export function updateCells() {
+    function updateCells() {
       var donor = document.getElementById('select_donor').value;
       var tissues = $('#select_tissue').val();
       var tissuenum = 0 ? donor.tissue == 'HIP' : 1;
@@ -389,7 +389,7 @@
       $('.selectpicker').selectpicker('refresh');
     }
 
-    export function allDonorsTracks() {
+    function allDonorsTracks() {
       // Create a pileup track for each donor/tissue
       var myTracks = []
       var tissues = $('#select_tissue').val();
@@ -419,7 +419,7 @@
       browser.loadTrackList(myTracks)
     }
 
-    export function allCellsHeatmapTrack() {
+    function allCellsHeatmapTrack() {
       // Create a heatmap track showing all cells
       browser.loadTrack({
         "name": "All cells - coverage around peaks",
@@ -443,7 +443,7 @@
       })
     }
 
-    export function addBigWigTracks() {
+    function addBigWigTracks() {
       var cells_show = $("#select_cells_pileup").val();
       var cells_info = cells.filter((x) => (cells_show.includes(x.sample)) & (x.is_bulk == 'False'))
       var trackHeight = document.getElementById('pileup_height').value;
@@ -468,7 +468,7 @@
       browser.loadTrackList(myTracks)
     }
 
-    export function addBamTracks() {
+    function addBamTracks() {
       // Add bam tracks
       var cells_show = $("#select_cells_bam").val();
       var cells_info = cells.filter((x) => cells_show.includes(x.sample))
@@ -526,7 +526,7 @@
       })
     }
 
-    export function updateIGV() {
+    function updateIGV() {
       for (const track of (browser.tracks.filter((x) => ['wig', 'alignment', 'seg'].includes(x.type)))) {
         browser.removeTrack(track);
       }
