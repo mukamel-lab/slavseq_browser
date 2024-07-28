@@ -549,7 +549,6 @@
     }
 
     async function trackHeight(plusminus) {
-      console.log('Changing track height: ' + plusminus)
       var tracks = browser.trackViews.filter((x) => ['wig', 'alignment', 'seg'].includes(x.track.type))
       tracks.forEach((x) => {
         var height = x.track.height;
@@ -561,7 +560,6 @@
             height /= 1.1;
             break
         }
-        console.log('new height = ' + height)
         x.track.height = height;
         x.setTrackHeight(height)
       })
