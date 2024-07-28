@@ -87,8 +87,8 @@
             data-header="Donor(s) to show" data-live-search="true">
             <option value="Heatmap"> All cells (heatmap)</option>
             <option value="AllDonors_MaxSingleCells" selected> All donors - Max of single cell SLAV-seq</option>
-            <option value="AllDonors_BulkSLAVseq" selected> All donors - Bulk SLAV-seq</option>
-            <option value="AllDonors_BulkWGS" selected> All donors - Bulk 30X WGS</option>
+            <option value="AllDonors_BulkSLAVseq"> All donors - Bulk SLAV-seq</option>
+            <option value="AllDonors_BulkWGS"> All donors - Bulk 30X WGS</option>
           </select>
         </li>
 
@@ -96,8 +96,8 @@
           <select id="select_tissue" class="selectpicker" multiple data-width="100%" data-toggle="tooltip"
             data-placement="top" title="Tissue" data-selected-text-format="static" data-title="Tissue"
             data-header="Tissues to show" data-actions-box="true">
-            <option value="HIP"> Hippocampus</option>
-            <option value="DLPFC"> Dorsolateral pre-frontal cortex</option>
+            <option value="HIP" selected> Hippocampus</option>
+            <option value="DLPFC" selected> Dorsolateral pre-frontal cortex</option>
           </select>
         </li>
 
@@ -307,14 +307,16 @@
       // Show and hide the appropriate dropdown menus
       var donor = document.getElementById('select_donor').value;
       if (donor == 'AllDonors_MaxSingleCells') {
+        console.log('AllDonors_MaxSingleCells')
         document.getElementById('select_cells_li').style.display = 'none';
         document.getElementById('select_bams_li').style.display = 'none';
         document.getElementById('select_tissue_li').style.display = 'block';
       } else if (donor.startsWith('AllDonors_Bulk')) {
+        console.log('AllDonors_Bulk')
         document.getElementById('select_cells_li').style.display = 'none';
         document.getElementById('select_bams_li').style.display = 'none';
         document.getElementById('select_tissue_li').style.display = 'none';
-      }      else if (donor == 'Heatmap') {
+      } else if (donor == 'Heatmap') {
         document.getElementById('select_cells_li').style.display = 'none';
         document.getElementById('select_bams_li').style.display = 'none';
         document.getElementById('select_tissue_li').style.display = 'none';
@@ -389,6 +391,38 @@
       $('.selectpicker').selectpicker('refresh');
     }
 
+    function pileupTracks() {
+      // Load all tracks of selected type
+      var tracktype = $('#select_donor').val();
+      // var usetracks = donors.
+
+
+      for (const donor of donors_tissues.filter((x) => tissues.includes(x.tissue))) {
+        var tissuenum = 0 ? donor.tissue == 'HIP' : 1;
+        var myTrack = {
+          'name': donor.donor + ' ' + donor.tissue,
+          'url': donor.AllDonors_MaxSingleCells_path,
+          'format': 'bigwig',
+          'type': 'wig',
+          'windowFunction': 'max',
+          'autoscale': false,
+          'min': 0, 'max': 20,
+          'height': 20,
+          'color': donor.tissue == "HIP" ? "rgb(0,204,255)" : "rgb(0,0,255)",
+          'visible': false,
+          'order': 10 + (donor.index / 100) + (tissuenum / 1000),
+          'roi': [{
+            name: donor.donor + ' non-reference germline L1 insertions (KNRGL called by Megane)',
+            url: "./rois/KNRGL_" + donor.donor + "_megane.bed",
+            color: "rgba(255,94,1,0.90)"
+          }],
+          'overflowColor': "rgb(100,100,100)"
+        };
+        myTracks.push(myTrack)
+      }
+      browser.loadTrackList(myTracks)
+    }
+
     function allDonorsTracks() {
       // Create a pileup track for each donor/tissue
       var myTracks = []
@@ -397,7 +431,7 @@
         var tissuenum = 0 ? donor.tissue == 'HIP' : 1;
         var myTrack = {
           'name': donor.donor + ' ' + donor.tissue,
-          'url': donor.url,
+          'url': donor.AllDonors_MaxSingleCells_path,
           'format': 'bigwig',
           'type': 'wig',
           'windowFunction': 'max',
@@ -534,7 +568,9 @@
       // Add pileup tracks (bigwig)
       var selectedDonor = document.getElementById('select_donor').value;
       switch (selectedDonor) {
-        case 'AllDonors':
+        case 'AllDonors_MaxSingleCells':
+        case 'AllDonors_BulkSLAVseq':
+        case 'AllDonors_BulkWGS':
           allDonorsTracks();
           break;
         case 'Heatmap':
@@ -562,7 +598,7 @@
       copyLink();
     })
     document.getElementById('screenshotButton').addEventListener('click', () => {myScreenshot();})
-    document.getElementById('select_donor').addEventListener('change', () => {console.log('Pressed select_donor'); updateCells(); updateTracks(); updateROIs(); updateIGV();})
+    document.getElementById('select_donor').addEventListener('change', () => {updateCells(); updateTracks(); updateROIs(); updateIGV();})
     // document.getElementById('select_cells_pileup').addEventListener('change', () => {updateTracks(); updateIGV();})
     // document.getElementById('select_cells_bam').addEventListener('change', () => {updateTracks(); updateIGV();})
     document.getElementById('pileup_height').addEventListener('change', () => {updateIGV();})
