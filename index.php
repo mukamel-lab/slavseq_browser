@@ -96,8 +96,8 @@
           <select id="select_tissue" class="selectpicker" multiple data-width="100%" data-toggle="tooltip"
             data-placement="top" title="Tissue" data-selected-text-format="static" data-title="Tissue"
             data-header="Tissues to show" data-actions-box="true">
-            <option value="HIP" selected> Hippocampus</option>
-            <option value="DLPFC" selected> Dorsolateral pre-frontal cortex</option>
+            <option value="HIP"> Hippocampus</option>
+            <option value="DLPFC"> Dorsolateral pre-frontal cortex</option>
           </select>
         </li>
 
@@ -391,17 +391,22 @@
       $('.selectpicker').selectpicker('refresh');
     }
 
-    function pileupTracks() {
+    export function pileupTracks() {
       // Load all tracks of selected type
-      var tracktype = $('#select_donor').val();
-      // var usetracks = donors.
+      var tracktype = document.getElementById('select_donor').value;
+      console.log('tracktype = ' + tracktype)
+      switch (tracktype) {
+        case 'allDonors':
+      }
+      var tissues = $('#select_tissue').val();
+      var usetracks = donors_tissues.filter((x) => tissues.includes(x.tissue))
 
 
-      for (const donor of donors_tissues.filter((x) => tissues.includes(x.tissue))) {
+      for (const donor of usetracks) {
         var tissuenum = 0 ? donor.tissue == 'HIP' : 1;
         var myTrack = {
           'name': donor.donor + ' ' + donor.tissue,
-          'url': donor.AllDonors_MaxSingleCells_path,
+          'url': donor[tracktype + '_path'],
           'format': 'bigwig',
           'type': 'wig',
           'windowFunction': 'max',
@@ -438,6 +443,7 @@
           'autoscale': false,
           'min': 0, 'max': 20,
           'height': 20,
+          'minHeight':5,
           'color': donor.tissue == "HIP" ? "rgb(0,204,255)" : "rgb(0,0,255)",
           'visible': false,
           'order': 10 + (donor.index / 100) + (tissuenum / 1000),
@@ -491,7 +497,8 @@
           'windowFunction': 'max',
           'autoscale': false,
           'min': 0, 'max': 20,
-          'height': trackHeight, 'minHeight': 5,
+          'height': trackHeight, 
+          'minHeight': 5,
           'color': cell_info.tissue == "HIP" ? "rgb(0,204,255)" : "rgb(0,0,255)",
           'visible': false,
           'order': 10
@@ -571,6 +578,7 @@
         case 'AllDonors_MaxSingleCells':
         case 'AllDonors_BulkSLAVseq':
         case 'AllDonors_BulkWGS':
+          // pileupTracks();
           allDonorsTracks();
           break;
         case 'Heatmap':
@@ -613,6 +621,7 @@
     });
     browser.on('trackorderchanged', function () {toggleROIs()});
 
+    browser.pileupTracks = pileupTracks;
     globalThis.browser = browser; // Makes the browser available in the console
 
     // I don't know why, but we have to use jQuery to set up events which can get triggered by "select all" and "deselect all"
