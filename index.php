@@ -54,11 +54,11 @@
   <script src="js/fontawesome.js"></script>
   <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/solid.min.css"> -->
   <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/solid.min.js"></script> -->
-  
+
   <?php
   include './loadCsv.php';
-  loadCsv('data/donors_IGVconfig.csv', 'donors_tissues');
-  loadCsv('data/slavseq_metadata.csv', 'cells');
+  loadCsv('config/donors_IGVconfig.csv', 'donors_tissues');
+  loadCsv('config/slavseq_metadata.csv', 'cells');
   ?>
 
 </head>
@@ -85,8 +85,10 @@
           <select id="select_donor" class="selectpicker" data-selected-text-format="static" data-title="Donor(s)"
             multiple data-max-options="1" data-width="100%" data-toggle="tooltip" data-placement="top"
             data-header="Donor(s) to show" data-live-search="true">
-            <option value="AllDonors" selected> All donors (pileups)</option>
             <option value="Heatmap"> All cells (heatmap)</option>
+            <option value="AllDonors_MaxSingleCells" selected> All donors - Max of single cell SLAV-seq</option>
+            <option value="AllDonors_BulkSLAVseq" selected> All donors - Bulk SLAV-seq</option>
+            <option value="AllDonors_BulkWGS" selected> All donors - Bulk 30X WGS</option>
           </select>
         </li>
 
@@ -133,7 +135,7 @@
             <i class="fa fa-minus"></i>
           </button>
         </li>
-        
+
       </ul>
     </div>
 
@@ -215,7 +217,7 @@
       ],
       "sampleinfo": [
         {
-          "url": "./data/sampletable.tsv"
+          "url": "./config/sampletable.tsv"
         }
       ]
     };
@@ -302,13 +304,17 @@
     }
 
     export function updateTracks() {
+      // Show and hide the appropriate dropdown menus
       var donor = document.getElementById('select_donor').value;
-      if (['AllDonors'].includes(donor)) {
+      if (donor == 'AllDonors_MaxSingleCells') {
         document.getElementById('select_cells_li').style.display = 'none';
         document.getElementById('select_bams_li').style.display = 'none';
         document.getElementById('select_tissue_li').style.display = 'block';
-      }
-      else if (['Heatmap'].includes(donor)) {
+      } else if (donor.startsWith('AllDonors_Bulk')) {
+        document.getElementById('select_cells_li').style.display = 'none';
+        document.getElementById('select_bams_li').style.display = 'none';
+        document.getElementById('select_tissue_li').style.display = 'none';
+      }      else if (donor == 'Heatmap') {
         document.getElementById('select_cells_li').style.display = 'none';
         document.getElementById('select_bams_li').style.display = 'none';
         document.getElementById('select_tissue_li').style.display = 'none';
@@ -451,7 +457,7 @@
           'windowFunction': 'max',
           'autoscale': false,
           'min': 0, 'max': 20,
-          'height': trackHeight, 'minHeight':5,
+          'height': trackHeight, 'minHeight': 5,
           'color': cell_info.tissue == "HIP" ? "rgb(0,204,255)" : "rgb(0,0,255)",
           'visible': false,
           'order': 10
@@ -475,7 +481,7 @@
           'format': 'bam',
           'type': 'alignment',
           'height': 100,
-          'minHeight':10,
+          'minHeight': 10,
           'coverageColor': cell_info.tissue == "HIP" ? "rgb(0,204,255)" : "rgb(0,0,255)",
           'showSoftClips': true,
           'showCoverage': false,
@@ -494,30 +500,30 @@
 
     async function sortSegTracks() {
       console.log('Sort seg tracks')
-      var mytracks = browser.tracks.filter((x)=>x.type=='seg')
+      var mytracks = browser.tracks.filter((x) => x.type == 'seg')
       mytracks.forEach(
-        (x)=>x.sortByAttribute('order')
+        (x) => x.sortByAttribute('order')
       )
       console.log(mytracks.length)
     }
 
     async function trackHeight(plusminus) {
-      console.log('Changing track height: '+plusminus)
-      var tracks=browser.trackViews.filter((x)=>['wig', 'alignment', 'seg'].includes(x.track.type))
-      tracks.forEach((x) =>{
-        var height=x.track.height;
+      console.log('Changing track height: ' + plusminus)
+      var tracks = browser.trackViews.filter((x) => ['wig', 'alignment', 'seg'].includes(x.track.type))
+      tracks.forEach((x) => {
+        var height = x.track.height;
         switch (plusminus) {
           case '+':
-            height*=1.1;
+            height *= 1.1;
             break;
           case '-':
-            height/=1.1;
+            height /= 1.1;
             break
         }
-        console.log('new height = '+height)
-        x.track.height=height;
-         x.setTrackHeight(height)
-        })
+        console.log('new height = ' + height)
+        x.track.height = height;
+        x.setTrackHeight(height)
+      })
     }
 
     export function updateIGV() {
@@ -566,7 +572,7 @@
       toggleROIs();
     })
     browser.on('locuschange', function () {
-      toggleROIs(); 
+      toggleROIs();
       // sortSegTracks(); // This may be too slow and compromise performance?
     });
     browser.on('trackorderchanged', function () {toggleROIs()});
