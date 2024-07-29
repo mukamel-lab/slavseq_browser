@@ -7,7 +7,7 @@ export const all_roi_tracks = [
     'indexed': false,
     'color': "rgba(99,99,99,0.5)",
     'format': 'bed',
-    'tracktype':'ROI',
+    'tracktype': 'ROI',
   },
   {
     'name': 'Filtered peaks',
@@ -15,7 +15,7 @@ export const all_roi_tracks = [
     'indexed': false,
     'color': "rgba(32,128,1,0.5)",
     'format': 'bed',
-    'tracktype':'ROI'
+    'tracktype': 'ROI'
   },
   {
     'name': 'Disc peaks (remove KNRGL,RefL1HS,PolyA)',
@@ -23,7 +23,7 @@ export const all_roi_tracks = [
     'indexed': false,
     'color': "rgba(94,94,1,0.5)",
     'format': 'bed',
-    'tracktype':'ROI'
+    'tracktype': 'ROI'
   },
   {
     name: "Apua's peak calls",
@@ -31,7 +31,7 @@ export const all_roi_tracks = [
     'indexed': false,
     'color': "rgba(1,1,255,0.5)",
     'format': 'bed',
-    'tracktype':'ROI'
+    'tracktype': 'ROI'
   },
   {
     "name": 'L1 insertions called by Alex Urban',
@@ -39,5 +39,5 @@ export const all_roi_tracks = [
     'indexed': false,
     'color': "rgba(99,99,99,0.5)",
     'format': 'bed',
-    'tracktype':'ROI',
+    'tracktype': 'ROI',
   }];

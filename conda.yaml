@@ -14,3 +14,5 @@ dependencies:
   - ipykernel
   - seaborn
   - bedtools>=2.31
+  - pyliftover
+  - pyranges
