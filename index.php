@@ -87,7 +87,7 @@
             multiple data-max-options="1" data-width="100%" data-toggle="tooltip" data-placement="top"
             data-header="Donor(s) to show" data-live-search="true">
             <option value="Heatmap"> All cells (heatmap)</option>
-            <option value="AllDonors_AllModalities"> All donors</option>
+            <option value="AllDonors_AllModalities"> All donors - Bulk+SingleCells</option>
             <option value="AllDonors_MaxSingleCells" selected> All donors - Max of single cell SLAV-seq</option>
             <option value="AllDonors_BulkSLAVseq"> All donors - Bulk SLAV-seq</option>
             <option value="AllDonors_BulkWGS"> All donors - Bulk 30X WGS</option>
@@ -455,15 +455,15 @@
           var tissuenum = 0 ? donor.tissue == 'HIP' : 1;
 
           // TODO: Make a nicer color palette
-          if (donor.tissue=='HIP') { var color = "rgb(0,204,255)"} 
+          if (donor.tissue=='HIP') { var color = "rgb(155, 209, 229)"} 
           else if (tracktype=='AllDonors_MaxSingleCells') {
-            var color="rgb(0,0,255)"
+            var color="rgb(106, 142, 174)"
           } else if (tracktype=='AllDonors_BulkSLAVseq') {
-            var color="rgb(255,100,0)"
+            var color="rgb(87, 167, 115)"
           } else {
-            var color="rgb(100,255,0)"
+            var color="rgb(21, 113, 69)"
           }
-          
+
           var myTrack = {
             'name': tracktype.replace('AllDonors_', '') + ' ' + donor.donor + ' ' + donor.tissue,
             'url': donor[tracktype + '_path'],
