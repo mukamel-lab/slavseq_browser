@@ -87,6 +87,7 @@
             multiple data-max-options="1" data-width="100%" data-toggle="tooltip" data-placement="top"
             data-header="Donor(s) to show" data-live-search="true">
             <option value="Heatmap"> All cells (heatmap)</option>
+            <option value="AllDonors_AllModalities"> All donors</option>
             <option value="AllDonors_MaxSingleCells" selected> All donors - Max of single cell SLAV-seq</option>
             <option value="AllDonors_BulkSLAVseq"> All donors - Bulk SLAV-seq</option>
             <option value="AllDonors_BulkWGS"> All donors - Bulk 30X WGS</option>
@@ -303,11 +304,11 @@
       } else {
         for (var track of browser.tracks) {
           if ('dataRange' in track) {
-            track.autoscale = false; 
-            track.dataRange['max']=20;
-            track.trackView.dataRange['max']=20;
+            track.autoscale = false;
+            track.dataRange['max'] = 20;
+            track.trackView.dataRange['max'] = 20;
           }
-        }      
+        }
         browser.repaintViews();
       }
     }
@@ -401,19 +402,26 @@
       var tissuenum = 0 ? donor.tissue == 'HIP' : 1;
       var cellsu = cells.filter((x) => (x.donor == donor) & (tissues.includes(x.tissue)) & (x.is_bulk == 'False'))
 
-      // Add Bulk BAM tracks
-      var option = document.createElement("option");
-      option.selected = false;
-      option.text = donor + ' Bulk WGS';
-      option.value = donor+'_BulkWGS';
-      document.getElementById('select_cells_bam').add(option)
-      option.text = donor + ' Bulk SLAV-seq';
-      option.value = donor+'_BulkSLAVseq';
-      document.getElementById('select_cells_bam').add(option)
-
       for (const selector of ['pileup', 'bam']) {
         $("#select_cells_" + selector).empty();
+
+        if (selector == 'bam') {
+          // Add Bulk BAM tracks
+          var option = document.createElement("option");
+          option.selected = false;
+          option.text = donor + ' Bulk WGS';
+          option.value = donor + '_BulkWGS';
+          document.getElementById('select_cells_bam').add(option)
+
+          var option = document.createElement("option");
+          option.selected = false;
+          option.text = donor + ' Bulk SLAV-seq';
+          option.value = donor + '_BulkSLAVseq';
+          document.getElementById('select_cells_bam').add(option)
+        }
+
         for (const cell of cellsu) {
+          var option = document.createElement("option");
           option.text = cell.donor + ' ' + cell.tissue + ': ' + cell.sample;
           option.value = cell.sample;
           option.selected = selector == 'pileup';
@@ -423,48 +431,62 @@
       $('.selectpicker').selectpicker('refresh');
     }
 
-    export function pileupTracks() {
+    export function pileupTracks(tracktypes) {
       // Load all tracks of selected type
-      var tracktype = document.getElementById('select_donor').value;
+      // var tracktype = document.getElementById('select_donor').value;
 
-      switch (tracktype) {
-        case 'AllDonors_BulkWGS':
-        case 'AllDonors_BulkSLAVseq':
-          for (var opt of document.getElementById('select_tissue').options) {
-            opt.selected = opt.value == 'DLPFC';
-          }
-          $('.selectpicker').selectpicker('refresh');
-          break
-        default:
-          console.log('Error: tracktype is wrong: ' + tracktype)
-      }
-      var tissues = $('#select_tissue').val();
-      var usetracks = donors_tissues.filter((x) => tissues.includes(x.tissue))
-
+      const modality2num = {'AllDonors_BulkWGS': 0, 'AllDonors_BulkSLAVseq': 1, 'AllDonors_MaxSingleCells': 2};
       var myTracks = [];
-      for (const donor of usetracks) {
-        var tissuenum = 0 ? donor.tissue == 'HIP' : 1;
-        var myTrack = {
-          'name': tracktype.replace('AllDonors_', '') + ' ' + donor.donor + ' ' + donor.tissue,
-          'url': donor[tracktype + '_path'],
-          'format': 'bigwig',
-          'type': 'wig',
-          'windowFunction': 'max',
-          'autoscale': true,
-          'min': 0, 'max': 20,
-          'height': 20,
-          'minHeight': 5,
-          'color': donor.tissue == "HIP" ? "rgb(0,204,255)" : "rgb(0,0,255)",
-          // 'visible': false,
-          'order': 10 + (donor.index / 100) + (tissuenum / 1000),
-          'roi': [{
-            name: donor.donor + ' non-reference germline L1 insertions (KNRGL called by Megane)',
-            url: "./rois/KNRGL_" + donor.donor + "_megane.bed",
-            color: "rgba(255,94,1,0.90)"
-          }],
-          'overflowColor': "rgb(100,100,100)"
-        };
-        myTracks.push(myTrack)
+      var autoscale=$('#toggleAutoscale_btn').prop('checked')
+      for (const tracktype of tracktypes) {
+        switch (tracktype) {
+          case 'AllDonors_BulkWGS':
+          case 'AllDonors_BulkSLAVseq':
+            for (var opt of document.getElementById('select_tissue').options) {
+              opt.selected = opt.value == 'DLPFC';
+            }
+            $('.selectpicker').selectpicker('refresh');
+            break
+        }
+        var tissues = $('#select_tissue').val();
+        var usetracks = donors_tissues.filter((x) => tissues.includes(x.tissue))
+
+        for (const donor of usetracks) {
+          var tissuenum = 0 ? donor.tissue == 'HIP' : 1;
+
+          // TODO: Make a nicer color palette
+          if (donor.tissue=='HIP') { var color = "rgb(0,204,255)"} 
+          else if (tracktype=='AllDonors_MaxSingleCells') {
+            var color="rgb(0,0,255)"
+          } else if (tracktype=='AllDonors_BulkSLAVseq') {
+            var color="rgb(255,100,0)"
+          } else {
+            var color="rgb(100,255,0)"
+          }
+          
+          var myTrack = {
+            'name': tracktype.replace('AllDonors_', '') + ' ' + donor.donor + ' ' + donor.tissue,
+            'url': donor[tracktype + '_path'],
+            'format': 'bigwig',
+            'type': 'wig',
+            'windowFunction': 'max',
+            'autoscale': autoscale,
+            'min': 0, 'max': 20,
+            'height': 20,
+            'minHeight': 5,
+            'color': color,
+            // donor.tissue == "HIP" ? "rgb(0,204,255)" : "rgb(0,0,255)",
+            // 'visible': false,
+            'order': 10 + (donor.index / 100) + (modality2num[tracktype] / 1000) + (tissuenum / 10000),
+            'roi': [{
+              name: donor.donor + ' non-reference germline L1 insertions (KNRGL called by Megane)',
+              url: "./rois/KNRGL_" + donor.donor + "_megane.bed",
+              color: "rgba(255,94,1,0.90)"
+            }],
+            'overflowColor': "rgb(100,100,100)"
+          };
+          myTracks.push(myTrack)
+        }
       }
       browser.loadTrackList(myTracks)
     }
@@ -571,14 +593,36 @@
           'viewAsPairs': false,
           'visibilityWindow': 3000000,
           'maxTLEN': 10000,
-          'order': 4
+          'order': 6
         };
-        // browser.loadTrack(myTrack)
         myTracks.push(myTrack)
       }
 
       // Add BulkWGS and BulkSLAVseq bams
-
+      var tracks = document.getElementById('select_cells_bam').selectedOptions;
+      var donor = document.getElementById('select_donor').value;
+      for (const track of tracks) {
+        if (track.value.includes('Bulk')) {
+          var tracktype = track.value.split('_')[1]
+          var myTrack = {
+            'name': track.text,
+            'url': 'data/bam/' + tracktype + '/' + donor + '.DLPFC.' + tracktype + '.bam',
+            'indexURL': 'data/bam/' + tracktype + '/' + donor + '.DLPFC.' + tracktype + '.bam.bai',
+            'format': 'bam',
+            'type': 'alignment',
+            'height': 100,
+            'minHeight': 10,
+            'showSoftClips': true,
+            'showCoverage': false,
+            'displayMode': 'squished',
+            'viewAsPairs': false,
+            'visibilityWindow': 3000000,
+            'maxTLEN': 10000,
+            'order': 5.5
+          };
+          myTracks.push(myTrack)
+        }
+      }
 
       browser.loadTrackList(myTracks)
     }
@@ -615,12 +659,13 @@
       // Add pileup tracks (bigwig)
       var selectedDonor = document.getElementById('select_donor').value;
       switch (selectedDonor) {
-        case 'AllDonors_MaxSingleCells':
-          allDonorsTracks();
+        case 'AllDonors_AllModalities':
+          pileupTracks(['AllDonors_MaxSingleCells','AllDonors_BulkWGS','AllDonors_BulkSLAVseq'])
           break;
+        case 'AllDonors_MaxSingleCells':
         case 'AllDonors_BulkSLAVseq':
         case 'AllDonors_BulkWGS':
-          pileupTracks();
+          pileupTracks([selectedDonor]);
           break;
         case 'Heatmap':
           allCellsHeatmapTrack();
@@ -660,6 +705,8 @@
     browser.on('trackorderchanged', function () {toggleROIs()});
 
     // Make some functions and variables accessible globally
+    browser.pileupTracks = pileupTracks;
+    browser.toggleAutoscale=toggleAutoscale;
     globalThis.browser = browser; // Makes the browser available in the console
 
     // I don't know why, but we have to use jQuery to set up events which can get triggered by "select all" and "deselect all"
