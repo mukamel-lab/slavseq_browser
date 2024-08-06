@@ -1,14 +1,14 @@
 #
 # Prepare data file for heatmap
 
-import pandas as pd 
+import pandas as pd
 from glob import glob
 from tqdm import tqdm
 import re,os
 from multiprocessing import Pool
 
 # files=glob('/mysqlpool/emukamel/SLAVSeq_SZ/allsamples/Merged_SingleCells/peak_coverage_q30/*.allcells_max_peaks.R1_disc.bed.gz')
-samples=pd.read_csv('data/slavseq_metadata.csv')
+samples=pd.read_csv('config/slavseq_metadata.csv')
 samples=samples[~samples['is_bulk']]
 
 # Use the full bam file
@@ -16,11 +16,11 @@ datadir='/mysqlpool/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bed_coverage_dono
 dfs=[]
 def loadsample(i, samples=samples):
   sample=samples.iloc[i]
-  bedfile=f'{datadir}/{sample["sample"]}.q30_R1_disc_bins1kb.bed.gz'
+  bedfile=f'{datadir}/{sample["sample"]}.q30_R1_disc_bins1kb_withZeros.bed.gz'
   assert os.path.exists(bedfile), f'File does not exists: {bedfile}'
   df=pd.read_csv(bedfile,sep='\t',
                 names=['Chromosome','Start','End','Segment_Mean'])
-  df['Sample']='D'+str(sample['donor'])+'_'+sample['tissue']+'_'+sample["sample"]
+  df['Sample']=str(sample['donor'])+'_'+sample['tissue']+'_'+sample["sample"]
   return df
 
 with Pool() as p:
@@ -38,8 +38,8 @@ os.system('bgzip -f data/allcells_q30_R1_disc_bins1kb.seg')
 os.system('tabix -b3 -e4 -s2 -S1 -f data/allcells_q30_R1_disc_bins1kb.seg.gz')
 
 # Make a filtered file with just the bins that have coverage≥5 reads
-os.system('zcat allcells_q30_R1_disc_bins1kb.seg.gz | awk '(NR==1)||($6>=5)'| bgzip > data/allcells_q30_R1_disc_bins1kb.coverage5.seg.gz')
-os.system('tabix -b3 -e4 -s2 -S1 -f data/allcells_q30_R1_disc_bins1kb.coverage5.seg.gz')
+#os.system('zcat allcells_q30_R1_disc_bins1kb.seg.gz | awk '(NR==1)||($6>=5)'| bgzip > data/allcells_q30_R1_disc_bins1kb.coverage5.seg.gz')
+#os.system('tabix -b3 -e4 -s2 -S1 -f data/allcells_q30_R1_disc_bins1kb.coverage5.seg.gz')
 
 ###########
 # Create sample table

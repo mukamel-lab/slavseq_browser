@@ -153,7 +153,7 @@
 
   <script type="module">
 
-    import igv from "./js/igv.esm.min.js"
+    import igv from "./js/igv.esm.EAM_mod.min.js"
     import {all_roi_tracks} from "./roi_tracks.js"
 
     // Add ROI tracks for each donor
@@ -437,7 +437,7 @@
 
       const modality2num = {'AllDonors_BulkWGS': 0, 'AllDonors_BulkSLAVseq': 1, 'AllDonors_MaxSingleCells': 2};
       var myTracks = [];
-      var autoscale=$('#toggleAutoscale_btn').prop('checked')
+      var autoscale = $('#toggleAutoscale_btn').prop('checked')
       for (const tracktype of tracktypes) {
         switch (tracktype) {
           case 'AllDonors_BulkWGS':
@@ -455,13 +455,13 @@
           var tissuenum = 0 ? donor.tissue == 'HIP' : 1;
 
           // TODO: Make a nicer color palette
-          if (donor.tissue=='HIP') { var color = "rgb(155, 209, 229)"} 
-          else if (tracktype=='AllDonors_MaxSingleCells') {
-            var color="rgb(106, 142, 174)"
-          } else if (tracktype=='AllDonors_BulkSLAVseq') {
-            var color="rgb(87, 167, 115)"
+          if (donor.tissue == 'HIP') {var color = "rgb(155, 209, 229)"}
+          else if (tracktype == 'AllDonors_MaxSingleCells') {
+            var color = "rgb(106, 142, 174)"
+          } else if (tracktype == 'AllDonors_BulkSLAVseq') {
+            var color = "rgb(87, 167, 115)"
           } else {
-            var color="rgb(21, 113, 69)"
+            var color = "rgb(21, 113, 69)"
           }
 
           var myTrack = {
@@ -522,16 +522,77 @@
       browser.loadTrackList(myTracks)
     }
 
+    const colorScale = {
+      low: 0, lowR: 255, lowG: 255, lowB: 255,
+      mid: 40, midR: 125, midG: 125, midB: 125,
+      high: 1000.0, highR: 255.0, highG: 10.0, highB: 10.0
+    }
+
+    // function GradientColorScale(scale) {
+
+    //   this.scale = scale
+    //   this.lowColor = "rgb(" + scale.lowR + "," + scale.lowG + "," + scale.lowB + ")"
+    //   this.highColor = "rgb(" + scale.highR + "," + scale.highG + "," + scale.highB + ")"
+    //   this.diff = scale.high - scale.low
+    // }
+
+
+    // GradientColorScale.prototype.getColor = function (value) {
+
+    //   var scale = this.scale, r, g, b, frac
+
+    //   if (value <= scale.low) return this.lowColor
+    //   else if (value >= scale.high) return this.highColor
+
+    //   frac = (value - scale.low) / this.diff
+    //   r = Math.floor(scale.lowR + frac * (scale.highR - scale.lowR))
+    //   g = Math.floor(scale.lowG + frac * (scale.highG - scale.lowG))
+    //   b = Math.floor(scale.lowB + frac * (scale.highB - scale.lowB))
+
+    //   return "rgb(" + r + "," + g + "," + b + ")"
+    // }
+
+    // function myColor(value) {
+
+    //   const lowColor= "rgb(" + colorScale.lowR + "," + colorScale.lowG + "," + colorScale.lowB + ")"
+    //   const highColor = "rgb(" + colorScale.highR + "," + colorScale.highG + "," + colorScale.highB + ")"
+
+    //   if (value <= colorScale.low) return lowColor
+    //   else if (value >= colorScale.high) return highColor
+
+    //   var frac,r,g,b
+    //   if (value < colorScale.mid) {
+    //     frac = (value - colorScale.low) / (colorScale.mid - colorScale.low)
+    //     r = Math.floor(colorScale.lowR + frac * (colorScale.midR - colorScale.lowR))
+    //     g = Math.floor(colorScale.lowG + frac * (colorScale.midG - colorScale.lowG))
+    //     b = Math.floor(colorScale.lowB + frac * (colorScale.midB - colorScale.lowB))
+    //   } else {
+    //     frac = (value - colorScale.mid) / (colorScale.high - colorScale.mid)
+    //     r = Math.floor(colorScale.midR + frac * (colorScale.highR - colorScale.midR))
+    //     g = Math.floor(colorScale.midG + frac * (colorScale.highG - colorScale.midG))
+    //     b = Math.floor(colorScale.midB + frac * (colorScale.highB - colorScale.midB))
+    //   }
+
+    //   return "rgb(" + r + "," + g + "," + b + ")"
+    // }
+
     function allCellsHeatmapTrack() {
       // Create a heatmap track showing all cells
+      // const myColor = new GradientColorScale(colorScale)
+
       browser.loadTrack({
         "name": "All cells - coverage around peaks",
-        "filename": "allcells_q30_R1_disc_bins1kb.seg.gz",
         "format": "seg",
+        "isLog": true,
         // "url": "./data/allcells_q30_R1_disc_bins1kb.coverage5.seg.gz", // Show only the bins with ≥5 reads
         // "indexURL": "./data/allcells_q30_R1_disc_bins1kb.coverage5.seg.gz.tbi",
-        "url": "./data/allcells_q30_R1_disc_bins1kb.seg.gz", // Show all reads
-        "indexURL": "./data/allcells_q30_R1_disc_bins1kb.seg.gz.tbi",
+         "filename": "allcells_q30_R1_disc_bins1kb.withZeros.seg.gz",
+         "url": "./data/allcells_q30_R1_disc_bins1kb.withZeros.seg.gz", // Show all reads
+         "indexURL": "./data/allcells_q30_R1_disc_bins1kb.withZeros.seg.gz.tbi",
+        //        "filename": "allcells_q30_R1_disc_bins1kb.seg.gz",
+        //        "url": "./data/allcells_q30_R1_disc_bins1kb.seg.gz", // Show all reads
+        //        "indexURL": "./data/allcells_q30_R1_disc_bins1kb.seg.gz.tbi",
+        // "filename": "foo.seg.gz", "url": "./data/foo.seg.gz", "indexURL": "./data/foo.seg.gz.tbi", // This is a smaller heatmap showing just one donor
         "indexed": true,
         "sourceType": "file",
         "type": "seg",
@@ -542,7 +603,10 @@
           "option": "ATTRIBUTE",
           "attribute": "order",
           "direction": "ASC"
-        }
+        },
+        "posColorScale": colorScale,
+        "negColorScale": colorScale,
+        // "color": myColor
       })
     }
 
@@ -660,7 +724,7 @@
       var selectedDonor = document.getElementById('select_donor').value;
       switch (selectedDonor) {
         case 'AllDonors_AllModalities':
-          pileupTracks(['AllDonors_MaxSingleCells','AllDonors_BulkWGS','AllDonors_BulkSLAVseq'])
+          pileupTracks(['AllDonors_MaxSingleCells', 'AllDonors_BulkWGS', 'AllDonors_BulkSLAVseq'])
           break;
         case 'AllDonors_MaxSingleCells':
         case 'AllDonors_BulkSLAVseq':
@@ -706,7 +770,7 @@
 
     // Make some functions and variables accessible globally
     browser.pileupTracks = pileupTracks;
-    browser.toggleAutoscale=toggleAutoscale;
+    browser.toggleAutoscale = toggleAutoscale;
     globalThis.browser = browser; // Makes the browser available in the console
 
     // I don't know why, but we have to use jQuery to set up events which can get triggered by "select all" and "deselect all"
