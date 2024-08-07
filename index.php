@@ -3,7 +3,7 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-1T4FCX4DFN"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag() {dataLayer.push(arguments);}
+    function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
 
     gtag('config', 'G-1T4FCX4DFN');
@@ -90,7 +90,7 @@
             <option value="AllDonors_AllModalities"> All donors - Bulk+SingleCells</option>
             <option value="AllDonors_MaxSingleCells" selected> All donors - Max of single cell SLAV-seq</option>
             <option value="AllDonors_BulkSLAVseq"> All donors - Bulk SLAV-seq</option>
-            <option value="AllDonors_BulkWGS"> All donors - Bulk 30X WGS</option>
+            <option value="AllDonors_BulkWGS"> All donors - Bulk WGS</option>
           </select>
         </li>
 
@@ -100,6 +100,7 @@
             data-header="Tissues to show" data-actions-box="true">
             <option value="HIP"> Hippocampus</option>
             <option value="DLPFC"> Dorsolateral pre-frontal cortex</option>
+            <option value="CBN"> Cerebellum</option>
           </select>
         </li>
 
@@ -154,7 +155,7 @@
   <script type="module">
 
     import igv from "./js/igv.esm.EAM_mod.min.js"
-    import {all_roi_tracks} from "./roi_tracks.js"
+    import { all_roi_tracks } from "./roi_tracks.js"
 
     // Add ROI tracks for each donor
     const donors = donors_tissues.filter((d) => d.tissue == "HIP")
@@ -298,7 +299,7 @@
     function toggleAutoscale() {
       if ($('#toggleAutoscale_btn').prop('checked')) {
         for (var track of browser.tracks) {
-          if ('dataRange' in track) {track.autoscale = true}
+          if ('dataRange' in track) { track.autoscale = true }
         }
         browser.updateViews();
       } else {
@@ -373,7 +374,7 @@
     function updateROIs() {
       // Remove the currently active ROI tracks
       var activeROITracks = browser.tracks.filter((x) => (x.config) ? x.config.tracktype == 'ROI' : 0)
-      for (const roiTrack of activeROITracks) {browser.removeTrack(roiTrack)}
+      for (const roiTrack of activeROITracks) { browser.removeTrack(roiTrack) }
       browser.clearROIs();
       var rois = $('#select_rois').val()
       var roi_tracks = all_roi_tracks.filter((x) => rois.includes(x.name))
@@ -397,6 +398,7 @@
     ////////////////////
     // Create tracks
     function updateCells() {
+      // After the user selects a single donor to display, update the list of cells and the available bulk tracks
       var donor = document.getElementById('select_donor').value;
       var tissues = $('#select_tissue').val();
       var tissuenum = 0 ? donor.tissue == 'HIP' : 1;
@@ -407,11 +409,15 @@
 
         if (selector == 'bam') {
           // Add Bulk BAM tracks
-          var option = document.createElement("option");
-          option.selected = false;
-          option.text = donor + ' Bulk WGS';
-          option.value = donor + '_BulkWGS';
-          document.getElementById('select_cells_bam').add(option)
+          for (const tissue of ['DLPFC', 'HIP', 'CBN']) {
+            if (donors_tissues.filter((x) => (x.tissue == tissue) & (x.donor = donor)).length > 0) {
+              var option = document.createElement("option");
+              option.selected = false;
+              option.text = donor + ' Bulk WGS ' + tissue;
+              option.value = donor + '_BulkWGS_' + tissue;
+              document.getElementById('select_cells_bam').add(option)
+            }
+          }
 
           var option = document.createElement("option");
           option.selected = false;
@@ -435,7 +441,9 @@
       // Load all tracks of selected type
       // var tracktype = document.getElementById('select_donor').value;
 
-      const modality2num = {'AllDonors_BulkWGS': 0, 'AllDonors_BulkSLAVseq': 1, 'AllDonors_MaxSingleCells': 2};
+      console.log(donors_tissues)
+      const modality2num = { 'AllDonors_BulkWGS': 0, 'AllDonors_BulkSLAVseq': 1, 'AllDonors_MaxSingleCells': 2 };
+      const tissue2num = { 'DLPFC': 0, 'HIP': 1, 'CBN': 2 };
       var myTracks = [];
       var autoscale = $('#toggleAutoscale_btn').prop('checked')
       for (const tracktype of tracktypes) {
@@ -449,13 +457,14 @@
             break
         }
         var tissues = $('#select_tissue').val();
-        var usetracks = donors_tissues.filter((x) => tissues.includes(x.tissue))
+        var useTracks = donors_tissues.filter((x) => tissues.includes(x.tissue))
+        console.log(useTracks)
 
-        for (const donor of usetracks) {
-          var tissuenum = 0 ? donor.tissue == 'HIP' : 1;
+        for (const donor of useTracks) {
+          var tissuenum = tissue2num[donor.tissue]
 
           // TODO: Make a nicer color palette
-          if (donor.tissue == 'HIP') {var color = "rgb(155, 209, 229)"}
+          if (donor.tissue == 'HIP') { var color = "rgb(155, 209, 229)" }
           else if (tracktype == 'AllDonors_MaxSingleCells') {
             var color = "rgb(106, 142, 174)"
           } else if (tracktype == 'AllDonors_BulkSLAVseq') {
@@ -528,54 +537,6 @@
       high: 1000.0, highR: 255.0, highG: 10.0, highB: 10.0
     }
 
-    // function GradientColorScale(scale) {
-
-    //   this.scale = scale
-    //   this.lowColor = "rgb(" + scale.lowR + "," + scale.lowG + "," + scale.lowB + ")"
-    //   this.highColor = "rgb(" + scale.highR + "," + scale.highG + "," + scale.highB + ")"
-    //   this.diff = scale.high - scale.low
-    // }
-
-
-    // GradientColorScale.prototype.getColor = function (value) {
-
-    //   var scale = this.scale, r, g, b, frac
-
-    //   if (value <= scale.low) return this.lowColor
-    //   else if (value >= scale.high) return this.highColor
-
-    //   frac = (value - scale.low) / this.diff
-    //   r = Math.floor(scale.lowR + frac * (scale.highR - scale.lowR))
-    //   g = Math.floor(scale.lowG + frac * (scale.highG - scale.lowG))
-    //   b = Math.floor(scale.lowB + frac * (scale.highB - scale.lowB))
-
-    //   return "rgb(" + r + "," + g + "," + b + ")"
-    // }
-
-    // function myColor(value) {
-
-    //   const lowColor= "rgb(" + colorScale.lowR + "," + colorScale.lowG + "," + colorScale.lowB + ")"
-    //   const highColor = "rgb(" + colorScale.highR + "," + colorScale.highG + "," + colorScale.highB + ")"
-
-    //   if (value <= colorScale.low) return lowColor
-    //   else if (value >= colorScale.high) return highColor
-
-    //   var frac,r,g,b
-    //   if (value < colorScale.mid) {
-    //     frac = (value - colorScale.low) / (colorScale.mid - colorScale.low)
-    //     r = Math.floor(colorScale.lowR + frac * (colorScale.midR - colorScale.lowR))
-    //     g = Math.floor(colorScale.lowG + frac * (colorScale.midG - colorScale.lowG))
-    //     b = Math.floor(colorScale.lowB + frac * (colorScale.midB - colorScale.lowB))
-    //   } else {
-    //     frac = (value - colorScale.mid) / (colorScale.high - colorScale.mid)
-    //     r = Math.floor(colorScale.midR + frac * (colorScale.highR - colorScale.midR))
-    //     g = Math.floor(colorScale.midG + frac * (colorScale.highG - colorScale.midG))
-    //     b = Math.floor(colorScale.midB + frac * (colorScale.highB - colorScale.midB))
-    //   }
-
-    //   return "rgb(" + r + "," + g + "," + b + ")"
-    // }
-
     function allCellsHeatmapTrack() {
       // Create a heatmap track showing all cells
       // const myColor = new GradientColorScale(colorScale)
@@ -586,9 +547,9 @@
         "isLog": true,
         // "url": "./data/allcells_q30_R1_disc_bins1kb.coverage5.seg.gz", // Show only the bins with ≥5 reads
         // "indexURL": "./data/allcells_q30_R1_disc_bins1kb.coverage5.seg.gz.tbi",
-         "filename": "allcells_q30_R1_disc_bins1kb.withZeros.seg.gz",
-         "url": "./data/allcells_q30_R1_disc_bins1kb.withZeros.seg.gz", // Show all reads
-         "indexURL": "./data/allcells_q30_R1_disc_bins1kb.withZeros.seg.gz.tbi",
+        "filename": "allcells_q30_R1_disc_bins1kb.withZeros.seg.gz",
+        "url": "./data/allcells_q30_R1_disc_bins1kb.withZeros.seg.gz", // Show all reads
+        "indexURL": "./data/allcells_q30_R1_disc_bins1kb.withZeros.seg.gz.tbi",
         //        "filename": "allcells_q30_R1_disc_bins1kb.seg.gz",
         //        "url": "./data/allcells_q30_R1_disc_bins1kb.seg.gz", // Show all reads
         //        "indexURL": "./data/allcells_q30_R1_disc_bins1kb.seg.gz.tbi",
@@ -748,29 +709,31 @@
     await updateTracks();
     await updateCells();
     await initializeROIs();
-    if (!window.location.search.includes('sessionURL')) {await updateROIs();}
+    if (!window.location.search.includes('sessionURL')) { await updateROIs(); }
     // await browser.roiManager.toggleROIs();
 
     document.getElementById('getLinkButton').addEventListener('click', (event) => {
       getLink();
       copyLink();
     })
-    document.getElementById('screenshotButton').addEventListener('click', () => {myScreenshot();})
-    document.getElementById('select_donor').addEventListener('change', () => {updateCells(); updateTracks(); updateROIs(); updateIGV();})
+    document.getElementById('screenshotButton').addEventListener('click', () => { myScreenshot(); })
+    document.getElementById('select_donor').addEventListener('change', () => { updateCells(); updateTracks(); updateROIs(); updateIGV(); })
     // document.getElementById('select_cells_pileup').addEventListener('change', () => {updateTracks(); updateIGV();})
     // document.getElementById('select_cells_bam').addEventListener('change', () => {updateTracks(); updateIGV();})
-    document.getElementById('pileup_height').addEventListener('change', () => {updateIGV();})
-    document.getElementById('btn_plus').addEventListener('click', () => {trackHeight('+');})
-    document.getElementById('btn_minus').addEventListener('click', () => {trackHeight('-');})
+    document.getElementById('pileup_height').addEventListener('change', () => { updateIGV(); })
+    document.getElementById('btn_plus').addEventListener('click', () => { trackHeight('+'); })
+    document.getElementById('btn_minus').addEventListener('click', () => { trackHeight('-'); })
     browser.on('locuschange', function () {
       toggleROIs();
       // sortSegTracks(); // This may be too slow and compromise performance?
     });
-    browser.on('trackorderchanged', function () {toggleROIs()});
+    browser.on('trackorderchanged', function () { toggleROIs() });
 
     // Make some functions and variables accessible globally
-    browser.pileupTracks = pileupTracks;
-    browser.toggleAutoscale = toggleAutoscale;
+    // browser.pileupTracks = pileupTracks;
+    // browser.toggleAutoscale = toggleAutoscale;
+    browser.donors_tissues = donors_tissues;
+
     globalThis.browser = browser; // Makes the browser available in the console
 
     // I don't know why, but we have to use jQuery to set up events which can get triggered by "select all" and "deselect all"
