@@ -1,11 +1,14 @@
 import pandas as pd
 import os
 
-df = pd.read_csv("./config/donors_IGVconfig.csv", index_col=0)
+basedir = "/mysqlpool/emukamel/SLAVSeq_SZ/slavseq_browser"
+
+df = pd.read_csv(f"{basedir}/config/donors_IGVconfig.csv", 
+                 index_col=0
+                )
 df=df.iloc[:,:13]
 df=df.loc[df['tissue']!='CBN']
 
-basedir = "/mysqlpool/emukamel/SLAVSeq_SZ/slavseq_browser"
 df_cbn=[]
 for i, dfi in df.iterrows():
   donor_num = dfi.donor[1:]
@@ -19,7 +22,7 @@ for i, dfi in df.iterrows():
   for region in ["DLPFC", "HIP"]:
     bulk_WGS_path = f"data/AllDonors_BulkWGS/D{donor_num:02}.{region}.BulkWGS_disc_q30.bigwig"
     if os.path.exists(f"{basedir}/{bulk_WGS_path}") and (dfi.tissue == region):
-        print(f"Found pileup for BulkWGS D{donor_num} {region}")
+        print(f"Found pileup for BulkWGS D{donor_num} {region}: {bulk_WGS_path}")
         df.loc[i, f"AllDonors_BulkWGS_path"] = bulk_WGS_path
     else:
         df.loc[i, f"AllDonors_BulkWGS_path"] = ""
@@ -34,6 +37,7 @@ for i, dfi in df.iterrows():
     df_cbn.append(df_cbnu)
 
 df_cbn=pd.DataFrame(df_cbn)
-df=pd.concat((df,df_cbn))      
+df=pd.concat((df,df_cbn))
+df=df.reset_index()
 
-df.to_csv("./config/donors_IGVconfig.csv",index=False)
+df.to_csv(f"{basedir}/config/donors_IGVconfig.csv",index=False)

@@ -339,7 +339,7 @@
       } else if (donor.startsWith('AllDonors_Bulk')) {
         document.getElementById('select_cells_li').style.display = 'none';
         document.getElementById('select_bams_li').style.display = 'none';
-        document.getElementById('select_tissue_li').style.display = 'none';
+        document.getElementById('select_tissue_li').style.display = 'block';
       } else if (donor == 'Heatmap') {
         document.getElementById('select_cells_li').style.display = 'none';
         document.getElementById('select_bams_li').style.display = 'none';
@@ -410,7 +410,7 @@
         if (selector == 'bam') {
           // Add Bulk BAM tracks
           for (const tissue of ['DLPFC', 'HIP', 'CBN']) {
-            if (donors_tissues.filter((x) => (x.tissue == tissue) & (x.donor = donor)).length > 0) {
+            if (donors_tissues.filter((x) => (x.tissue == tissue) & (x.donor == donor)).length > 0) {
               var option = document.createElement("option");
               option.selected = false;
               option.text = donor + ' Bulk WGS ' + tissue;
@@ -437,18 +437,16 @@
       $('.selectpicker').selectpicker('refresh');
     }
 
-    export function pileupTracks(tracktypes) {
+    function pileupTracks(tracktypes) {
       // Load all tracks of selected type
       // var tracktype = document.getElementById('select_donor').value;
 
-      console.log(donors_tissues)
       const modality2num = { 'AllDonors_BulkWGS': 0, 'AllDonors_BulkSLAVseq': 1, 'AllDonors_MaxSingleCells': 2 };
       const tissue2num = { 'DLPFC': 0, 'HIP': 1, 'CBN': 2 };
       var myTracks = [];
       var autoscale = $('#toggleAutoscale_btn').prop('checked')
       for (const tracktype of tracktypes) {
         switch (tracktype) {
-          case 'AllDonors_BulkWGS':
           case 'AllDonors_BulkSLAVseq':
             for (var opt of document.getElementById('select_tissue').options) {
               opt.selected = opt.value == 'DLPFC';
@@ -458,20 +456,12 @@
         }
         var tissues = $('#select_tissue').val();
         var useTracks = donors_tissues.filter((x) => tissues.includes(x.tissue))
-        console.log(useTracks)
+        if (tracktypes.includes('AllDonors_BulkWGS')) {
+          useTracks = useTracks.filter((x) => x.AllDonors_BulkWGS_path.length > 0)
+        }
 
         for (const donor of useTracks) {
           var tissuenum = tissue2num[donor.tissue]
-
-          // TODO: Make a nicer color palette
-          if (donor.tissue == 'HIP') { var color = "rgb(155, 209, 229)" }
-          else if (tracktype == 'AllDonors_MaxSingleCells') {
-            var color = "rgb(106, 142, 174)"
-          } else if (tracktype == 'AllDonors_BulkSLAVseq') {
-            var color = "rgb(87, 167, 115)"
-          } else {
-            var color = "rgb(21, 113, 69)"
-          }
 
           var myTrack = {
             'name': tracktype.replace('AllDonors_', '') + ' ' + donor.donor + ' ' + donor.tissue,
@@ -483,9 +473,7 @@
             'min': 0, 'max': 20,
             'height': 20,
             'minHeight': 5,
-            'color': color,
-            // donor.tissue == "HIP" ? "rgb(0,204,255)" : "rgb(0,0,255)",
-            // 'visible': false,
+            'color': donor.color,
             'order': 10 + (donor.index / 100) + (modality2num[tracktype] / 1000) + (tissuenum / 10000),
             'roi': [{
               name: donor.donor + ' non-reference germline L1 insertions (KNRGL called by Megane)',
@@ -496,37 +484,6 @@
           };
           myTracks.push(myTrack)
         }
-      }
-      browser.loadTrackList(myTracks)
-    }
-
-    function allDonorsTracks() {
-      // Create a pileup track for each donor/tissue
-      var myTracks = []
-      var tissues = $('#select_tissue').val();
-      for (const donor of donors_tissues.filter((x) => tissues.includes(x.tissue))) {
-        var tissuenum = 0 ? donor.tissue == 'HIP' : 1;
-        var myTrack = {
-          'name': donor.donor + ' ' + donor.tissue,
-          'url': donor.AllDonors_MaxSingleCells_path,
-          'format': 'bigwig',
-          'type': 'wig',
-          'windowFunction': 'max',
-          'autoscale': false,
-          'min': 0, 'max': 20,
-          'height': 20,
-          'minHeight': 5,
-          'color': donor.tissue == "HIP" ? "rgb(0,204,255)" : "rgb(0,0,255)",
-          // 'visible': false,
-          'order': 10 + (donor.index / 100) + (tissuenum / 1000),
-          'roi': [{
-            name: donor.donor + ' non-reference germline L1 insertions (KNRGL called by Megane)',
-            url: "./rois/KNRGL_" + donor.donor + "_megane.bed",
-            color: "rgba(255,94,1,0.90)"
-          }],
-          'overflowColor': "rgb(100,100,100)"
-        };
-        myTracks.push(myTrack)
       }
       browser.loadTrackList(myTracks)
     }
@@ -754,7 +711,6 @@
         updateIGV();
       })
       $('#select_rois').on('change', function () {
-        console.log('changed bs select ROIs');
         updateROIs();
         toggleROIs();
       });
