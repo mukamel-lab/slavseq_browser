@@ -12,7 +12,7 @@ df=df.loc[df['tissue']!='CBN']
 df_cbn=[]
 for i, dfi in df.iterrows():
   donor_num = dfi.donor[1:]
-  bulk_slavseq_path = f"data/AllDonors_BulkSLAVseq/gDNA_usd{donor_num}.tagged.sorted.R1_discordant.q30.sorted.bigwig"
+  bulk_slavseq_path = f"data/bigwig/BulkSLAVseq/gDNA_usd{donor_num}.tagged.sorted.R1_discordant.q30.sorted.bigwig"
   if os.path.exists(f"{basedir}/{bulk_slavseq_path}") and (dfi.tissue == "DLPFC"):
     print(f"Found pileup for BulkSLAVseq D{donor_num}")
     df.loc[i, "AllDonors_BulkSLAVseq_path"] = bulk_slavseq_path
@@ -20,14 +20,15 @@ for i, dfi in df.iterrows():
     df.loc[i, "AllDonors_BulkSLAVseq_path"] = ""
   
   for region in ["DLPFC", "HIP"]:
-    bulk_WGS_path = f"data/AllDonors_BulkWGS/D{donor_num:02}.{region}.BulkWGS_disc_q30.bigwig"
+    bulk_WGS_path = f"data/bigwig/BulkWGS/D{donor_num:02}.{region}.BulkWGS_disc_q30.bigwig"
     if os.path.exists(f"{basedir}/{bulk_WGS_path}") and (dfi.tissue == region):
         print(f"Found pileup for BulkWGS D{donor_num} {region}: {bulk_WGS_path}")
         df.loc[i, f"AllDonors_BulkWGS_path"] = bulk_WGS_path
+        break
     else:
         df.loc[i, f"AllDonors_BulkWGS_path"] = ""
   region='CBN'  
-  bulk_WGS_path = f"data/AllDonors_BulkWGS/D{donor_num:02}.{region}.BulkWGS_disc_q30.bigwig"
+  bulk_WGS_path = f"data/bigwig/BulkWGS/D{donor_num:02}.{region}.BulkWGS_disc_q30.bigwig"
   if (dfi.tissue=='DLPFC') and os.path.exists(f"{basedir}/{bulk_WGS_path}"):
     print(f"Found pileup for BulkWGS D{donor_num} {region}")
     df_cbnu=dfi.copy()

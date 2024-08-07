@@ -29,6 +29,11 @@
       display: none;
     }
 
+    .dropdown-menu {
+      max-height: 400px;
+      overflow-y: scroll;
+    }
+
     .btn {
       /* padding: 2px 4px; */
       font-size: 10pt;
@@ -66,6 +71,24 @@
 
 <body id="top">
   <nav class="navbar navbar-default" style="margin:0;">
+    <select id="foo" class="selectpicker" data-size="3">
+      <option value="Heatmap"> All cells (heatmap)</option>
+      <option value="Heatmap"> All cells (heatmap)</option>
+      <option value="Heatmap"> All cells (heatmap)</option>
+      <option value="Heatmap"> All cells (heatmap)</option>
+      <option value="Heatmap"> All cells (heatmap)</option>
+      <option value="Heatmap"> All cells (heatmap)</option>
+      <option value="Heatmap"> All cells (heatmap)</option>
+      <option value="Heatmap"> All cells (heatmap)</option>
+      <option value="Heatmap"> All cells (heatmap)</option>
+      <option value="Heatmap"> All cells (heatmap)</option>
+      <option value="Heatmap"> All cells (heatmap)</option>
+      <option value="Heatmap"> All cells (heatmap)</option>
+    </select>
+  </nav>
+  <nav class="navbar navbar-default" style="margin:0;">
+
+
     <div class="container-fluid">
       <ul class="nav navbar-nav">
         <!-- <li class="nav-item">
@@ -107,7 +130,7 @@
         <li class="nav-item" id="select_cells_li" style="display:none; width:none;">
           <!-- <label>Pileup track height:</label> -->
           <input class="selectpicker" id="pileup_height" value="20" style="width:50px; display:none;">
-          <select id="select_cells_pileup" class="selectpicker" multiple data-width="100%" data-title="Cell pileups"
+          <select id="select_cells_pileup" class="selectpicker" multiple data-width="100%" data-title="Pileups"
             title="Cell pileups" data-toggle="tooltip" data-placement="top" data-live-search="true"
             data-header="Cells to show" data-actions-box="true" data-selected-text-format="static">
             <option value="All" selected> All cells</option>
@@ -115,7 +138,7 @@
         </li>
         <li class="nav-item" id="select_bams_li" style="display:none; width:none;">
           <select id="select_cells_bam" class="selectpicker" multiple data-width="100%" data-live-search="true"
-            title="Cell BAMs" data-toggle="tooltip" data-placement="top" data-header="Cells to show"
+            title="Alignments (BAM)" data-toggle="tooltip" data-placement="top" data-header="Cells to show"
             data-actions-box="true" data-selected-text-format="static">
             <option value="All" selected> All cells</option>
           </select>
@@ -407,30 +430,33 @@
       for (const selector of ['pileup', 'bam']) {
         $("#select_cells_" + selector).empty();
 
-        if (selector == 'bam') {
-          // Add Bulk BAM tracks
+        // if (selector == 'bam') {
+        // Add Bulk BAM tracks
+        for (const modality of ['WGS', 'SLAVseq']) {
           for (const tissue of ['DLPFC', 'HIP', 'CBN']) {
-            if (donors_tissues.filter((x) => (x.tissue == tissue) & (x.donor == donor)).length > 0) {
+            if (donors_tissues.filter((x) => (x.tissue == tissue) & (x.donor == donor) & (x['AllDonors_Bulk' + modality + '_path'].length > 0)).length > 0) {
               var option = document.createElement("option");
               option.selected = false;
-              option.text = donor + ' Bulk WGS ' + tissue;
-              option.value = donor + '_BulkWGS_' + tissue;
-              document.getElementById('select_cells_bam').add(option)
+              option.text = donor + ' Bulk ' + modality + ' ' + tissue;
+              option.value = donor + '_Bulk' + modality + '_' + tissue;
+              document.getElementById('select_cells_' + selector).add(option)
             }
-          }
 
-          var option = document.createElement("option");
-          option.selected = false;
-          option.text = donor + ' Bulk SLAV-seq';
-          option.value = donor + '_BulkSLAVseq';
-          document.getElementById('select_cells_bam').add(option)
+            // if (donors_tissues.filter((x) => (x.tissue == tissue) & (x.donor == donor) & (x.AllDonors_BulkSLAVseq_path.length > 0)).length > 0) {
+            //   var option = document.createElement("option");
+            //   option.selected = false;
+            //   option.text = donor + ' Bulk SLAV-seq ' + tissue;
+            //   option.value = donor + '_BulkSLAVseq_' + tissue;
+            //   document.getElementById('select_cells_' + selector).add(option)
+            //   // }
+          }
         }
 
         for (const cell of cellsu) {
           var option = document.createElement("option");
           option.text = cell.donor + ' ' + cell.tissue + ': ' + cell.sample;
           option.value = cell.sample;
-          option.selected = selector == 'pileup';
+          option.selected = false;
           document.getElementById('select_cells_' + selector).add(option)
         }
       }
@@ -507,9 +533,6 @@
         "filename": "allcells_q30_R1_disc_bins1kb.withZeros.seg.gz",
         "url": "./data/allcells_q30_R1_disc_bins1kb.withZeros.seg.gz", // Show all reads
         "indexURL": "./data/allcells_q30_R1_disc_bins1kb.withZeros.seg.gz.tbi",
-        //        "filename": "allcells_q30_R1_disc_bins1kb.seg.gz",
-        //        "url": "./data/allcells_q30_R1_disc_bins1kb.seg.gz", // Show all reads
-        //        "indexURL": "./data/allcells_q30_R1_disc_bins1kb.seg.gz.tbi",
         // "filename": "foo.seg.gz", "url": "./data/foo.seg.gz", "indexURL": "./data/foo.seg.gz.tbi", // This is a smaller heatmap showing just one donor
         "indexed": true,
         "sourceType": "file",
@@ -536,7 +559,7 @@
       for (const cell_info of cells_info) {
         var myTrack = {
           'name': cell_info.donor + ' ' + cell_info.tissue + ':' + cell_info.sample,
-          'url': 'https://brainome.ucsd.edu/emukamel/SLAVSeq_SZ/allsamples/SingleCells/pileups_q30_bothstrands/' + cell_info.sample + '.tagged.sorted.R1_discordant.q30.sorted.bigwig',
+          'url': 'data/bigwig/SingleCell_pileups_q30_bothstrands/' + cell_info.sample + '.tagged.sorted.R1_discordant.q30.sorted.bigwig',
           'format': 'bigwig',
           'type': 'wig',
           'windowFunction': 'max',
@@ -551,6 +574,38 @@
         // browser.loadTrack(myTrack)
         myTracks.push(myTrack)
       }
+
+      // Add BulkWGS and BulkSLAVseq bams
+      var tracks = document.getElementById('select_cells_pileup').selectedOptions;
+      var donor = document.getElementById('select_donor').value;
+      const tissue2num = { 'DLPFC': 0, 'HIP': 1, 'CBN': 2 };
+      for (const track of tracks) {
+        if (track.value.includes('Bulk')) {
+          var tracktype = track.value.split('_')[1]
+          tracktype = tracktype.replace('AllDonors_', '')
+          var tissue = track.value.split('_')[2]
+          var myDonorTissue = donors_tissues.filter((x) => (x.donor == donor) & (x.tissue == tissue) & (x['AllDonors_' + tracktype + '_path'].length > 0))
+          console.log(myDonorTissue)
+          if (myDonorTissue.length == 1) {
+
+            console.log('url: ' + myDonorTissue[0]['AllDonors_' + tracktype + '_path'])
+            var myTrack = {
+              'name': track.text,
+              'url': myDonorTissue[0]['AllDonors_' + tracktype + '_path'],
+              'format': 'bigwig',
+              'type': 'wig',
+              'order': 5.5 + tissue2num[tissue] / 10,
+              'color': myDonorTissue[0]['color'],
+              'autoscale': $('#toggleAutoscale_btn').prop('checked'),
+              'min': 0, 'max': 20,
+              'height': 20,
+              'minHeight': 5
+            };
+            myTracks.push(myTrack)
+          }
+        }
+      }
+
       browser.loadTrackList(myTracks)
     }
 
@@ -586,6 +641,7 @@
       for (const track of tracks) {
         if (track.value.includes('Bulk')) {
           var tracktype = track.value.split('_')[1]
+          tracktype = tracktype.replace('AllDonors_', '')
           var myTrack = {
             'name': track.text,
             'url': 'data/bam/' + tracktype + '/' + donor + '.DLPFC.' + tracktype + '.bam',
