@@ -482,10 +482,8 @@
         }
         var tissues = $('#select_tissue').val();
         var useTracks = donors_tissues.filter((x) => tissues.includes(x.tissue))
-        if (tracktypes.includes('AllDonors_BulkWGS')) {
-          useTracks = useTracks.filter((x) => x.AllDonors_BulkWGS_path.length > 0)
-        }
-
+        useTracks = useTracks.filter((x) => x[tracktype+'_path'].length > 0)
+        
         for (const donor of useTracks) {
           var tissuenum = tissue2num[donor.tissue]
 
@@ -579,6 +577,8 @@
       var tracks = document.getElementById('select_cells_pileup').selectedOptions;
       var donor = document.getElementById('select_donor').value;
       const tissue2num = { 'DLPFC': 0, 'HIP': 1, 'CBN': 2 };
+      const modality2num = { 'BulkWGS': 0, 'BulkSLAVseq': 1, 'MaxSingleCells': 2 };
+      const autoscale = $('#toggleAutoscale_btn').prop('checked');
       for (const track of tracks) {
         if (track.value.includes('Bulk')) {
           var tracktype = track.value.split('_')[1]
@@ -594,9 +594,9 @@
               'url': myDonorTissue[0]['AllDonors_' + tracktype + '_path'],
               'format': 'bigwig',
               'type': 'wig',
-              'order': 5.5 + tissue2num[tissue] / 10,
+              'order': 5.5 + modality2num[tracktype]/10 + tissue2num[tissue] / 100,
               'color': myDonorTissue[0]['color'],
-              'autoscale': $('#toggleAutoscale_btn').prop('checked'),
+              'autoscale': autoscale,
               'min': 0, 'max': 20,
               'height': 20,
               'minHeight': 5
