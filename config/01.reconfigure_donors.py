@@ -35,6 +35,7 @@ for i, dfi in df.iterrows():
     df_cbnu['tissue']='CBN'
     df_cbnu['AllDonors_BulkWGS_path'] = bulk_WGS_path
     df_cbnu['color']='rgb(0,100,255)'
+    df_cbnu['AllDonors_MaxSingleCells_path']=""
     df_cbn.append(df_cbnu)
 
 df_cbn=pd.DataFrame(df_cbn)
