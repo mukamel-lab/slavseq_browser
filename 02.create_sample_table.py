@@ -1,4 +1,3 @@
-
 import pandas as pd
 from glob import glob
 from tqdm import tqdm
@@ -9,22 +8,21 @@ from multiprocessing import Pool
 samples=pd.read_csv('config/slavseq_metadata.csv')
 samples=samples[~samples['is_bulk']]
 
-
 ###########
 # Create sample table
-samples=pd.read_csv('data/slavseq_metadata.csv')
+samples=pd.read_csv('config/slavseq_metadata.csv')
 samples=samples[~samples['is_bulk']]
 
-samples['Linking_id']='D'+samples['donor'].astype(str)+'_'+samples['tissue']+'_'+samples['sample']
-samples=samples.sort_values(['diagnosis','race','donor','tissue','age','diagnosis','race'])
-samples['donor']='D'+samples['donor'].astype(str)+' ('+samples['diagnosis']+' '+samples['race']+')'
+samples['Linking_id']=samples['donor'].astype(str)+'_'+samples['tissue']+'_'+samples['sample']
+samples=samples.sort_values(['diagnosis','race','donor','tissue','age'])
+samples['donor']=samples['donor'].astype(str)+' ('+samples['diagnosis']+' '+samples['race']+')'
 samples=samples.reset_index()
 samples['order']=samples.index
 
 import matplotlib as mpl,numpy as np
 from itertools import cycle
 
-with open('/mysqlpool/emukamel/SLAVSeq_SZ/IGV/data/sampletable.tsv','w') as f:
+with open('config/sampletable.tsv','w') as f:
   f.write('#sampleTable\n')
   samples[['Linking_id','donor','tissue','age','race','diagnosis','order']].to_csv(f,mode='a',
                                                                          sep='\t',index=False)
