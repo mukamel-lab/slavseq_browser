@@ -7,7 +7,7 @@ df = pd.read_csv(f"{basedir}/config/donors_IGVconfig.csv",
                  index_col=0
                 )
 df=df.iloc[:,:12]
-df=df.loc[df['tissue']!='CBN']
+df=df.loc[(df['tissue']!='CBN')&(df['tissue']!='DURA')]
 
 df_cbn=[]
 for i, dfi in df.iterrows():
@@ -24,13 +24,13 @@ for i, dfi in df.iterrows():
   else:
       df.loc[i, f"AllDonors_BulkWGS_pileup_path"] = ""
         
-  tissue='CBN'  
-  bulk_WGS_path = f"data/bigwig/BulkWGS/D{donor_num:02}.{tissue}.BulkWGS_disc_q30.bigwig"
+  tissue='DURA'  
+  bulk_WGS_path = f"data/bigwig/BulkWGS/D{donor_num}.{tissue}.BulkWGS_disc_q30.bigwig"
   if (dfi.tissue=='DLPFC') and os.path.exists(f"{basedir}/{bulk_WGS_path}"):
     df_cbnu=dfi.copy()
-    df_cbnu['tissue']='CBN'
+    df_cbnu['tissue']='DURA'
     df_cbnu['AllDonors_BulkWGS_pileup_path'] = bulk_WGS_path
-    df_cbnu['color']='rgb(0,100,255)'
+    df_cbnu['color']='rgb(100,100,100)'
     df_cbnu['AllDonors_MaxSingleCells_pileup_path']=""
     df_cbn.append(df_cbnu)
 

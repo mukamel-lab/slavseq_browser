@@ -71,14 +71,8 @@
 
 <body id="top">
   <nav class="navbar navbar-default" style="margin:0;">
-
-
     <div class="container-fluid">
       <ul class="nav navbar-nav">
-        <!-- <li class="nav-item">
-          <span class="glyphicon glyphicon-chevron-down" data-toggle="collapse" href="#topbar" title="Show/hide options"
-            style="line-height: inherit; font-size:18;"></span>
-        </li> -->
         <li class="nav-item">
           <button id="screenshotButton" class="btn btn-primary">
             <i class="fa fa-camera"></i> Screenshot</button>
@@ -107,7 +101,7 @@
             data-header="Tissues to show" data-actions-box="true">
             <option value="HIP"> Hippocampus</option>
             <option value="DLPFC"> Dorsolateral pre-frontal cortex</option>
-            <option value="CBN"> Cerebellum</option>
+            <option value="DURA"> Dura mater</option>
           </select>
         </li>
 
@@ -417,7 +411,7 @@
         // if (selector == 'bam') {
         // Add Bulk BAM tracks
         for (const modality of ['WGS', 'SLAVseq']) {
-          for (const tissue of ['DLPFC', 'HIP', 'CBN']) {
+          for (const tissue of ['DLPFC', 'HIP', 'DURA']) {
             if (donors_tissues.filter((x) => (x.tissue == tissue) & (x.donor == donor) & (x['AllDonors_Bulk' + modality + '_' + selector + '_path'].length > 0)).length > 0) {
               var option = document.createElement("option");
               option.selected = false;
@@ -444,7 +438,7 @@
       // var tracktype = document.getElementById('select_donor').value;
 
       const modality2num = { 'AllDonors_BulkWGS': 0, 'AllDonors_BulkSLAVseq': 1, 'AllDonors_MaxSingleCells': 2 };
-      const tissue2num = { 'DLPFC': 0, 'HIP': 1, 'CBN': 2 };
+      const tissue2num = { 'DLPFC': 0, 'HIP': 1, 'DURA': 2 };
       var myTracks = [];
       var autoscale = $('#toggleAutoscale_btn').prop('checked')
       for (const tracktype of tracktypes) {
@@ -458,14 +452,14 @@
         }
         var tissues = $('#select_tissue').val();
         var useTracks = donors_tissues.filter((x) => tissues.includes(x.tissue))
-        useTracks = useTracks.filter((x) => x[tracktype + '_path'].length > 0)
+        useTracks = useTracks.filter((x) => x[tracktype + '_pileup_path'].length > 0)
 
         for (const donor of useTracks) {
           var tissuenum = tissue2num[donor.tissue]
 
           var myTrack = {
             'name': tracktype.replace('AllDonors_', '') + ' ' + donor.donor + ' ' + donor.tissue,
-            'url': donor[tracktype + '_path'],
+            'url': donor[tracktype + '_pileup_path'],
             'format': 'bigwig',
             'type': 'wig',
             'windowFunction': 'max',
@@ -474,7 +468,7 @@
             'height': 20,
             'minHeight': 5,
             'color': donor.color,
-            'order': 10 + (donor.index / 100) + (modality2num[tracktype] / 1000) + (tissuenum / 10000),
+            'order': 10 + Number(donor.donor.slice(1)/100) + (modality2num[tracktype] / 1000) + (tissuenum / 10000),
             'roi': [{
               name: donor.donor + ' non-reference germline L1 insertions (KNRGL called by Megane)',
               url: "./rois/KNRGL_" + donor.donor + "_megane.bed",
@@ -488,15 +482,13 @@
       browser.loadTrackList(myTracks)
     }
 
-    const colorScale = {
-      low: 0, lowR: 255, lowG: 255, lowB: 255,
-      mid: 10, midR: 125, midG: 125, midB: 125,
-      high: 1000.0, highR: 255.0, highG: 10.0, highB: 10.0
-    }
-
     function allCellsHeatmapTrack() {
       // Create a heatmap track showing all cells
-      // const myColor = new GradientColorScale(colorScale)
+      const colorScale = {
+        low: 0, lowR: 255, lowG: 255, lowB: 255,
+        mid: 40, midR: 125, midG: 125, midB: 125,
+        high: 1000.0, highR: 255.0, highG: 10.0, highB: 10.0
+      }
 
       browser.loadTrack({
         "name": "All cells - coverage around peaks",
@@ -507,15 +499,16 @@
         // "url": "./data/allcells_q30_R1_disc_bins1kb.withZeros.seg.gz", // Show all reads
         // "indexURL": "./data/allcells_q30_R1_disc_bins1kb.withZeros.seg.gz.tbi",
 
-        "filename": "allcells_q30_R1_disc_bins1kb_coverage5.seg.gz",
-        "url": "./data/allcells_q30_R1_disc_bins1kb_coverage5.seg.gz", // Show all reads
-        "indexURL": "./data/allcells_q30_R1_disc_bins1kb_coverage5.seg.gz.tbi",
+        "filename": "allcells_q30_R1_disc_bins1kb_coverage0.seg.gz",
+        "url": "./data/allcells_q30_R1_disc_bins1kb_coverage0.seg.gz", // Show all reads
+        "indexURL": "./data/allcells_q30_R1_disc_bins1kb_coverage0.seg.gz.tbi",
 
         // "filename": "foo.seg.gz", "url": "./data/foo.seg.gz", "indexURL": "./data/foo.seg.gz.tbi", // This is a smaller heatmap showing just one donor
         "indexed": true,
         "sourceType": "file",
         "type": "seg",
-        "height": 1000,
+        "height": 800,
+        'maxHeight': 1600,
         "displayMode": "FILL",
         "order": 5,
         "sort": {
@@ -525,7 +518,6 @@
         },
         "posColorScale": colorScale,
         "negColorScale": colorScale,
-        // "color": myColor
       })
     }
 
@@ -556,7 +548,7 @@
       // Add BulkWGS and BulkSLAVseq bams
       var tracks = document.getElementById('select_cells_pileup').selectedOptions;
       var donor = document.getElementById('select_donor').value;
-      const tissue2num = { 'DLPFC': 0, 'HIP': 1, 'CBN': 2 };
+      const tissue2num = { 'DLPFC': 0, 'HIP': 1, 'DURA': 2 };
       const modality2num = { 'BulkWGS': 0, 'BulkSLAVseq': 1, 'MaxSingleCells': 2 };
       const autoscale = $('#toggleAutoscale_btn').prop('checked');
       for (const track of tracks) {
@@ -568,10 +560,10 @@
           console.log(myDonorTissue)
           if (myDonorTissue.length == 1) {
 
-            console.log('url: ' + myDonorTissue[0]['AllDonors_' + tracktype + '_path'])
+            console.log('url: ' + myDonorTissue[0]['AllDonors_' + tracktype + '_pileup_path'])
             var myTrack = {
               'name': track.text,
-              'url': myDonorTissue[0]['AllDonors_' + tracktype + '_path'],
+              'url': myDonorTissue[0]['AllDonors_' + tracktype + '_pileup_path'],
               'format': 'bigwig',
               'type': 'wig',
               'order': 5.5 + modality2num[tracktype] / 10 + tissue2num[tissue] / 100,
