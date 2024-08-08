@@ -71,22 +71,6 @@
 
 <body id="top">
   <nav class="navbar navbar-default" style="margin:0;">
-    <select id="foo" class="selectpicker" data-size="3">
-      <option value="Heatmap"> All cells (heatmap)</option>
-      <option value="Heatmap"> All cells (heatmap)</option>
-      <option value="Heatmap"> All cells (heatmap)</option>
-      <option value="Heatmap"> All cells (heatmap)</option>
-      <option value="Heatmap"> All cells (heatmap)</option>
-      <option value="Heatmap"> All cells (heatmap)</option>
-      <option value="Heatmap"> All cells (heatmap)</option>
-      <option value="Heatmap"> All cells (heatmap)</option>
-      <option value="Heatmap"> All cells (heatmap)</option>
-      <option value="Heatmap"> All cells (heatmap)</option>
-      <option value="Heatmap"> All cells (heatmap)</option>
-      <option value="Heatmap"> All cells (heatmap)</option>
-    </select>
-  </nav>
-  <nav class="navbar navbar-default" style="margin:0;">
 
 
     <div class="container-fluid">
@@ -110,7 +94,7 @@
             multiple data-max-options="1" data-width="100%" data-toggle="tooltip" data-placement="top"
             data-header="Donor(s) to show" data-live-search="true">
             <option value="Heatmap"> All cells (heatmap)</option>
-            <option value="AllDonors_AllModalities"> All donors - Bulk+SingleCells</option>
+            <option value="AllDonors_AllModalities"> All donors - Bulk+MaxSingleCells</option>
             <option value="AllDonors_MaxSingleCells" selected> All donors - Max of single cell SLAV-seq</option>
             <option value="AllDonors_BulkSLAVseq"> All donors - Bulk SLAV-seq</option>
             <option value="AllDonors_BulkWGS"> All donors - Bulk WGS</option>
@@ -434,21 +418,13 @@
         // Add Bulk BAM tracks
         for (const modality of ['WGS', 'SLAVseq']) {
           for (const tissue of ['DLPFC', 'HIP', 'CBN']) {
-            if (donors_tissues.filter((x) => (x.tissue == tissue) & (x.donor == donor) & (x['AllDonors_Bulk' + modality + '_path'].length > 0)).length > 0) {
+            if (donors_tissues.filter((x) => (x.tissue == tissue) & (x.donor == donor) & (x['AllDonors_Bulk' + modality + '_' + selector + '_path'].length > 0)).length > 0) {
               var option = document.createElement("option");
               option.selected = false;
               option.text = donor + ' Bulk ' + modality + ' ' + tissue;
               option.value = donor + '_Bulk' + modality + '_' + tissue;
               document.getElementById('select_cells_' + selector).add(option)
             }
-
-            // if (donors_tissues.filter((x) => (x.tissue == tissue) & (x.donor == donor) & (x.AllDonors_BulkSLAVseq_path.length > 0)).length > 0) {
-            //   var option = document.createElement("option");
-            //   option.selected = false;
-            //   option.text = donor + ' Bulk SLAV-seq ' + tissue;
-            //   option.value = donor + '_BulkSLAVseq_' + tissue;
-            //   document.getElementById('select_cells_' + selector).add(option)
-            //   // }
           }
         }
 
@@ -482,8 +458,8 @@
         }
         var tissues = $('#select_tissue').val();
         var useTracks = donors_tissues.filter((x) => tissues.includes(x.tissue))
-        useTracks = useTracks.filter((x) => x[tracktype+'_path'].length > 0)
-        
+        useTracks = useTracks.filter((x) => x[tracktype + '_path'].length > 0)
+
         for (const donor of useTracks) {
           var tissuenum = tissue2num[donor.tissue]
 
@@ -514,7 +490,7 @@
 
     const colorScale = {
       low: 0, lowR: 255, lowG: 255, lowB: 255,
-      mid: 40, midR: 125, midG: 125, midB: 125,
+      mid: 10, midR: 125, midG: 125, midB: 125,
       high: 1000.0, highR: 255.0, highG: 10.0, highB: 10.0
     }
 
@@ -526,11 +502,15 @@
         "name": "All cells - coverage around peaks",
         "format": "seg",
         "isLog": true,
-        // "url": "./data/allcells_q30_R1_disc_bins1kb.coverage5.seg.gz", // Show only the bins with ≥5 reads
-        // "indexURL": "./data/allcells_q30_R1_disc_bins1kb.coverage5.seg.gz.tbi",
-        "filename": "allcells_q30_R1_disc_bins1kb.withZeros.seg.gz",
-        "url": "./data/allcells_q30_R1_disc_bins1kb.withZeros.seg.gz", // Show all reads
-        "indexURL": "./data/allcells_q30_R1_disc_bins1kb.withZeros.seg.gz.tbi",
+
+        // "filename": "allcells_q30_R1_disc_bins1kb.withZeros.seg.gz",
+        // "url": "./data/allcells_q30_R1_disc_bins1kb.withZeros.seg.gz", // Show all reads
+        // "indexURL": "./data/allcells_q30_R1_disc_bins1kb.withZeros.seg.gz.tbi",
+
+        "filename": "allcells_q30_R1_disc_bins1kb_coverage5.seg.gz",
+        "url": "./data/allcells_q30_R1_disc_bins1kb_coverage5.seg.gz", // Show all reads
+        "indexURL": "./data/allcells_q30_R1_disc_bins1kb_coverage5.seg.gz.tbi",
+
         // "filename": "foo.seg.gz", "url": "./data/foo.seg.gz", "indexURL": "./data/foo.seg.gz.tbi", // This is a smaller heatmap showing just one donor
         "indexed": true,
         "sourceType": "file",
@@ -594,7 +574,7 @@
               'url': myDonorTissue[0]['AllDonors_' + tracktype + '_path'],
               'format': 'bigwig',
               'type': 'wig',
-              'order': 5.5 + modality2num[tracktype]/10 + tissue2num[tissue] / 100,
+              'order': 5.5 + modality2num[tracktype] / 10 + tissue2num[tissue] / 100,
               'color': myDonorTissue[0]['color'],
               'autoscale': autoscale,
               'min': 0, 'max': 20,
