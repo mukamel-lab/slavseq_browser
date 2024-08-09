@@ -433,55 +433,6 @@
       $('.selectpicker').selectpicker('refresh');
     }
 
-    function pileupTracks(tracktypes) {
-      // Load all tracks of selected type
-      // var tracktype = document.getElementById('select_donor').value;
-
-      const modality2num = { 'AllDonors_BulkWGS': 0, 'AllDonors_BulkSLAVseq': 1, 'AllDonors_MaxSingleCells': 2 };
-      const tissue2num = { 'DLPFC': 0, 'HIP': 1, 'DURA': 2 };
-      var myTracks = [];
-      var autoscale = $('#toggleAutoscale_btn').prop('checked')
-      for (const tracktype of tracktypes) {
-        switch (tracktype) {
-          case 'AllDonors_BulkSLAVseq':
-            for (var opt of document.getElementById('select_tissue').options) {
-              opt.selected = opt.value == 'DLPFC';
-            }
-            $('.selectpicker').selectpicker('refresh');
-            break
-        }
-        var tissues = $('#select_tissue').val();
-        var useTracks = donors_tissues.filter((x) => tissues.includes(x.tissue))
-        useTracks = useTracks.filter((x) => x[tracktype + '_pileup_path'].length > 0)
-
-        for (const donor of useTracks) {
-          var tissuenum = tissue2num[donor.tissue]
-
-          var myTrack = {
-            'name': tracktype.replace('AllDonors_', '') + ' ' + donor.donor + ' ' + donor.tissue,
-            'url': donor[tracktype + '_pileup_path'],
-            'format': 'bigwig',
-            'type': 'wig',
-            'windowFunction': 'max',
-            'autoscale': autoscale,
-            'min': 0, 'max': 20,
-            'height': 20,
-            'minHeight': 5,
-            'color': donor.color,
-            'order': 10 + Number(donor.donor.slice(1)/100) + (modality2num[tracktype] / 1000) + (tissuenum / 10000),
-            'roi': [{
-              name: donor.donor + ' non-reference germline L1 insertions (KNRGL called by Megane)',
-              url: "./rois/KNRGL_" + donor.donor + "_megane.bed",
-              color: "rgba(255,94,1,0.90)"
-            }],
-            'overflowColor': "rgb(100,100,100)"
-          };
-          myTracks.push(myTrack)
-        }
-      }
-      browser.loadTrackList(myTracks)
-    }
-
     function allCellsHeatmapTrack() {
       // Create a heatmap track showing all cells
       const colorScale = {
@@ -521,6 +472,55 @@
       })
     }
 
+    function pileupTracks(tracktypes) {
+      // Load all tracks of selected type
+      // var tracktype = document.getElementById('select_donor').value;
+
+      const modality2num = { 'AllDonors_BulkWGS': 0, 'AllDonors_BulkSLAVseq': 1, 'AllDonors_MaxSingleCells': 2 };
+      const tissue2num = { 'DLPFC': 0, 'HIP': 1, 'DURA': 2 };
+      var myTracks = [];
+      var autoscale = $('#toggleAutoscale_btn').prop('checked')
+      for (const tracktype of tracktypes) {
+        switch (tracktype) {
+          case 'AllDonors_BulkSLAVseq':
+            for (var opt of document.getElementById('select_tissue').options) {
+              opt.selected = opt.value == 'DLPFC';
+            }
+            $('.selectpicker').selectpicker('refresh');
+            break
+        }
+        var tissues = $('#select_tissue').val();
+        var useTracks = donors_tissues.filter((x) => tissues.includes(x.tissue))
+        useTracks = useTracks.filter((x) => x[tracktype + '_pileup_path'].length > 0)
+
+        for (const donor of useTracks) {
+          var tissuenum = tissue2num[donor.tissue]
+
+          var myTrack = {
+            'name': tracktype.replace('AllDonors_', '') + ' ' + donor.donor + ' ' + donor.tissue,
+            'url': donor[tracktype + '_pileup_path'],
+            'format': 'bigwig',
+            'type': 'wig',
+            'windowFunction': 'max',
+            'autoscale': autoscale,
+            'min': 0, 'max': 20,
+            'height': 20,
+            'minHeight': 5,
+            'color': donor.color,
+            'order': 10 + Number(donor.donor.slice(1) / 100) + (modality2num[tracktype] / 1000) + (tissuenum / 10000),
+            'roi': [{
+              name: donor.donor + ' non-reference germline L1 insertions (KNRGL called by Megane)',
+              url: "./rois/KNRGL_" + donor.donor + "_megane.bed",
+              color: "rgba(255,94,1,0.90)"
+            }],
+            'overflowColor': "rgb(100,100,100)"
+          };
+          myTracks.push(myTrack)
+        }
+      }
+      browser.loadTrackList(myTracks)
+    }
+
     function addBigWigTracks() {
       var cells_show = $("#select_cells_pileup").val();
       var cells_info = cells.filter((x) => (cells_show.includes(x.sample)) & (x.is_bulk == 'False'))
@@ -545,7 +545,7 @@
         myTracks.push(myTrack)
       }
 
-      // Add BulkWGS and BulkSLAVseq bams
+      // Add BulkWGS and BulkSLAVseq pileups
       var tracks = document.getElementById('select_cells_pileup').selectedOptions;
       var donor = document.getElementById('select_donor').value;
       const tissue2num = { 'DLPFC': 0, 'HIP': 1, 'DURA': 2 };
@@ -556,11 +556,10 @@
           var tracktype = track.value.split('_')[1]
           tracktype = tracktype.replace('AllDonors_', '')
           var tissue = track.value.split('_')[2]
-          var myDonorTissue = donors_tissues.filter((x) => (x.donor == donor) & (x.tissue == tissue) & (x['AllDonors_' + tracktype + '_path'].length > 0))
-          console.log(myDonorTissue)
+          console.log(tracktype)
+          console.log('AllDonors_' + tracktype + '_pileup_path')
+          var myDonorTissue = donors_tissues.filter((x) => (x.donor == donor) & (x.tissue == tissue) & (x['AllDonors_' + tracktype + '_pileup_path'].length > 0))
           if (myDonorTissue.length == 1) {
-
-            console.log('url: ' + myDonorTissue[0]['AllDonors_' + tracktype + '_pileup_path'])
             var myTrack = {
               'name': track.text,
               'url': myDonorTissue[0]['AllDonors_' + tracktype + '_pileup_path'],
@@ -597,6 +596,7 @@
           'minHeight': 10,
           'coverageColor': cell_info.tissue == "HIP" ? "rgb(0,204,255)" : "rgb(0,0,255)",
           'showSoftClips': true,
+          'showInsertions': false, 'showMismatches': false, 'showCoverage': true,
           'showCoverage': false,
           'displayMode': 'squished',
           'viewAsPairs': false,
@@ -614,21 +614,25 @@
         if (track.value.includes('Bulk')) {
           var tracktype = track.value.split('_')[1]
           tracktype = tracktype.replace('AllDonors_', '')
-          var myTrack = {
-            'name': track.text,
-            'url': 'data/bam/' + tracktype + '/' + donor + '.DLPFC.' + tracktype + '.bam',
-            'indexURL': 'data/bam/' + tracktype + '/' + donor + '.DLPFC.' + tracktype + '.bam.bai',
-            'format': 'bam',
-            'type': 'alignment',
-            'height': 100,
-            'minHeight': 10,
-            'showSoftClips': true,
-            'showCoverage': false,
-            'displayMode': 'squished',
-            'viewAsPairs': false,
-            'visibilityWindow': 3000000,
-            'maxTLEN': 10000,
-            'order': 5.5
+          var tissue = track.value.split('_')[2]
+          var myDonorTissue = donors_tissues.filter((x) => (x.donor == donor) & (x.tissue == tissue) & (x['AllDonors_' + tracktype + '_bam_path'].length > 0))
+          if (myDonorTissue.length == 1) {
+            var myTrack = {
+              'name': track.text,
+              'url': myDonorTissue[0]['AllDonors_' + tracktype + '_bam_path'],
+              'indexURL': myDonorTissue[0]['AllDonors_' + tracktype + '_bam_path'] + '.bai',
+              'format': 'bam',
+              'type': 'alignment',
+              'height': 150,
+              'minHeight': 10,
+              'showSoftClips': true,
+              'showInsertions': false, 'showMismatches': false, 'showCoverage': true,
+              'displayMode': 'squished',
+              'viewAsPairs': false,
+              'visibilityWindow': 3000000,
+              'maxTLEN': 10000,
+              'order': 5.5
+            }
           };
           myTracks.push(myTrack)
         }
