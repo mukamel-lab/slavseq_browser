@@ -706,7 +706,6 @@
     await updateCells();
     await initializeROIs();
     if (!window.location.search.includes('sessionURL')) { await updateROIs(); }
-    // await browser.roiManager.toggleROIs();
 
     document.getElementById('getLinkButton').addEventListener('click', (event) => {
       getLink();
@@ -714,8 +713,6 @@
     })
     document.getElementById('screenshotButton').addEventListener('click', () => { myScreenshot(); })
     document.getElementById('select_donor').addEventListener('change', () => { updateCells(); updateTracks(); updateROIs(); updateIGV(); })
-    // document.getElementById('select_cells_pileup').addEventListener('change', () => {updateTracks(); updateIGV();})
-    // document.getElementById('select_cells_bam').addEventListener('change', () => {updateTracks(); updateIGV();})
     document.getElementById('pileup_height').addEventListener('change', () => { updateIGV(); })
     document.getElementById('btn_plus').addEventListener('click', () => { trackHeight('+'); })
     document.getElementById('btn_minus').addEventListener('click', () => { trackHeight('-'); })
@@ -726,10 +723,6 @@
     browser.on('trackorderchanged', function () { toggleROIs() });
 
     // Make some functions and variables accessible globally
-    // browser.pileupTracks = pileupTracks;
-    // browser.toggleAutoscale = toggleAutoscale;
-    browser.donors_tissues = donors_tissues;
-
     globalThis.browser = browser; // Makes the browser available in the console
 
     // I don't know why, but we have to use jQuery to set up events which can get triggered by "select all" and "deselect all"
