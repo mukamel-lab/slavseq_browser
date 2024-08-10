@@ -87,7 +87,8 @@
           <select id="select_donor" class="selectpicker" data-selected-text-format="static" data-title="Donor(s)"
             multiple data-max-options="1" data-width="100%" data-toggle="tooltip" data-placement="top"
             data-header="Donor(s) to show" data-live-search="true">
-            <option value="Heatmap"> All cells (heatmap)</option>
+            <option value="SingleCells_Heatmap"> All cells (heatmap)</option>
+            <option value="Heatmap"> All bulk data (heatmap)</option>
             <option value="AllDonors_AllModalities"> All donors - Bulk+MaxSingleCells</option>
             <option value="AllDonors_MaxSingleCells" selected> All donors - Max of single cell SLAV-seq</option>
             <option value="AllDonors_BulkSLAVseq"> All donors - Bulk SLAV-seq</option>
@@ -341,7 +342,7 @@
         document.getElementById('select_cells_li').style.display = 'none';
         document.getElementById('select_bams_li').style.display = 'none';
         document.getElementById('select_tissue_li').style.display = 'block';
-      } else if (donor == 'Heatmap') {
+      } else if (donor == 'SingleCells_Heatmap') {
         document.getElementById('select_cells_li').style.display = 'none';
         document.getElementById('select_bams_li').style.display = 'none';
         document.getElementById('select_tissue_li').style.display = 'none';
@@ -409,7 +410,7 @@
         $("#select_cells_" + selector).empty();
 
         // if (selector == 'bam') {
-        // Add Bulk BAM tracks
+        // Add Bulk BAM/Pileup tracks
         for (const modality of ['WGS', 'SLAVseq']) {
           for (const tissue of ['DLPFC', 'HIP', 'DURA']) {
             if (donors_tissues.filter((x) => (x.tissue == tissue) & (x.donor == donor) & (x['AllDonors_Bulk' + modality + '_' + selector + '_path'].length > 0)).length > 0) {
@@ -419,6 +420,17 @@
               option.value = donor + '_Bulk' + modality + '_' + tissue;
               document.getElementById('select_cells_' + selector).add(option)
             }
+          }
+        }
+
+        if (selector == 'pileup') {
+          const modality = 'MaxSingleCells';
+          for (const tissue of ['DLPFC', 'HIP']) {
+            var option = document.createElement("option");
+            option.selected = false;
+            option.text = donor + ' ' + modality + ' ' + tissue;
+            option.value = donor + '_Bulk' + modality + '_' + tissue;
+            document.getElementById('select_cells_' + selector).add(option)
           }
         }
 
@@ -472,8 +484,9 @@
       })
     }
 
+    // TODO: Create an option for showing only the donors that have all 3 tissues (DLPFC, HIP and DURA)
     function pileupTracks(tracktypes) {
-      // Load all tracks of selected type
+      // Load all pileup tracks of selected type (BulkWGS, BulkSLAVseq or MaxSingleCells)
       // var tracktype = document.getElementById('select_donor').value;
 
       const modality2num = { 'AllDonors_BulkWGS': 0, 'AllDonors_BulkSLAVseq': 1, 'AllDonors_MaxSingleCells': 2 };
@@ -482,7 +495,7 @@
       var myTracks = [];
       var autoscale = $('#toggleAutoscale_btn').prop('checked')
       for (const tracktype of tracktypes) {
-        
+
         var tissues = $('#select_tissue').val();
         var useTracks = donors_tissues.filter((x) => tissues.includes(x.tissue))
         useTracks = useTracks.filter((x) => x[tracktype + '_pileup_path'].length > 0)
@@ -543,15 +556,13 @@
       var tracks = document.getElementById('select_cells_pileup').selectedOptions;
       var donor = document.getElementById('select_donor').value;
       const tissue2num = { 'DLPFC': 0, 'HIP': 1, 'DURA': 2 };
-      const modality2num = { 'BulkWGS': 0, 'BulkSLAVseq': 1, 'MaxSingleCells': 2 };
+      const modality2num = { 'BulkWGS': 0, 'BulkSLAVseq': 1, 'BulkMaxSingleCells': 2 };
       const autoscale = $('#toggleAutoscale_btn').prop('checked');
       for (const track of tracks) {
         if (track.value.includes('Bulk')) {
           var tracktype = track.value.split('_')[1]
           tracktype = tracktype.replace('AllDonors_', '')
           var tissue = track.value.split('_')[2]
-          console.log(tracktype)
-          console.log('AllDonors_' + tracktype + '_pileup_path')
           var myDonorTissue = donors_tissues.filter((x) => (x.donor == donor) & (x.tissue == tissue) & (x['AllDonors_' + tracktype + '_pileup_path'].length > 0))
           if (myDonorTissue.length == 1) {
             var myTrack = {
@@ -669,7 +680,7 @@
       switch (selectedDonor) {
         case 'AllDonors_AllModalities':
           pileupTracks(['AllDonors_MaxSingleCells', 'AllDonors_BulkWGS',
-           'AllDonors_BulkSLAVseq' 
+            'AllDonors_BulkSLAVseq'
           ])
           break;
         case 'AllDonors_MaxSingleCells':
@@ -677,7 +688,7 @@
         case 'AllDonors_BulkWGS':
           pileupTracks([selectedDonor]);
           break;
-        case 'Heatmap':
+        case 'SingleCells_Heatmap':
           allCellsHeatmapTrack();
           break;
         default:

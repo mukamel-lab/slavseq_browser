@@ -1,3 +1,6 @@
+# Set up configuration .tsv file listing all of the "bulk" pileup and bam tracks
+#
+
 import pandas as pd
 import os
 
@@ -23,7 +26,7 @@ for i, dfi in df.iterrows():
       df.loc[i, f"AllDonors_BulkWGS_pileup_path"] = bulk_WGS_path
   else:
       df.loc[i, f"AllDonors_BulkWGS_pileup_path"] = ""
-        
+            
   tissue='DURA'  
   bulk_WGS_path = f"data/bigwig/BulkWGS/D{donor_num}.{tissue}.BulkWGS_disc_q30.bigwig"
   if (dfi.tissue=='DLPFC') and os.path.exists(f"{basedir}/{bulk_WGS_path}"):
@@ -31,7 +34,8 @@ for i, dfi in df.iterrows():
     df_cbnu['tissue']='DURA'
     df_cbnu['AllDonors_BulkWGS_pileup_path'] = bulk_WGS_path
     df_cbnu['color']='rgb(100,100,100)'
-    df_cbnu['AllDonors_MaxSingleCells_pileup_path']=""
+    df_cbnu['AllDonors_BulkMaxSingleCells_pileup_path']=""
+    df_cbnu['AllDonors_BulkSLAVseq_pileup_path'] = ''
     df_cbn.append(df_cbnu)
 
 df_cbn=pd.DataFrame(df_cbn)
@@ -48,11 +52,13 @@ for modality in ['WGS','SLAVseq']:
     if os.path.exists(f'{basedir}/{bulk_bam}'):
       df.loc[i,f'AllDonors_Bulk{modality}_bam_path']=bulk_bam
 
-df[f'AllDonors_MaxSingleCells_pileup_path']=''
+df[f'AllDonors_BulkMaxSingleCells_pileup_path']=''
 for i, dfi in df.iterrows():
   donor_num = dfi.donor[1:]
-  path=f'data/bigwig/MaxSingleCells/R1_discordant_q30.Donor{donor_num}_{dfi.tissue}_discordant.max.bw'
+  path=f'data/bigwig/BulkMaxSingleCells/R1_discordant_q30.Donor{donor_num}_{dfi.tissue}_discordant.max.bw'
   if os.path.exists(f'{basedir}/{path}'):
-    df.loc[i,f'AllDonors_MaxSingleCells_pileup_path']=path
+    df.loc[i,f'AllDonors_BulkMaxSingleCells_pileup_path']=path
+  else:
+    df.loc[i,f'AllDonors_BulkMaxSingleCells_pileup_path']=''
       
 df.to_csv(f"{basedir}/config/donors_IGVconfig.csv",index=False)
