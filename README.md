@@ -9,3 +9,6 @@ This application uses IGV.js <https://github.com/igvteam/igv.js> to display SLAV
 
 To configure annotations (ROIs), edit the file roi_tracks.js
 
+Bugs/TODO:
+
+- Multiple copies of the donor-specific peaks are added to the ROI list....

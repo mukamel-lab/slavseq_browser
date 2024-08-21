@@ -87,8 +87,8 @@
           <select id="select_donor" class="selectpicker" data-selected-text-format="static" data-title="Donor(s)"
             multiple data-max-options="1" data-width="100%" data-toggle="tooltip" data-placement="top"
             data-header="Donor(s) to show" data-live-search="true">
-            <option value="SingleCells_Heatmap"> All cells (heatmap)</option>
-            <option value="Heatmap"> All bulk data (heatmap)</option>
+            <option value="SingleCells_Heatmap"> All single cell SLAV-seq (heatmap)</option>
+            <!-- <option value="BulkWGS_Heatmap"> All bulk WGS data (heatmap)</option> -->
             <option value="AllDonors_AllModalities"> All donors - Bulk+MaxSingleCells</option>
             <option value="AllDonors_BulkMaxSingleCells" selected> All donors - Max of single cell SLAV-seq</option>
             <option value="AllDonors_BulkSLAVseq"> All donors - Bulk SLAV-seq</option>
@@ -157,21 +157,21 @@
   <script type="module">
 
     import igv from "./js/igv.esm.EAM_mod.min.js"
-    import { all_roi_tracks } from "./roi_tracks.js"
+    import { all_roi_tracks } from "./roi_tracks.js" // This loads the ROI tracks derived from all donors (e.g. merged KNRGLs)
 
-    // Add ROI tracks for each donor
-    const donors = donors_tissues.filter((d) => d.tissue == "HIP")
-    for (const donor of donors) {
-      var roiTrack = {
-        'name': "Peaks in " + donor.donor,
-        'url': './data/peaks_per_donor/peaks_' + donor.donor + '.bed',
-        'indexed': false,
-        'color': "rgba(1,1,255,0.5)",
-        'format': 'bed',
-        'tracktype': 'ROI'
-      };
-      all_roi_tracks.push(roiTrack);
-    }
+    // // Add ROI tracks for each donor
+    // const donors = donors_tissues.filter((d) => d.tissue == "HIP")
+    // for (const donor of donors) {
+    //   var roiTrack = {
+    //     'name': "Peaks in " + donor.donor,
+    //     'url': './data/peaks_per_donor/peaks_' + donor.donor + '.bed',
+    //     'indexed': false,
+    //     'color': "rgba(1,1,255,0.5)",
+    //     'format': 'bed',
+    //     'tracktype': 'ROI'
+    //   };
+    //   all_roi_tracks.push(roiTrack);
+    // }
 
     var options =
     {
@@ -320,7 +320,7 @@
     // Functions for updating the dropdown lists
 
     function updateDonors() {
-      // Update the select menus
+      // Add each donor to the select_donor dropdown
       const donors = donors_tissues.filter((d) => d.tissue == "HIP")
       for (const donor of donors) {
         var option = document.createElement("option");
@@ -348,22 +348,32 @@
         document.getElementById('select_bams_li').style.display = 'block';
         document.getElementById('select_tissue_li').style.display = 'block';
 
-        var option = document.createElement("option");
-        option.text = donor + ' KNRGL Megane';
-        option.value = donor + '_knrgl';
-        option.selected = true;
-        document.getElementById('select_rois').add(option);
+        var donor_rois = all_roi_tracks.filter((x) => (x.donor == donor) | (x.donor == 'all'))
+        for (const donor_roi of donor_rois) {
+          var option = document.createElement("option");
+          option.text = donor_roi.name;
+          option.value = donor_roi.url;
+          option.selected = false;
+          document.getElementById('select_rois').add(option);
+        }
+        // var option = document.createElement("option");
+        // option.text = donor + ' KNRGL Megane';
+        // option.value = donor + '_knrgl';
+        // option.selected = true;
+        // document.getElementById('select_rois').add(option);
         $('.selectpicker').selectpicker('refresh');
       }
     }
 
-    function initializeROIs() {
+    function updateROItracks() {
       var activeROIs = browser.roiManager.roiSets.map((x) => x.name)
-      for (const roi_track of all_roi_tracks.filter((x) => !x.name.startsWith("Peaks in D"))) {
+
+      document.getElementById('select_rois').options.length = 0;
+      for (const roi_track of all_roi_tracks.filter((x) => (x.donor == 'all') | (x.donor == document.getElementById('select_donor').value))) {
         var option = document.createElement("option");
         option.text = roi_track.name;
-        option.value = roi_track.name;
-        option.selected = activeROIs.includes(roi_track.name);
+        option.value = roi_track.url;
+        option.selected = false;
         document.getElementById('select_rois').add(option);
       }
       $('.selectpicker').selectpicker('refresh');
@@ -374,23 +384,11 @@
       var activeROITracks = browser.tracks.filter((x) => (x.config) ? x.config.tracktype == 'ROI' : 0)
       for (const roiTrack of activeROITracks) { browser.removeTrack(roiTrack) }
       browser.clearROIs();
-      var rois = $('#select_rois').val()
-      var roi_tracks = all_roi_tracks.filter((x) => rois.includes(x.name))
+      var selected_rois = $('#select_rois').val()
+      var selected_roi_tracks = all_roi_tracks.filter((x) => selected_rois.includes(x.url))
 
-      if (document.getElementById('select_donor').value.startsWith('D')) {
-        // When we're only showing a single donor, just show the ROIs for that donor
-        var donor = document.getElementById('select_donor').value;
-        roi_tracks.push({
-          "name": "Peaks for Donor " + donor,
-          'url': 'data/peaks_per_donor/peaks_' + donor + '.bed',
-          'indexed': false,
-          'tracktype': 'ROI',
-          'height': 25,
-          'order': 4.9
-        })
-      }
-      browser.loadTrackList(roi_tracks);
-      browser.loadROI(roi_tracks)
+      browser.loadTrackList(selected_roi_tracks);
+      browser.loadROI(selected_roi_tracks)
     }
 
     ////////////////////
@@ -510,13 +508,15 @@
             'minHeight': 5,
             'color': donor.color,
             'order': 10 + Number(donor.donor.slice(1) / 100) + (modality2num[tracktype] / 1000) + (tissuenum / 10000),
-            'roi': [{
-              name: donor.donor + ' non-reference germline L1 insertions (KNRGL called by Megane)',
-              url: "./rois/KNRGL_" + donor.donor + "_megane.bed",
-              color: "rgba(255,94,1,0.90)"
-            }],
             'overflowColor': "rgb(100,100,100)"
           };
+          if (tracktype == 'AllDonors_BulkWGS') {
+            myTrack.roi = [{
+              name: donor.donor + ' non-reference germline L1 insertions (KNRGL called by Megane)',
+              url: "./rois/megane_KNRGL_calls/" + donor.donor + "." + donor.tissue + ".megane_final_gaussian.L1HS.bed",
+              color: "rgba(255,94,1,0.90)"
+            }]
+          }
           myTracks.push(myTrack)
         }
       }
@@ -525,10 +525,10 @@
 
     function addBigWigTracks() {
       var cells_show = $("#select_cells_pileup").val();
-      var cells_info = cells.filter((x) => (cells_show.includes(x.sample)) & (x.is_bulk == 'False'))
+      var cells_infos = cells.filter((x) => (cells_show.includes(x.sample)) & (x.is_bulk == 'False'))
       var trackHeight = document.getElementById('pileup_height').value;
       var myTracks = []
-      for (const cell_info of cells_info) {
+      for (const cell_info of cells_infos) {
         var myTrack = {
           'name': cell_info.donor + ' ' + cell_info.tissue + ':' + cell_info.sample,
           'url': 'data/bigwig/SingleCell_pileups_q30_bothstrands/' + cell_info.sample + '.tagged.sorted.R1_discordant.q30.sorted.bigwig',
@@ -572,6 +572,14 @@
               'height': 20,
               'minHeight': 5
             };
+            if (track.text.includes('Bulk WGS')) {
+              var tissue = track.text.split(' ')[3]
+              myTrack.roi = [{
+                name: donor + ' non-reference germline L1 insertions (KNRGL called by Megane)',
+                url: "./rois/megane_KNRGL_calls/" + donor + "." + tissue + ".megane_final_gaussian.L1HS.bed",
+                color: "rgba(255,94,1,0.90)"
+              }]
+            }
             myTracks.push(myTrack)
           }
         }
@@ -583,9 +591,9 @@
     function addBamTracks() {
       // Add bam tracks for single cells
       var cells_show = $("#select_cells_bam").val();
-      var cells_info = cells.filter((x) => cells_show.includes(x.sample))
+      var cells_infos = cells.filter((x) => cells_show.includes(x.sample))
       var myTracks = []
-      for (const cell_info of cells_info) {
+      for (const cell_info of cells_infos) {
         var myTrack = {
           'name': cell_info.donor + ' ' + cell_info.tissue + ':' + cell_info.sample,
           'url': 'data/bam/SingleCells/' + cell_info.sample + '.tagged.sorted.bam',
@@ -695,11 +703,13 @@
 
     const igvDiv = document.getElementById("igv-div");
     const browser = await igv.createBrowser(igvDiv, options)
+    browser.all_roi_tracks = all_roi_tracks;
+    browser.options = options;
 
     await updateDonors();
     await updateTracks();
     await updateCells();
-    await initializeROIs();
+    await updateROItracks();
     if (!window.location.search.includes('sessionURL')) { await updateROIs(); }
 
     document.getElementById('getLinkButton').addEventListener('click', (event) => {
@@ -707,7 +717,7 @@
       copyLink();
     })
     document.getElementById('screenshotButton').addEventListener('click', () => { myScreenshot(); })
-    document.getElementById('select_donor').addEventListener('change', () => { updateCells(); updateTracks(); updateROIs(); updateIGV(); })
+    document.getElementById('select_donor').addEventListener('change', () => { updateCells(); updateTracks(); updateROItracks(); updateIGV(); })
     document.getElementById('pileup_height').addEventListener('change', () => { updateIGV(); })
     document.getElementById('btn_plus').addEventListener('click', () => { trackHeight('+'); })
     document.getElementById('btn_minus').addEventListener('click', () => { trackHeight('-'); })
