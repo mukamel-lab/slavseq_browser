@@ -348,28 +348,32 @@
         document.getElementById('select_bams_li').style.display = 'block';
         document.getElementById('select_tissue_li').style.display = 'block';
 
-        var donor_rois = all_roi_tracks.filter((x) => (x.donor == donor) | (x.donor == 'all'))
-        for (const donor_roi of donor_rois) {
-          var option = document.createElement("option");
-          option.text = donor_roi.name;
-          option.value = donor_roi.url;
-          option.selected = false;
-          document.getElementById('select_rois').add(option);
-        }
+        // var donor_rois = all_roi_tracks.filter((x) => (x.donor == donor) | (x.donor == 'all'))
+        // for (const donor_roi of donor_rois) {
+        //   var option = document.createElement("option");
+        //   option.text = donor_roi.name;
+        //   option.value = donor_roi.url;
+        //   option.selected = false;
+        //   document.getElementById('select_rois').add(option);
+        // }
         // var option = document.createElement("option");
         // option.text = donor + ' KNRGL Megane';
         // option.value = donor + '_knrgl';
         // option.selected = true;
         // document.getElementById('select_rois').add(option);
-        $('.selectpicker').selectpicker('refresh');
+        // $('.selectpicker').selectpicker('refresh');
       }
+
+      updateROItracks();
     }
 
     function updateROItracks() {
       var activeROIs = browser.roiManager.roiSets.map((x) => x.name)
 
       document.getElementById('select_rois').options.length = 0;
-      for (const roi_track of all_roi_tracks.filter((x) => (x.donor == 'all') | (x.donor == document.getElementById('select_donor').value))) {
+      // $('.selectpicker').selectpicker('refresh');
+      var donor=document.getElementById('select_donor').value
+      for (const roi_track of all_roi_tracks.filter((x) => (x.donor == 'all') | (x.donor == donor))) {
         var option = document.createElement("option");
         option.text = roi_track.name;
         option.value = roi_track.url;
@@ -709,7 +713,7 @@
     await updateDonors();
     await updateTracks();
     await updateCells();
-    await updateROItracks();
+    // await updateROItracks();
     if (!window.location.search.includes('sessionURL')) { await updateROIs(); }
 
     document.getElementById('getLinkButton').addEventListener('click', (event) => {
@@ -717,7 +721,7 @@
       copyLink();
     })
     document.getElementById('screenshotButton').addEventListener('click', () => { myScreenshot(); })
-    document.getElementById('select_donor').addEventListener('change', () => { updateCells(); updateTracks(); updateROItracks(); updateIGV(); })
+    document.getElementById('select_donor').addEventListener('change', () => { updateCells(); updateTracks(); updateIGV(); })
     document.getElementById('pileup_height').addEventListener('change', () => { updateIGV(); })
     document.getElementById('btn_plus').addEventListener('click', () => { trackHeight('+'); })
     document.getElementById('btn_minus').addEventListener('click', () => { trackHeight('-'); })
