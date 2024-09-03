@@ -143,9 +143,6 @@
           <input class="btn" id="toggleAutoscale_btn" type="checkbox" data-toggle="toggle" data-off="Fixed scale"
             data-on="Autoscale">
         </li>
-
-
-
       </ul>
     </div>
 
@@ -190,16 +187,16 @@
         "twoBitBptURL": "https://hgdownload.soe.ucsc.edu/goldenPath/hs1/bigZips/hs1.2bit.bpt"
       },
       tracks: [
-        {
-          "name": "Genes",
-          "format": "bed",
-          "url": "https://s3.amazonaws.com/igv.org.genomes/chm13v2.0/chm13v2.0_geneLocations.short.bed.gz",
-          "hidden": false,
-          "searchable": true,
-          "order": 0,
-          "type": "annotation",
-          "height": 5
-        },
+        // {
+        //   "name": "Genes",
+        //   "format": "bed",
+        //   "url": "https://s3.amazonaws.com/igv.org.genomes/chm13v2.0/chm13v2.0_geneLocations.short.bed.gz",
+        //   "hidden": false,
+        //   "searchable": true,
+        //   "order": 0,
+        //   "type": "annotation",
+        //   "height": 5
+        // },
         {
           "id": "catLiftOffGenesV1",
           "name": "CAT/Liftoff Genes",
@@ -460,9 +457,13 @@
         // "url": "./data/allcells_q30_R1_disc_bins1kb.withZeros.seg.gz", // Show all reads
         // "indexURL": "./data/allcells_q30_R1_disc_bins1kb.withZeros.seg.gz.tbi",
 
-        "filename": "allcells_q30_R1_disc_bins1kb_coverage0.seg.gz",
-        "url": "./data/allcells_q30_R1_disc_bins1kb_coverage0.seg.gz", // Show all reads
-        "indexURL": "./data/allcells_q30_R1_disc_bins1kb_coverage0.seg.gz.tbi",
+        // "filename": "allcells_q30_R1_disc_bins1kb_coverage5.seg.gz",
+        // "url": "./data/allcells_q30_R1_disc_bins1kb_coverage5.seg.gz", // Show all reads
+        // "indexURL": "./data/allcells_q30_R1_disc_bins1kb_coverage5.seg.gz.tbi",
+
+        "filename": "allcells.peaks.R1_disc_q30.seg.gz",
+        "url": "./data/allcells.peaks.R1_disc_q30.seg.gz", // Show all reads
+        "indexURL": "./data/allcells.peaks.R1_disc_q30.seg.gz.tbi",
 
         // "filename": "foo.seg.gz", "url": "./data/foo.seg.gz", "indexURL": "./data/foo.seg.gz.tbi", // This is a smaller heatmap showing just one donor
         "indexed": true,
@@ -535,7 +536,8 @@
       for (const cell_info of cells_infos) {
         var myTrack = {
           'name': cell_info.donor + ' ' + cell_info.tissue + ':' + cell_info.sample,
-          'url': 'data/bigwig/SingleCell_pileups_q30_bothstrands/' + cell_info.sample + '.tagged.sorted.R1_discordant.q30.sorted.bigwig',
+          // 'url': 'data/bigwig/SingleCell_pileups_q30_bothstrands/' + cell_info.sample + '.tagged.sorted.R1_discordant.q30.sorted.bigwig',
+          'url': 'data/bigwig/SingleCell_pileups_q30_bothstrands/' + cell_info.sample + '.tagged.sorted.R1.q30.sorted_thresh3.bigwig',
           'format': 'bigwig',
           'type': 'wig',
           'windowFunction': 'max',
@@ -604,6 +606,7 @@
           'indexURL': 'data/bam/SingleCells/' + cell_info.sample + '.tagged.sorted.bam.bai',
           'format': 'bam',
           'type': 'alignment',
+          'filter':{mq:30},
           'height': 100,
           'minHeight': 10,
           'coverageColor': cell_info.tissue == "HIP" ? "rgb(0,204,255)" : "rgb(0,0,255)",

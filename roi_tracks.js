@@ -10,20 +10,10 @@ export const all_roi_tracks = [
     'tissue':'all'
   },
   {
-    'name': 'Filtered peaks',
-    'url': './rois/allcells_max_q30.filtered.ForIGV.bed',
+    name: "Our insertion calls using all scSLAVseq R1 reads",
+    'url': './rois/scL1_inserts_calls.bed',
     'indexed': false,
-    'color': "rgba(32,128,1,0.5)",
-    'format': 'bed',
-    'tracktype':'ROI',
-    'donor':'all',
-    'tissue':'all'
-  },
-  {
-    'name': 'Disc peaks (remove KNRGL,RefL1HS,PolyA)',
-    'url': './rois/allcells_max_q30.R1_discordant.noKNRGL_noRefL1HS_slop60kb.noPolyA_2kb.bed',
-    'indexed': false,
-    'color': "rgba(94,94,1,0.5)",
+    'color': "rgba(1,1,255,0.5)",
     'format': 'bed',
     'tracktype':'ROI',
     'donor':'all',
