@@ -20,6 +20,16 @@ export const all_roi_tracks = [
     'tissue':'all'
   },
   {
+    name: "All of our peaks",
+    'url': './rois/AllDonors.q30_mindist40000_thresh3.filtered.no_rmsk.bed',
+    'indexed': false,
+    'color': "rgba(1,1,255,0.5)",
+    'format': 'bed',
+    'tracktype':'ROI',
+    'donor':'all',
+    'tissue':'all'
+  },
+  {
     name: "Apua's peak calls",
     'url': './rois/apua_calls_chm13.bed',
     'indexed': false,

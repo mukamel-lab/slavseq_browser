@@ -92,7 +92,7 @@
             <option value="AllDonors_AllModalities"> All donors - Bulk+MaxSingleCells</option>
             <option value="AllDonors_BulkMaxSingleCells" selected> All donors - Max of single cell SLAV-seq</option>
             <option value="AllDonors_BulkSLAVseq"> All donors - Bulk SLAV-seq</option>
-            <option value="AllDonors_BulkWGS"> All donors - Bulk WGS</option>
+            <option value="AllDonors_BulkWGS"> All donors - Bulk WGS (discordant reads)</option>
           </select>
         </li>
 
@@ -179,12 +179,18 @@
         "id": "hs1",
         "blatDB": "hub_3671779_hs1",
         "name": "Human (T2T CHM13-v2.0/hs1)",
-        "fastaURL": "https://s3.amazonaws.com/igv.org.genomes/chm13v2.0/chm13v2.0.fa",
-        "indexURL": "https://s3.amazonaws.com/igv.org.genomes/chm13v2.0/chm13v2.0.fa.fai",
-        "cytobandURL": "https://s3.amazonaws.com/igv.org.genomes/chm13v2.0/CHM13_v2.0.cytoBandMapped.bed",
-        "aliasURL": "https://hgdownload.soe.ucsc.edu/goldenPath/hs1/bigZips/hs1.chromAlias.txt",
-        "twoBitURL": "https://hgdownload.soe.ucsc.edu/goldenPath/hs1/bigZips/hs1.2bit",
-        "twoBitBptURL": "https://hgdownload.soe.ucsc.edu/goldenPath/hs1/bigZips/hs1.2bit.bpt"
+        // "fastaURL": "https://s3.amazonaws.com/igv.org.genomes/chm13v2.0/chm13v2.0.fa",
+        // "indexURL": "https://s3.amazonaws.com/igv.org.genomes/chm13v2.0/chm13v2.0.fa.fai",
+        // "cytobandURL": "https://s3.amazonaws.com/igv.org.genomes/chm13v2.0/CHM13_v2.0.cytoBandMapped.bed",
+        // "aliasURL": "https://hgdownload.soe.ucsc.edu/goldenPath/hs1/bigZips/hs1.chromAlias.txt",
+        // "twoBitURL": "https://hgdownload.soe.ucsc.edu/goldenPath/hs1/bigZips/hs1.2bit",
+        // "twoBitBptURL": "https://hgdownload.soe.ucsc.edu/goldenPath/hs1/bigZips/hs1.2bit.bpt"
+        "fastaURL": "./data/reference/GCF_009914755.1_T2T-CHM13v2.0_genomic.fna",
+        "indexURL": "./data/reference/GCF_009914755.1_T2T-CHM13v2.0_genomic.fna.fai",
+        "cytobandURL": "./data/reference/CHM13_v2.0.cytoBandMapped.bed",
+        "aliasURL": "./data/reference/hs1.chromAlias.txt",
+        "twoBitURL": "./data/reference/hs1.2bit",
+        "twoBitBptURL": "./data/reference/hs1.2bit.bpt"
       },
       tracks: [
         // {
@@ -369,7 +375,7 @@
 
       document.getElementById('select_rois').options.length = 0;
       // $('.selectpicker').selectpicker('refresh');
-      var donor=document.getElementById('select_donor').value
+      var donor = document.getElementById('select_donor').value
       for (const roi_track of all_roi_tracks.filter((x) => (x.donor == 'all') | (x.donor == donor))) {
         var option = document.createElement("option");
         option.text = roi_track.name;
@@ -515,13 +521,14 @@
             'order': 10 + Number(donor.donor.slice(1) / 100) + (modality2num[tracktype] / 1000) + (tissuenum / 10000),
             'overflowColor': "rgb(100,100,100)"
           };
-          if (tracktype == 'AllDonors_BulkWGS') {
-            myTrack.roi = [{
-              name: donor.donor + ' non-reference germline L1 insertions (KNRGL called by Megane)',
-              url: "./rois/megane_KNRGL_calls/" + donor.donor + "." + donor.tissue + ".megane_final_gaussian.L1HS.bed",
-              color: "rgba(255,94,1,0.90)"
-            }]
-          }
+          // if (tracktype == ['AllDonors_BulkWGS','AllDonors_BulkSLAVseq']) {
+          myTrack.roi = [{
+            name: donor.donor + ' non-reference germline L1 insertions (KNRGL called by Megane)',
+            // url: "./rois/megane_KNRGL_calls/" + donor.donor + "." + donor.tissue + ".megane_final_gaussian.L1HS.bed",
+            url: "./rois/megane_KNRGL_calls/KNRGL_subsets/AnyTissue/KNRGL." + donor.donor + ".bed",
+            color: "rgba(255,94,1,0.90)"
+          }]
+          // }
           myTracks.push(myTrack)
         }
       }
@@ -606,7 +613,7 @@
           'indexURL': 'data/bam/SingleCells/' + cell_info.sample + '.tagged.sorted.bam.bai',
           'format': 'bam',
           'type': 'alignment',
-          'filter':{mq:30},
+          'filter': { mq: 30 },
           'height': 100,
           'minHeight': 10,
           'coverageColor': cell_info.tissue == "HIP" ? "rgb(0,204,255)" : "rgb(0,0,255)",
@@ -637,6 +644,7 @@
               'url': myDonorTissue[0]['AllDonors_' + tracktype + '_bam_path'],
               'indexURL': myDonorTissue[0]['AllDonors_' + tracktype + '_bam_path'] + '.bai',
               'format': 'bam',
+              'filter': { mq: 30 },
               'type': 'alignment',
               'height': 150,
               'minHeight': 10,
