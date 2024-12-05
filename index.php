@@ -544,7 +544,7 @@
         var myTrack = {
           'name': cell_info.donor + ' ' + cell_info.tissue + ':' + cell_info.sample,
           // 'url': 'data/bigwig/SingleCell_pileups_q30_bothstrands/' + cell_info.sample + '.tagged.sorted.R1_discordant.q30.sorted.bigwig',
-          'url': 'data/bigwig/SingleCell_pileups_q30_bothstrands/' + cell_info.sample + '.tagged.sorted.R1.q30.sorted_thresh3.bigwig',
+          'url': 'data/bigwig/SingleCell_pileups_q30_bothstrands/' + cell_info.sample + '.tagged.sorted.R1.q30.sorted_thresh0.bigwig',
           'format': 'bigwig',
           'type': 'wig',
           'windowFunction': 'max',
@@ -660,7 +660,6 @@
           myTracks.push(myTrack)
         }
       }
-
       browser.loadTrackList(myTracks)
     }
 

@@ -15,7 +15,7 @@ df=df.loc[(df['tissue']!='CBN')&(df['tissue']!='DURA')]
 df_cbn=[]
 for i, dfi in df.iterrows():
   donor_num = dfi.donor[1:]
-  bulk_slavseq_path = f"data/bigwig/BulkSLAVseq/gDNA_usd{donor_num}.tagged.sorted.R1_discordant.q30.sorted.bigwig"
+  bulk_slavseq_path = f"data/bigwig/BulkSLAVseq/gDNA_usd{donor_num}.tagged.sorted.R1.q30.sorted_thresh3.bw"
   if os.path.exists(f"{basedir}/{bulk_slavseq_path}") and (dfi.tissue == "DLPFC"):
     df.loc[i, "AllDonors_BulkSLAVseq_pileup_path"] = bulk_slavseq_path
   else:
@@ -51,11 +51,14 @@ for modality in ['WGS','SLAVseq']:
     bulk_bam=f'data/bam/Bulk{modality}/D{donor_num}.{tissue}.Bulk{modality}.bam'
     if os.path.exists(f'{basedir}/{bulk_bam}'):
       df.loc[i,f'AllDonors_Bulk{modality}_bam_path']=bulk_bam
+    else:
+      print(f'File does not exist: {basedir}/{bulk_bam}')
 
 df[f'AllDonors_BulkMaxSingleCells_pileup_path']=''
 for i, dfi in df.iterrows():
   donor_num = dfi.donor[1:]
-  path=f'data/bigwig/BulkMaxSingleCells/R1_discordant_q30.Donor{donor_num}_{dfi.tissue}_discordant.max.bw'
+  # path=f'data/bigwig/BulkMaxSingleCells/R1_discordant_q30.Donor{donor_num}_{dfi.tissue}_discordant.max.bw'
+  path=f'data/bigwig/BulkMaxSingleCells/Donor{donor_num}_{dfi.tissue}_R1.max.bw'
   if os.path.exists(f'{basedir}/{path}'):
     df.loc[i,f'AllDonors_BulkMaxSingleCells_pileup_path']=path
   else:

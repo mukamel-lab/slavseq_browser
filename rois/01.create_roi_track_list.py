@@ -25,8 +25,18 @@ tracks='''
     'tissue':'all'
   },
   {
-    name: "All of our peaks",
+    name: "All of our scSLAVseq peaks",
     'url': './rois/AllDonors.q30_mindist40000_thresh3.filtered.no_rmsk.bed',
+    'indexed': false,
+    'color': "rgba(1,1,255,0.5)",
+    'format': 'bed',
+    'tracktype':'ROI',
+    'donor':'all',
+    'tissue':'all'
+  },
+  {
+    name: "Our bulkSLAVseq peaks",
+    'url': './rois/gDNA.AllDonors.slop2500bp_merged.no_rmsk.bed',
     'indexed': false,
     'color': "rgba(1,1,255,0.5)",
     'format': 'bed',

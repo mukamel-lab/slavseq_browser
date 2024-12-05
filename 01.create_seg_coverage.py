@@ -14,6 +14,7 @@ samples=samples[~samples['is_bulk']]
 # Use the full bam file
 min_coverage=5
 datadir=f'/mysqlpool/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bed_coverage_donor_q30_bins1kb_coverage{min_coverage}'
+datadir=f'/mysqlpool/emukamel/SLAVSeq_SZ/allsamples/SingleCells/bed_coverage_donor_q30_bins1kb_coverage{min_coverage}'
 dfs=[]
 def loadsample(i, samples=samples):
   sample=samples.iloc[i]
