@@ -105,6 +105,23 @@ for bed in megane_knrgls:
             )
   tracks+=newtrack
             
+
+scl1=glob('mike_scL1_calls/*.bed')
+for bed in scl1:
+  thresholds=bed.split('/')[-1].split('_')[:2]
+  newtrack=('{\n'
+            f'"name": "Mike scL1 calls (≥{thresholds[1]} read in target, ≤{thresholds[0]} in off-target donor)",\n'
+            f'"url":"./rois/{bed}",\n'
+            '"indexed":false,\n'
+            '"format":"bed",\n'
+            '"tracktype":"ROI",\n'
+            f'"donor":"all",\n'
+            f'"tissue":"all",\n'
+            '"order":4.95,\n"height":25\n'
+            '},\n'
+            )
+  tracks+=newtrack
+                        
 tracks=tracks[:-2]
 tracks='export const all_roi_tracks = ['+tracks
 tracks+='];'

@@ -905,4 +905,59 @@ export const all_roi_tracks = [
 "tissue":"HIP",
 "order":4.9,
 "height":25
+},
+{
+"name": "Mike scL1 calls (≥50 read in target, ≤3 in off-target donor)",
+"url":"./rois/mike_scL1_calls/3_50_single_donor_peaks.bed",
+"indexed":false,
+"format":"bed",
+"tracktype":"ROI",
+"donor":"all",
+"tissue":"all",
+"order":4.95,
+"height":25
+},
+{
+"name": "Mike scL1 calls (≥10 read in target, ≤3 in off-target donor)",
+"url":"./rois/mike_scL1_calls/3_10_single_donor_peaks.bed",
+"indexed":false,
+"format":"bed",
+"tracktype":"ROI",
+"donor":"all",
+"tissue":"all",
+"order":4.95,
+"height":25
+},
+{
+"name": "Mike scL1 calls (≥5 read in target, ≤2 in off-target donor)",
+"url":"./rois/mike_scL1_calls/2_5_single_donor_peaks.bed",
+"indexed":false,
+"format":"bed",
+"tracktype":"ROI",
+"donor":"all",
+"tissue":"all",
+"order":4.95,
+"height":25
+},
+{
+"name": "Mike scL1 calls (≥5 read in target, ≤3 in off-target donor)",
+"url":"./rois/mike_scL1_calls/3_5_single_donor_peaks.bed",
+"indexed":false,
+"format":"bed",
+"tracktype":"ROI",
+"donor":"all",
+"tissue":"all",
+"order":4.95,
+"height":25
+},
+{
+"name": "Mike scL1 calls (≥10 read in target, ≤2 in off-target donor)",
+"url":"./rois/mike_scL1_calls/2_10_single_donor_peaks.bed",
+"indexed":false,
+"format":"bed",
+"tracktype":"ROI",
+"donor":"all",
+"tissue":"all",
+"order":4.95,
+"height":25
 }];

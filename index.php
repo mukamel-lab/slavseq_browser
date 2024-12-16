@@ -55,6 +55,11 @@
     .nav-item {
       margin: 5;
     }
+
+    .igv-track-label {
+      font-size: 7px;
+      /* Adjust this value to your desired size */
+    }
   </style>
   <script src="js/fontawesome.js"></script>
   <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/solid.min.css"> -->
@@ -235,14 +240,14 @@
       ]
     };
 
-    for (const mytrack of all_roi_tracks.filter((x) => !x.name.startsWith("Peaks in D"))) {
-      mytrack.height = 25;
+    for (const mytrack of all_roi_tracks.filter((x) => x.donor == 'all')) {
+      mytrack.height = 30;
       mytrack.order = 4;
       // Make the color non-transparent
       if (mytrack.color) {
         mytrack.color = mytrack.color.replace(/,[0-9]+\)/i, ',0)');
       }
-      options.tracks.push(mytrack)
+      // options.tracks.push(mytrack)
     }
 
     ////////////////////////////////////////////////
@@ -322,7 +327,7 @@
     ////////////////////////////////////
     // Functions for updating the dropdown lists
 
-    function updateDonors() {
+    async function updateDonors() {
       // Add each donor to the select_donor dropdown
       const donors = donors_tissues.filter((d) => d.tissue == "HIP")
       for (const donor of donors) {
@@ -334,7 +339,7 @@
       }
     }
 
-    function updateTracks() {
+    async function updateTracks() {
       // Show and hide the appropriate dropdown menus
       var donor = document.getElementById('select_donor').value;
       if (donor.startsWith('AllDonors_')) {
@@ -370,11 +375,10 @@
       updateROItracks();
     }
 
-    function updateROItracks() {
+    async function updateROItracks() {
       var activeROIs = browser.roiManager.roiSets.map((x) => x.name)
 
       document.getElementById('select_rois').options.length = 0;
-      // $('.selectpicker').selectpicker('refresh');
       var donor = document.getElementById('select_donor').value
       for (const roi_track of all_roi_tracks.filter((x) => (x.donor == 'all') | (x.donor == donor))) {
         var option = document.createElement("option");
@@ -394,13 +398,15 @@
       var selected_rois = $('#select_rois').val()
       var selected_roi_tracks = all_roi_tracks.filter((x) => selected_rois.includes(x.url))
 
+      console.log(selected_roi_tracks)
+
       browser.loadTrackList(selected_roi_tracks);
       browser.loadROI(selected_roi_tracks)
     }
 
     ////////////////////
     // Create tracks
-    function updateCells() {
+    async function updateCells() {
       // After the user selects a single donor to display, update the list of cells and the available bulk tracks
       var donor = document.getElementById('select_donor').value;
       var tissues = $('#select_tissue').val();
@@ -410,7 +416,6 @@
       for (const selector of ['pileup', 'bam']) {
         $("#select_cells_" + selector).empty();
 
-        // if (selector == 'bam') {
         // Add Bulk BAM/Pileup tracks
         for (const modality of ['WGS', 'SLAVseq']) {
           for (const tissue of ['DLPFC', 'HIP', 'DURA']) {
@@ -446,7 +451,7 @@
       $('.selectpicker').selectpicker('refresh');
     }
 
-    function allCellsHeatmapTrack() {
+    async function allCellsHeatmapTrack() {
       // Create a heatmap track showing all cells
       const colorScale = {
         low: 0, lowR: 255, lowG: 255, lowB: 255,
@@ -468,8 +473,8 @@
         // "indexURL": "./data/allcells_q30_R1_disc_bins1kb_coverage5.seg.gz.tbi",
 
         "filename": "allcells.peaks.R1_disc_q30.seg.gz",
-        "url": "./data/allcells.peaks.R1_disc_q30.seg.gz", // Show all reads
-        "indexURL": "./data/allcells.peaks.R1_disc_q30.seg.gz.tbi",
+        "url": "./data/allcells_q30_R1_disc_bins1kb_coverage5.seg.gz", // Show all reads
+        "indexURL": "./data/allcells_q30_R1_disc_bins1kb_coverage5.seg.gz.tbi",
 
         // "filename": "foo.seg.gz", "url": "./data/foo.seg.gz", "indexURL": "./data/foo.seg.gz.tbi", // This is a smaller heatmap showing just one donor
         "indexed": true,
@@ -490,9 +495,13 @@
     }
 
     // TODO: Create an option for showing only the donors that have all 3 tissues (DLPFC, HIP and DURA)
-    function pileupTracks(tracktypes) {
-      // Load all pileup tracks of selected type (BulkWGS, BulkSLAVseq or MaxSingleCells)
+    async function pileupTracks(tracktypes) {
+      // Load all pileup tracks (max across all single cells) of selected type (BulkWGS, BulkSLAVseq or MaxSingleCells)
       // var tracktype = document.getElementById('select_donor').value;
+
+      // Remove current tracks
+      var activeTracks = browser.tracks.filter((x) => ['wig', 'bam'].includes(x.type))
+      for (const activeTrack of activeTracks) { browser.removeTrack(activeTrack) }
 
       const modality2num = { 'AllDonors_BulkWGS': 0, 'AllDonors_BulkSLAVseq': 1, 'AllDonors_BulkMaxSingleCells': 2 };
       const modality2scale = { 'AllDonors_BulkWGS': 20, 'AllDonors_BulkSLAVseq': 500, 'AllDonors_BulkMaxSingleCells': 20 };
@@ -508,7 +517,7 @@
           var tissuenum = tissue2num[donor.tissue]
 
           var myTrack = {
-            'name': tracktype.replace('AllDonors_', '') + ' ' + donor.donor + ' ' + donor.tissue,
+            'name': tracktype.replace('AllDonors_', '').replace('BulkMaxSingle', 'MaxSingle') + ' ' + donor.donor + ' ' + donor.tissue,
             'url': donor[tracktype + '_pileup_path'],
             'format': 'bigwig',
             'type': 'wig',
@@ -535,7 +544,7 @@
       browser.loadTrackList(myTracks)
     }
 
-    function addBigWigTracks() {
+    async function addBigWigTracks() {
       var cells_show = $("#select_cells_pileup").val();
       var cells_infos = cells.filter((x) => (cells_show.includes(x.sample)) & (x.is_bulk == 'False'))
       var trackHeight = document.getElementById('pileup_height').value;
@@ -601,7 +610,7 @@
       browser.loadTrackList(myTracks)
     }
 
-    function addBamTracks() {
+    async function addBamTracks() {
       // Add bam tracks for single cells
       var cells_show = $("#select_cells_bam").val();
       var cells_infos = cells.filter((x) => cells_show.includes(x.sample))
@@ -609,8 +618,10 @@
       for (const cell_info of cells_infos) {
         var myTrack = {
           'name': cell_info.donor + ' ' + cell_info.tissue + ':' + cell_info.sample,
-          'url': 'data/bam/SingleCells/' + cell_info.sample + '.tagged.sorted.bam',
-          'indexURL': 'data/bam/SingleCells/' + cell_info.sample + '.tagged.sorted.bam.bai',
+          // 'url': 'data/bam/SingleCells/' + cell_info.sample + '.tagged.sorted.bam',
+          // 'indexURL': 'data/bam/SingleCells/' + cell_info.sample + '.tagged.sorted.bam.bai',
+          'url': cell_info.url,
+          'indexURL': cell_info.url + '.bai',
           'format': 'bam',
           'type': 'alignment',
           'filter': { mq: 30 },
@@ -687,7 +698,7 @@
       })
     }
 
-    function updateIGV() {
+    async function updateIGV() {
       for (const track of (browser.tracks.filter((x) => ['wig', 'alignment', 'seg'].includes(x.type)))) {
         browser.removeTrack(track);
       }
@@ -711,7 +722,6 @@
         default:
           addBigWigTracks();
           addBamTracks();
-
       }
     }
 
@@ -720,11 +730,13 @@
     browser.all_roi_tracks = all_roi_tracks;
     browser.options = options;
 
-    await updateDonors();
-    await updateTracks();
-    await updateCells();
-    // await updateROItracks();
-    if (!window.location.search.includes('sessionURL')) { await updateROIs(); }
+    async function initialize() {
+      await updateDonors();
+      await updateTracks();
+      await updateCells();
+      // await updateROItracks();
+      if (!window.location.search.includes('sessionURL')) { await updateROIs(); }
+    }
 
     document.getElementById('getLinkButton').addEventListener('click', (event) => {
       getLink();
@@ -765,6 +777,8 @@
         updateROIs();
         toggleROIs();
       });
+
+      initialize();
     })
 
   </script>
