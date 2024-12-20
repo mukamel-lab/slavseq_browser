@@ -106,11 +106,15 @@ for bed in megane_knrgls:
   tracks+=newtrack
             
 
-scl1=glob('mike_scL1_calls/*.bed')
+scl1=glob('mike_scL1_calls/*_single_donor_peaks.sorted.bed')
 for bed in scl1:
   thresholds=bed.split('/')[-1].split('_')[:2]
+  trackname=f'Mike scL1 calls (≥{thresholds[1]} read in target, ≤{thresholds[0]} in off-target donor)'
+  if '3prime' in bed:
+    trackname='3prime '+trackname
+  print
   newtrack=('{\n'
-            f'"name": "Mike scL1 calls (≥{thresholds[1]} read in target, ≤{thresholds[0]} in off-target donor)",\n'
+            f'"name": "{trackname}",\n'
             f'"url":"./rois/{bed}",\n'
             '"indexed":false,\n'
             '"format":"bed",\n'
@@ -122,7 +126,24 @@ for bed in scl1:
             )
   tracks+=newtrack
                         
-tracks=tracks[:-2]
+scl1=glob('mike_scL1_calls/3_5_*donor_peaks.D*.bed')
+for bed in scl1:
+  thresholds=bed.split('/')[-1].split('_')[:2]
+  donor=bed.split('.')[1]
+  newtrack=('{\n'
+            f'"name": "{donor}: scL1 calls (≥{thresholds[1]} read in target, ≤{thresholds[0]} in off-target donor)",\n'
+            f'"url":"./rois/{bed}",\n'
+            '"indexed":false,\n'
+            '"format":"bed",\n'
+            '"tracktype":"ROI",\n'
+            f'"donor":"{donor}",\n'
+            f'"tissue":"all",\n'
+            '"order":4.95,\n"height":25\n'
+            '},\n'
+            )
+  tracks+=newtrack
+  
+tracks=tracks[:-2] # Remove trailing comma
 tracks='export const all_roi_tracks = ['+tracks
 tracks+='];'
 

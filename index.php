@@ -206,7 +206,7 @@
         //   "searchable": true,
         //   "order": 0,
         //   "type": "annotation",
-        //   "height": 5
+        //   "height": 25
         // },
         {
           "id": "catLiftOffGenesV1",
@@ -317,7 +317,7 @@
           if ('dataRange' in track) {
             track.autoscale = false;
             track.dataRange['max'] = 20;
-            track.trackView.dataRange['max'] = 20;
+            // track.trackView.dataRange['max'] = 20;
           }
         }
         browser.repaintViews();
@@ -390,7 +390,7 @@
       $('.selectpicker').selectpicker('refresh');
     }
 
-    function updateROIs() {
+    async function updateROIs() {
       // Remove the currently active ROI tracks
       var activeROITracks = browser.tracks.filter((x) => (x.config) ? x.config.tracktype == 'ROI' : 0)
       for (const roiTrack of activeROITracks) { browser.removeTrack(roiTrack) }
@@ -398,9 +398,8 @@
       var selected_rois = $('#select_rois').val()
       var selected_roi_tracks = all_roi_tracks.filter((x) => selected_rois.includes(x.url))
 
-      console.log(selected_roi_tracks)
-
-      browser.loadTrackList(selected_roi_tracks);
+      // browser.loadTrackList(selected_roi_tracks);
+      myLoadBrowserTracks(selected_roi_tracks)
       browser.loadROI(selected_roi_tracks)
     }
 
@@ -499,15 +498,14 @@
       // Load all pileup tracks (max across all single cells) of selected type (BulkWGS, BulkSLAVseq or MaxSingleCells)
       // var tracktype = document.getElementById('select_donor').value;
 
-      // Remove current tracks
-      var activeTracks = browser.tracks.filter((x) => ['wig', 'bam'].includes(x.type))
-      for (const activeTrack of activeTracks) { browser.removeTrack(activeTrack) }
-
       const modality2num = { 'AllDonors_BulkWGS': 0, 'AllDonors_BulkSLAVseq': 1, 'AllDonors_BulkMaxSingleCells': 2 };
       const modality2scale = { 'AllDonors_BulkWGS': 20, 'AllDonors_BulkSLAVseq': 500, 'AllDonors_BulkMaxSingleCells': 20 };
       const tissue2num = { 'DLPFC': 0, 'HIP': 1, 'DURA': 2 };
       var myTracks = [];
       var autoscale = $('#toggleAutoscale_btn').prop('checked')
+      var trackHeight = document.getElementById('pileup_height').value;
+      const darkerColors = { 'HIP': 'rgb(0,104,155)', 'DLPFC': 'rgb(0,0,155)' }
+
       for (const tracktype of tracktypes) {
         var tissues = $('#select_tissue').val();
         var useTracks = donors_tissues.filter((x) => tissues.includes(x.tissue))
@@ -524,9 +522,9 @@
             'windowFunction': 'max',
             'autoscale': autoscale,
             'min': 0, 'max': modality2scale[tracktype],
-            'height': 20,
+            'height': trackHeight,
             'minHeight': 5,
-            'color': donor.color,
+            'color': ['AllDonors_BulkSLAVseq', 'AllDonors_BulkWGS'].includes(tracktype) ? darkerColors[donor.tissue] : donor.color,
             'order': 10 + Number(donor.donor.slice(1) / 100) + (modality2num[tracktype] / 1000) + (tissuenum / 10000),
             'overflowColor': "rgb(100,100,100)"
           };
@@ -538,13 +536,21 @@
             color: "rgba(255,94,1,0.90)"
           }]
           // }
+
           myTracks.push(myTrack)
         }
       }
-      browser.loadTrackList(myTracks)
+
+      // Remove current tracks
+      var activeTracks = browser.tracks.filter((x) => ['wig', 'bam'].includes(x.type))
+      for (const activeTrack of activeTracks) { browser.removeTrack(activeTrack) }
+      // browser.loadTrackList(myTracks)
+      // for (const track of myTracks) { browser.loadTrack(track) }
+      myLoadBrowserTracks(myTracks)
     }
 
     async function addBigWigTracks() {
+      // Single cell tracks
       var cells_show = $("#select_cells_pileup").val();
       var cells_infos = cells.filter((x) => (cells_show.includes(x.sample)) & (x.is_bulk == 'False'))
       var trackHeight = document.getElementById('pileup_height').value;
@@ -565,7 +571,6 @@
           // 'visible': false,
           'order': 10
         };
-        // browser.loadTrack(myTrack)
         myTracks.push(myTrack)
       }
 
@@ -607,7 +612,9 @@
         }
       }
 
-      browser.loadTrackList(myTracks)
+      // browser.loadTrackList(myTracks)
+      // for (const track of myTracks) { browser.loadTrack(track) }
+      myLoadBrowserTracks(myTracks)
     }
 
     async function addBamTracks() {
@@ -665,13 +672,15 @@
               'viewAsPairs': false,
               'visibilityWindow': 3000000,
               'maxTLEN': 10000,
-              'order': 5.5
+              'order': 5.5,
+              'samplingWindowSize': 100,
+              'samplingDepth': 5,
             }
           };
           myTracks.push(myTrack)
         }
       }
-      browser.loadTrackList(myTracks)
+      myLoadBrowserTracks(myTracks)
     }
 
     async function sortSegTracks() {
@@ -679,6 +688,15 @@
       mytracks.forEach(
         (x) => x.sortByAttribute('order')
       )
+    }
+
+    async function myLoadBrowserTracks(myTracks) {
+      // Load 10 tracks at a time to avoid overloading the server. This is a bit ad hoc. 
+      const chunkSize=10;
+      for (let i = 0; i < myTracks.length; i += chunkSize) {
+        const chunk = myTracks.slice(i, i + chunkSize);
+        await browser.loadTrackList(chunk); // Wait for each chunk to be processed
+      }
     }
 
     async function trackHeight(plusminus) {
